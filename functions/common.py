@@ -3,6 +3,11 @@ import secrets
 
 LOG_LEVEL = logging.DEBUG
 
+CORS_HEADERS = {
+    'Content-Type': 'application/json', 
+    'Access-Control-Allow-Origin': '*' 
+    }
+
 def log_setup():
     """
     Sets the log level.

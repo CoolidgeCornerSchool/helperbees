@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 import logging
-from common import log_setup, flatten_dynamo_item, to_dynamo_item, new_id
+from common import log_setup, flatten_dynamo_item, to_dynamo_item, new_id, CORS_HEADERS
 
 log_setup()
 
@@ -30,7 +30,8 @@ def post(event, context):
             return { "statusCode": 500, "body": f'User "{new_key}" already exists'}
         raise
     return {
-        "statusCode": 200,
+        'statusCode': 200,
+        'headers': CORS_HEADERS,
         'body': json.dumps({'user_id': new_key})
         }
 
@@ -57,7 +58,8 @@ def update(event, context):
         raise
 
     return {
-        "statusCode": 200,
+        'statusCode': 200,
+        'headers': CORS_HEADERS,
         'body': json.dumps({'user_id': key})
         }
 
@@ -69,18 +71,21 @@ def get_one(event, context):
     if item:
         result = flatten_dynamo_item(item)
         return {
-            "statusCode": 200,
+            'statusCode': 200,
+            'headers': CORS_HEADERS,
             'body': json.dumps(result)
             }
-    return { "statusCode": 404, 'body': 'User not found'}
-    
+    return { 'statusCode': 404,
+             'headers': CORS_HEADERS,
+             'body': 'User not found'}
 
 # GET /user
 def get_all(event, context):
     data = DYNAMO.scan(TableName='users')
     items = [flatten_dynamo_item(i) for i in data['Items']]
     return {
-        "statusCode": 200,
+        'statusCode': 200,
+        'headers': CORS_HEADERS,
         'body': json.dumps(items)
         }
 
@@ -93,5 +98,6 @@ def delete(event, context):
     result = DYNAMO.delete_item(TableName='users', Key={'user_id': {'S': user_id}})
     return {
         "statusCode": 200,
+        'headers': CORS_HEADERS,
         'body': json.dumps({'user_id': user_id})
         }
