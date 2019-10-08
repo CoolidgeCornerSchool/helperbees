@@ -1,0 +1,12 @@
+- tab: home
+  name: Home
+  url: /
+- tab: signup
+  name: Sign up
+  url: /signup
+- tab: admin
+  name: Admin
+  url: /admin
+- tab: test
+  name: Just for testing
+  url: /testing

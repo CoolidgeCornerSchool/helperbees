@@ -1,9 +1,13 @@
-<div class="navbar">
-  <div class="home">
-    <a class="page-link" href="#">Home</a>
-  </div>
-  <div class="about">
-    <a class="page-link" href="/about">About</a>
-  </div>
-</div>
+<nav class="navbar navbar-expand-lg mb-5">
+  <ul class="navbar-nav nav-pills">
+    <li class="nav-item"><div class="navbar-brand">/cool logo/</div>
+      </li>
+    {% for item in site.data.tabs %}
+    <li class="nav-item">
+      <a class="nav-link {% if (page.tab == item.tab) %}active{% endif %}"
+	 href="{{ item.url }}">{{ item.name }}</a> 
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
 
