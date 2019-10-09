@@ -15,8 +15,8 @@ function init_page(){
 // This is called when the list of all users arrives from the back end.
 // It adds all the OPTION menu items to the names menu.
 function on_load_users(data){
-    for (var i in data){
-	let user = data[i];
+    for (var i in data.result){
+	let user = data.result[i];
 	let name = user.first_name + ' ' + user.last_name;
 	let option = $('<option/>').attr('value', user.user_id).text(name);
 	$('#names').append(option);

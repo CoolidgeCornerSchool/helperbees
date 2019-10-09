@@ -3,6 +3,8 @@
 
 The back end runs on Amazon AWS.
 
+Warning: When working in the AWS console, always be sure that you've selected a region consistently.
+For example, we picked `us-east-1` (N. Virginia).
 
 ## DynamoDB
 
@@ -30,7 +32,24 @@ Lambdas are the functions that handle REST API requests.
 
 ### Setup
 
-Go to the Lambda console and create each of the lambdas.
+Go to IAM and create a policy granting DynamoDB permissions: GetItem, PutItem, DeleteItem
+Ours has a name like `LambdaExecutedDynamoDBPolicy`.
+
+Go to S3 and find the zip file uploaded by `deploy_lambda.py`. Ours is in https://helperbees.s3.amazonaws.com/prd/artifacts/functions.zip.
+
+Go to the Lambda console and create each of the lambdas. For each one:
+ * Start with "Author from Scratch"
+ * code entry type: Upload a file from Amazon S3
+ * Amazon S3 link: your S3 zip path
+ * runtime: Python 3.7
+ * handler: users.user_get (the path to each function will be different)
+ * Don't forget to hit `Save`
+
+Update the Execution role:
+ * By default a new execution role is created. For example, `user_get-role-ptk0njrt`
+ * Add `LambdaExecutedDynamoDBPolicy` to the execution role for this lambda.
+
+
 
 ## API Gateway
 
@@ -61,7 +80,9 @@ For each resource, select it and (in the `Actions` menu) choose `Enable CORS`.
 
 For each resource, create methods `GET`, `PUT`, `POST` connected to the corresponding Lambdas
 (`user_get`, `user_update`, etc.).
-   * Enable Lambda Proxy integration
-   * Under Method Response, under response for `http status=200`, under `Response Body for 200`
-   add a response model of type `application/json`
+   * Enable "Use Lambda Proxy integration"
+   * Under Method Response:
+     * under response for `http status=200`
+     * under `Response Body for 200`
+     * add a response model of type `application/json`
 
