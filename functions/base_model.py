@@ -16,7 +16,11 @@ CORS_HEADERS = { 'Content-Type': 'application/json',
 
 
 def response(code, data):
-    "Return request response"
+    """
+    :param code: http response code
+    :param data: string or dict to be returned to browser
+    :return: dict - lambda/API request response
+    """
     if isinstance(data, str):
         body = data
     elif isinstance(data, dict):
@@ -43,10 +47,15 @@ def to_dynamo(item):
     return { k:{"S":str(v)} for k,v in item.items()}
 
 
-def safe_json(string):
-    logging.info(f'SAFE_JSON STRING = {string}')
+def safe_json(json_string):
+    """
+    If JSON string is parsed into a dict, return it with is_error=False
+    If there's a parse error, return the error response (as dict) along with is_error=True
+    :param string: JSON string to be parsed
+    :return: tuple of (object, is_error).
+    """
     try:
-        return json.loads(string), False
+        return json.loads(json_string), False
     except json.decoder.JSONDecodeError as err:
         return response(400, f"Error parsing JSON: {err}"), True
 
@@ -70,7 +79,6 @@ class BaseModel:
         Create a new entry with a new unique id
         """
         body, err = safe_json(event['body'])
-        logging.info(f'BODY = {body}')
         if err:
             return body
         if self.partition_key in body:
@@ -104,8 +112,6 @@ class BaseModel:
         id_from_body = body.get(self.partition_key, None)
         if not id_from_body or id_from_body != item_id:
             return response(400, f'Mismatched item_id: "{item_id}" != "{id_from_body}"')
-
-        logging.info(f'&&&&&& updating with body = {body}')
         try:
             result = DYNAMO.put_item(TableName=self.tablename,
                                      Item=to_dynamo(body),

@@ -1,5 +1,4 @@
 import logging
-import secrets
 
 LOG_LEVEL = logging.DEBUG
 
@@ -14,6 +13,3 @@ def log_setup():
         for handler in root.handlers:
             root.removeHandler(handler)
     logging.basicConfig(format='YYYYY %(asctime)s %(message)s', level=LOG_LEVEL)
-
-
-
