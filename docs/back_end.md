@@ -86,3 +86,7 @@ For each resource, create methods `GET`, `PUT`, `POST` connected to the correspo
      * under `Response Body for 200`
      * add a response model of type `application/json`
 
+   *For methods that take JSON in the body (i.e. POST, PUT)
+   * under Method Request, edit Request Body
+   * specify MIME type: application/json
+   * specify model

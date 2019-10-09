@@ -41,7 +41,14 @@ def to_dynamo(item):
     This marks up the results object.
     """
     return { k:{"S":str(v)} for k,v in item.items()}
-           
+
+
+def safe_json(string):
+    logging.info(f'SAFE_JSON STRING = {string}')
+    try:
+        return json.loads(string), False
+    except json.decoder.JSONDecodeError as err:
+        return response(400, f"Error parsing JSON: {err}"), True
 
 
 class BaseModel:
@@ -62,10 +69,13 @@ class BaseModel:
         """
         Create a new entry with a new unique id
         """
-        body = json.loads(event['body'])
+        body, err = safe_json(event['body'])
+        logging.info(f'BODY = {body}')
+        if err:
+            return body
         if self.partition_key in body:
             return response(400, 'Cannot supply item_id in request')
-        new_key = new_id(DYNAMO, self.tablename, self.partition_key)
+        new_key = self.new_id()
         body[self.partition_key] = new_key
         try:
             result = DYNAMO.put_item(TableName=self.tablename,
@@ -86,22 +96,26 @@ class BaseModel:
         Updates the entry by replacing it
         """
         item_id = event['pathParameters'][self.partition_key]
-        body = json.loads(event['body'])
-        key = body.get(self.partition_key, None)
-        if key not in body:
-            body[self.partition_key] = key
-        if key and key != item_id:
-            return response(400, f'Mismatched item_id: "{item_id}" != "{key}"')
+        body, err = safe_json(event['body'])
+        if err:
+            return body
+        if self.partition_key not in body:
+            body[self.partition_key] = item_id
+        id_from_body = body.get(self.partition_key, None)
+        if not id_from_body or id_from_body != item_id:
+            return response(400, f'Mismatched item_id: "{item_id}" != "{id_from_body}"')
+
+        logging.info(f'&&&&&& updating with body = {body}')
         try:
             result = DYNAMO.put_item(TableName=self.tablename,
                                      Item=to_dynamo(body),
-                                     ConditionExpression='attribute_exists({self.partition_key})')
+                                     ConditionExpression=f'attribute_exists({self.partition_key})')
         except ClientError as err:
             error_code = err.response['Error']['Code']
             if error_code == 'ConditionalCheckFailedException':
-                return response(404, f'Cannot update item {self.partition_key}="{item_id}", no such item.')
+                return response(404, f'Cannot update item {self.partition_key}="{item_id}", no such item with body={to_dynamo(body)}.')
             raise
-        return response(200, {self.partition_key: key})
+        return response(200, {self.partition_key: item_id})
 
 
     # GET /user/{item_id}
@@ -134,7 +148,7 @@ class BaseModel:
         return response(200, {'success': True})
 
 
-    def new_id(client):
+    def new_id(self):
         """
         :return: an unused id for newly created objects
         Note: this is good enough for us, but for large projects just use UUID and
@@ -142,7 +156,7 @@ class BaseModel:
         """
         while True:
             new = secrets.token_urlsafe(ID_SIZE)
-            found = client.get_item(TableName=self.tablename,
+            found = DYNAMO.get_item(TableName=self.tablename,
                                     Key={self.partition_key: {'S': new}},
                                     ProjectionExpression=self.partition_key)
             if 'Item' not in found:
