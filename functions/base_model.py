@@ -48,6 +48,12 @@ class BaseModel:
 
 
     def create_attempt_put(self, item):
+        """
+        This is invoked by create.
+        It tries to store a newly-created item.
+        Hopefully the new randomly-generated ID is unique, but if it isn't,
+        this will throw an error and will be retried with a different random ID.
+        """
         new_id = secrets.token_urlsafe(self.id_size)
         item[self.partition_key] = new_id
         

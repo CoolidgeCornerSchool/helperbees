@@ -7,6 +7,6 @@
 - tab: admin
   name: Admin
   url: /admin
-- tab: test
+- tab: testing
   name: Just for testing
   url: /testing

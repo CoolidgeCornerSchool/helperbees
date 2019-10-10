@@ -12,20 +12,26 @@ class User(BaseModel):
         """
         return {k:v for (k,v) in item.items() if k != 'login_code'}
 
+
     def create_attempt_put(self, item):
         """
         When creating a user, also create a login_code
+        
+        This is invoked by create (overrides default behavior).
+        It tries to store a newly-created item.
+        Hopefully the new randomly-generated ID is unique, but if it isn't,
+        this will throw an error and will be retried with a different random ID.
         """
         new_id = secrets.token_urlsafe(self.id_size)
         item['user_id'] = new_id
         item['login_code'] = secrets.token_urlsafe(self.id_size)
-        
+
+        # TODO: This doesn't actually prevent collisions on login_code, since we don't look for it.
         condition = f'attribute_not_exists(user_id) AND attribute_not_exists(login_code)'
         self.dynamo.put_item(TableName=self.tablename,
                              Item=to_dynamo(item),
                              ConditionExpression=condition)
         return new_id
-
 
 # Singleton
 USER = User.get_singleton()
