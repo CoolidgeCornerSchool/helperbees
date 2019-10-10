@@ -7,7 +7,7 @@
 import os
 import boto3
 import subprocess
-from settings import ROOT_DIR, S3_BUCKET, INSTALL_DIR
+from settings import ROOT_DIR, S3_BUCKET, INSTALL_DIR, ENV
 
 S3 = boto3.client('s3')
 S3_ZIP_FILE = 'functions.zip'
@@ -25,6 +25,10 @@ def upload_artifact(env, local_filename, s3_filename):
     S3.upload_file(local_filename, S3_BUCKET, key)
 
 def deploy(env):
+    """
+    If env='prd', uploads to S3
+    If env='dev', assumes local dev with SAM
+    """
     # Zip package
     zip_cmd = ['zip', '-r9', LOCAL_ZIP_PATH, '.']
     subprocess.call(zip_cmd, cwd=os.path.join(ROOT_DIR, 'functions'))
@@ -44,5 +48,5 @@ def deploy(env):
                 )
 
 if __name__ == '__main__':
-    # This overrides settings.ENV. Use 'prd' to push code to S3 instead of keeping it locally
-    deploy('prd')
+    # Use 'prd' to push code to S3 instead of keeping it locally
+    deploy(ENV)

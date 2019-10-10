@@ -1,6 +1,6 @@
 import logging
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 
 
 def log_setup():
@@ -12,4 +12,5 @@ def log_setup():
     if root.handlers:
         for handler in root.handlers:
             root.removeHandler(handler)
-    logging.basicConfig(format='YYYYY %(asctime)s %(message)s', level=LOG_LEVEL)
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s %(message)s', level=LOG_LEVEL)
+    return root

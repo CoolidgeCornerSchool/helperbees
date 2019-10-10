@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, skip
 import requests
 
 try:
@@ -8,7 +8,6 @@ except ImportError:
     DIR = os.path.dirname(__file__)
     sys.path.append(os.path.join(DIR, '..'))
     from settings import API_BASE_URL
-
 
 class TestUser(TestCase):
 
@@ -66,7 +65,8 @@ class TestUser(TestCase):
 
     def test_update(self):
         url = f'{API_BASE_URL}/user'
-        dummy1 = {'first_name': 'Charlie', 'last_name': "L'Tuna", 'color': 'silver', 'test item':'delete me'}
+        dummy1 = {"first_name": "Charlie", "last_name": "L'Tuna", "color": "silver", "test item": "delete me"}
+        update_data = {'first_name': 'Sally', 'color': 'shiny silver'}
         dummy2 = {'first_name': 'Sally', 'last_name': "L'Tuna", 'color': 'shiny silver', 'test item':'delete me'}
 
         # Create item
@@ -79,7 +79,7 @@ class TestUser(TestCase):
 
         # Modify item
         new_url = f'{url}/{new_id}'
-        response_mod = requests.put(new_url, json=dummy2)
+        response_mod = requests.put(new_url, json=update_data)
         self.assertEqual(response_mod.status_code, 200)
 
         # Verify changed item

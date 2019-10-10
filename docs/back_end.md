@@ -19,12 +19,19 @@ is free forever, while RDS is only free for the first 12 months.
 
 Go to the DynamoDB console and create these tables:
 
- * 'users' (partition key: 'user_id')
- * 'teams' (partition key: 'team_id')
- * 'orders' (partition key: 'order_id')
- * 'order_types' (partition key: 'name')
- * 'offers' (partition key: 'offer_id')
- * 'admins' (partition key: 'name')
+ * `users` (partition key: `user_id`)
+ * `teams` (partition key: `team_id`)
+ * `orders` (partition key: `order_id`)
+ * `offers` (partition key: `offer_id`)
+ * `admins` (partition key: `name`)
+
+For `users`, add a secondary index on `login_code`.
+
+Dial down the read+write capacity to stay within the free tier (total of 25 capacity units).
+
+ * Look at the 'capacity' tab for each table.
+ * Look at the 'dashboard' tab for DynamoDb.
+ * Default is 5. 1 or 2 is fine.
 
 ## Lambda
 

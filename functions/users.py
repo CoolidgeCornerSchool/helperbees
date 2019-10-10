@@ -1,8 +1,31 @@
-from base_model import BaseModel
+import secrets
+from base_model import BaseModel, to_dynamo
 
 class User(BaseModel):
     tablename = 'users'
     partition_key = 'user_id'
+    masked_fields = ['login_code']
+
+    def update_hook(self, item):
+        """
+        Prevent updates for login_code.
+        """
+        return {k:v for (k,v) in item.items() if k != 'login_code'}
+
+    def create_attempt_put(self, item):
+        """
+        When creating a user, also create a login_code
+        """
+        new_id = secrets.token_urlsafe(self.id_size)
+        item['user_id'] = new_id
+        item['login_code'] = secrets.token_urlsafe(self.id_size)
+        
+        condition = f'attribute_not_exists(user_id) AND attribute_not_exists(login_code)'
+        self.dynamo.put_item(TableName=self.tablename,
+                             Item=to_dynamo(item),
+                             ConditionExpression=condition)
+        return new_id
+
 
 # Singleton
 USER = User.get_singleton()
