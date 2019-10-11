@@ -1,10 +1,14 @@
 <nav class="navbar navbar-expand-lg mb-5">
   <ul class="navbar-nav nav-pills">
     <li class="nav-item"><div class="navbar-brand">/cool logo/</div>
-      </li>
+    </li>
     {% for item in site.data.tabs %}
     <li class="nav-item">
-      <a class="nav-link {% if (page.tab == item.tab) %}active{% endif %}"
+      <!-- To make the admin button disappear for regular users, change 'hidden_admin' to 'admin' -->
+      <a class="nav-link tab-{{item.tab}}
+               {% if item.tab == page.tab %}active{% endif %}
+               {% if item.tab == 'hidden_admin' %}d-none{% endif %}
+               "
 	 href="{{ item.url }}">{{ item.name }}</a> 
     </li>
     {% endfor %}
