@@ -1,60 +1,79 @@
-$(document).ready(load_admins);
+// see
+// https://developers.google.com/identity/sign-in/web/reference
 
-/*
-This file enables the "admin" navbar button for admins.
+const google_client_id = '958880294296-npvqs3418t62qbcvaqb05qb0briht2oe.apps.googleusercontent.com';
 
-It assumes you have a google-based email (either gmail or GSuite).
-The process is described here:
-   https://developers.google.com/identity/sign-in/web/sign-in
+// promise that would be resolved when gapi would be loaded
+const gapiPromise = (function(){
+    var deferred = $.Deferred();
+    zot = deferred;
+    window.onLoadCallback = function(){
+	console.log('window loaded');
+	deferred.resolve(gapi);
+    };
+    return deferred.promise()
+}());
 
-To be an admin, add your google-based email to the Google Sheets below (admins_url).
-This sheet is publicly readable, but can only be edited by a Helperbees admin.
-If you're working on a copy of this repo, replace this url with your own,
-and configure your own credentials at the Google developers site (see above).
+//var authInited = gapiPromise.then(function(){
+//    console.log('authInited', "gapi=", gapi);
+//    gapi.auth2.init({client_id: google_client_id});
+//});
 
-How this code works:
+const google_client = {
 
-This code is loaded in default.html and triggered by an invisible DIV's data-onsuccess attribute.
-The 'd-none' class makes this button invisible:
-    <!-- hidden button, used for admin login -->
-    <script src="assets/js/login.js"></script>
-    <div class="g-signin2 d-none" data-onsuccess="onSignIn"></div>
+    auth2: null,  // The Sign-In client object.
 
-head.html adds a meta tag and loads the Google web APIs
+    load: function() {
+	// Initializes the Sign-In client.
+	let self = this;
+	console.log('loading gapi', self);
+	gapiPromise.then(()=>
+			 {
+			     console.log('now loading');
+			     gapi.load('auth2', self.on_loaded.call(self));
+			 });
+    },
 
-If you're logged in as a Google user, and the user's email is found in the admins_url,
-then you're an admin and we make the Admin navbar tab visible.
-*/
+    on_loaded: function(){
+	console.log('is_loaded', this, gapi);
+	// Retrieve the singleton for the GoogleAuth library and set up the client.
+	this.auth2 = gapi.auth2.init({ client_id: google_client_id });
 
-// replace this url with your own, and put your own admins into it.
-admins_url = 'https://docs.google.com/spreadsheets/d/1ybEhA4NazoiHf5khx7khDHnlLmpx7OExWxoLO32Rpbc/export?gid=0&format=tsv';
+	// Handle successful sign-ins.
+	function onSuccess (user) {
+	    console.log('Signed in as ' + user.getBasicProfile().getName());
+	};
 
-// When loaded, admins contains an array of legit admin emails
-var admins = null;
+	// Handle sign-in failures.
+	function onFailure (error) {
+	    console.log(error);
+	};
 
+	// Attach the click handler to the sign-in button
+	// https://developers.google.com/identity/sign-in/web/reference#googleauthattachclickhandlercontainer_options_onsuccess_onfailure
+	// auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
+    },
 
-/* Send this token to the back end.
-   This is a JWT token - it's digitally signed to prove the user's identity.
-   Visit jwt.io to decode it. */
-var id_token = null; 
+    is_signed_in: function(){
+	if (this.auth2 == null){
+	    return false;
+	}
+	return this.auth2.isSignedIn.get();
+    },
 
-function load_admins(){
-    $.get(admins_url).done(on_load_admins);
-}
+    user_profile: function(){
+	if (this.auth2 == null){
+	    return null;
+	}
+	return auth2.currentUser.get().getBasicProfile();
+    },
 
-function on_load_admins(data){
-    admins = data.split('\r\n').slice(1);
-}
-
-function onSignIn(googleUser){
-    let profile = googleUser.getBasicProfile();
-    id_token = googleUser.getAuthResponse().id_token;
-    let email = profile.getEmail();
-    if (admins.includes(email)){
-	console.log("Logged in as admin:", email);
-	console.log('with id_token = "'+id_token.substr(0,10)+'..."');
-	$('.tab-admin').removeClass('d-none');
-    } else {
-	console.log('Not an admin');
+    get_id_token: function(){
+	if (this.auth2 == null){
+	    return null;
+	}
+	return auth2.currentUser.get().getAuthResponse().id_token;
     }
 }
+
+$(document).ready(google_client.load.call(google_client));
