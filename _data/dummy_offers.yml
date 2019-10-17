@@ -1,0 +1,95 @@
+- type: Web site design
+  offer_id: offer001
+  per_unit: 2
+  unit: item
+  description: Cool site with only a few bugs
+  team:
+    team_id: abc123def
+    members:
+    - first_name: Steve
+      initial: S
+      grade: 5
+    - first_name: Phil
+      initial: D
+      grade: 7
+    - first_name: Suzi
+      initial: H
+      grade: 7
+    
+- type: Baking
+  offer_id: offer002
+  per_unit: 1
+  unit: item
+  description: choc chip brownies
+  team:
+    team_id: 2221f
+    members:
+    - first_name: Martha
+      initial: S
+      grade: 6
+
+- type: Shoveling
+  offer_id: offer003
+  per_unit: 2
+  unit: visit
+  description: can do lots
+  team:
+    team_id: 333fg
+    members:
+    - first_name: Larry
+      initial: Z
+      grade: 8
+
+- type: Shoveling
+  offer_id: offer004
+  per_unit: 2
+  unit: visit
+  description: can do lots
+  team:
+    team_id: 333fg
+    members:
+    - first_name: Curly
+      initial: S
+      grade: 8
+
+- type: Shoveling
+  offer_id: offer005
+  per_unit: 2
+  unit: visit
+  description: can do lots
+  team:
+    team_id: 333fg
+    members:
+    - first_name: Moe
+      initial: S
+      grade: 8
+
+- type: Cat sitting
+  offer_id: offer006
+  per_unit: 2
+  unit: visit
+  description: can do lots
+  team:
+    team_id: 333fg
+    members:
+    - first_name: Garfield
+      initial: C
+      grade: 6
+
+
+- type: Cat sitting
+  offer_id: offer007
+  per_unit: 2
+  unit: visit
+  description: can do lots
+  team:
+    team_id: 333fg
+    members:
+    - first_name: Minnie
+      initial: M
+      grade: 3
+    - first_name: Mickey
+      initial: M
+      grade: 3
+
+

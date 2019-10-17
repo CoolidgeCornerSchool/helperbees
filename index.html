@@ -9,11 +9,27 @@ layout: default
 <h1> Looking for help?</h1>
 
 
-
 <p>Placeholder: people looking for services</p>
 
-<ul>
-  <li>dog sitting</li>
-  <li>car washing</li>
-  <li>leaf raking</li>
-</ul>
+
+<h3>Shop</h3>
+<div class="form-group">
+  <label for="what">What would you like?</label>
+  <div class="form-row align-items-center mb-2">
+    <div class="col-1">
+      <label for="offer_type">Available:</label>
+    </div>
+    <div class="col-2">
+      <select class="form-control" id="offer_type">
+	<option class="choose">Available services:</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <input type="text" class="form-control d-none" placeholder="or something else..." id="offer_type_other"></input>
+    </div>
+  </div>
+  <table class="table table-striped offers"></table>
+</div>
+    
+
+<script src="assets/js/index.js"></script>
