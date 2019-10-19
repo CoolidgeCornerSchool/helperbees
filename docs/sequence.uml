@@ -1,0 +1,27 @@
+@startuml
+
+hide footbox
+title Helper Bees Sequence Diagram
+
+actor parent
+actor kid
+participant "Sign Up"
+database system
+participant "Home"
+kid -> "Sign Up" : offers service individually\nor as a team (up to 3)\nfrom dropdown list
+"Sign Up" -> system : service stored\nin system
+system -> parent : system emails parent of primary contact\nthat new service has been offered\n(and as many other parents as possible)
+
+actor customer
+participant "Admin"
+actor admins
+customer -> "Home" : shops and\nclicks "Buy"
+"Home" -> system : order placed\nand payment\nsent to PTO
+system -> parent : system emails parent of primary contact,\nsharing email address and phone number\nof customer
+system -> admins : system emails admins about order being placed
+parent -> kid : parent\ntalks\nto kid
+kid -> customer : kid contacts customer\nand provides service
+admins -> "Admin" : admins\nclick\n"Sales"
+"Admin" -> system : get sales data
+
+@enduml
