@@ -58,10 +58,15 @@ function submit_data(){
     url = API_BASE_URL + 'user';
     data = get_data();
     console.log('url', url);
-    $.post(url, JSON.stringify(data), on_submit_result);
-}
-
-// result contains the new user's ID
-function on_submit_result(result){
-    console.log('result', result);
+    $.post(url, JSON.stringify(data))
+        .done( function(msg) {
+            success_msg = 'Kid added with user id ' + msg.user_id;
+            console.log(success_msg);
+            alert(success_msg);
+        } )
+        .fail( function(xhr, textStatus, errorThrown) {
+            error_msg = 'Unable to add kid.';
+            console.log(error_msg);
+            alert(error_msg);
+    });
 }
