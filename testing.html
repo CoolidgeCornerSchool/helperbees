@@ -14,13 +14,6 @@ layout: default
 
 <form>
   <div class="form-group">
-    <label for="exampleFormControlSelect1">Pick a service</label>
-    <select class="form-control" id="services-dropdown"> </select>
-  </div>
-</form>
-
-<form>
-  <div class="form-group">
     <label for="names">Pick a name</label>
     <select class="form-control" id="names"
       ><option>Pick someone...</option></select
@@ -49,10 +42,13 @@ layout: default
   <button class="btn post btn-primary">Delete</button>
 </form>
 
+<form>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Pick a service</label>
+    <select class="form-control" id="services-dropdown"> </select>
+  </div>
+</form>
+
 <div id="admin_login" class="d-none mt-3"></div>
 
-<!-- TODO: Investigate why including main.js breaks the "add kid" form on this page. -->
-<!--
-<script src="assets/js/main.js"></script>
--->
 <script src="assets/js/ajax-demo.js"></script>
