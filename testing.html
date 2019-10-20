@@ -4,13 +4,18 @@ title: Helper Bees
 layout: default
 ---
 
-<h1>Helper Bees</h1>
+<h2>Sign Up</h2>
 
 <form id="create_user">
-  <input type="text" id="first_name" placeholder="first name" />
-  <input type="text" id="last_name" placeholder="last name" />
-  <button class="btn post btn-primary">post</button>
+  <div class="form-group">
+    <label class="form-row" for="first_name">Student</label>
+    <input type="text" id="first_name" placeholder="first name" />
+    <input type="text" id="last_name" placeholder="last initial" />
+  </div>
+  <button class="btn post btn-primary">Sign Up</button>
 </form>
+
+<h2>Browse Names</h2>
 
 <form>
   <div class="form-group">
@@ -41,6 +46,8 @@ layout: default
 <form id="delete_user" class="show_user d-none">
   <button class="btn post btn-primary">Delete</button>
 </form>
+
+<h2>Browse Services</h2>
 
 <form>
   <div class="form-group">
