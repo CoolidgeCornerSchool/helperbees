@@ -10,6 +10,11 @@ function init_page(){
     $.getJSON(url, null, on_load_users);
     // adds the ‘load_user’ callback to the names menu (<SELECT/>)
     $('#names').change(load_user);
+    $('#first_name').focus();
+    $('#create_user').on('submit', function(e) {
+        submit_data();
+        e.preventDefault();  //prevent form from submitting
+    });
 }
 
 // This is called when the list of all users arrives from the back end.
@@ -41,4 +46,22 @@ function on_load_user(data){
     $('.show_user .first').text(data.first_name);
     $('.show_user .last').text(data.last_name);
     $('.show_user .color').text(data.color);
+}
+
+function get_data(){
+    let first_name = $('input#first_name').val();
+    let last_name = $('input#last_name').val();
+    return { first_name: first_name, last_name: last_name};
+}
+
+function submit_data(){
+    url = API_BASE_URL + 'user';
+    data = get_data();
+    console.log('url', url);
+    $.post(url, JSON.stringify(data), on_submit_result);
+}
+
+// result contains the new user's ID
+function on_submit_result(result){
+    console.log('result', result);
 }
