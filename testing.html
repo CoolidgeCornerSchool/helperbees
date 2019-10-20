@@ -4,26 +4,25 @@ title: Helper Bees
 layout: default
 ---
 
-<h1>Helper Bees</h1>
+<h2>Sign Up</h2>
 
 <form id="create_user">
-  <input type="text" id="first_name" placeholder="first name"/>
-  <input type="text" id="last_name" placeholder="last name"/>
-  <button class="btn post btn-primary">post</button>
-</form>
-
-<form>
   <div class="form-group">
-    <label for="exampleFormControlSelect1">Pick a service</label>
-    <select class="form-control" id="services-dropdown"> </select>
+    <label class="form-row" for="first_name">Student</label>
+    <input type="text" id="first_name" placeholder="first name" />
+    <input type="text" id="last_name" placeholder="last initial" />
   </div>
+  <button class="btn post btn-primary">Sign Up</button>
 </form>
 
+<h2>Browse Names</h2>
 
 <form>
   <div class="form-group">
     <label for="names">Pick a name</label>
-    <select class="form-control" id="names"><option>Pick someone...</option></select>
+    <select class="form-control" id="names"
+      ><option>Pick someone...</option></select
+    >
   </div>
 </form>
 
@@ -36,12 +35,27 @@ layout: default
     </tr>
   </thead>
   <tbody>
-    <tr><td class="first"></td><td class="last"></td><td class="color"></td></tr>
+    <tr>
+      <td class="first"></td>
+      <td class="last"></td>
+      <td class="color"></td>
+    </tr>
   </tbody>
 </table>
 
+<form id="delete_user" class="show_user d-none">
+  <button class="btn post btn-primary">Delete</button>
+</form>
+
+<h2>Browse Services</h2>
+
+<form>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Pick a service</label>
+    <select class="form-control" id="services-dropdown"> </select>
+  </div>
+</form>
+
 <div id="admin_login" class="d-none mt-3"></div>
 
-<script src="assets/js/main.js"></script>
 <script src="assets/js/ajax-demo.js"></script>
-
