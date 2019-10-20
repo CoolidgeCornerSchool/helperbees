@@ -46,6 +46,10 @@ function on_load_user(data){
     $('.show_user .first').text(data.first_name);
     $('.show_user .last').text(data.last_name);
     $('.show_user .color').text(data.color);
+    $('#delete_user').on('submit', function(e) {
+        delete_user(data);
+        e.preventDefault();
+    });
 }
 
 function get_data(){
@@ -68,5 +72,22 @@ function submit_data(){
             error_msg = 'Unable to add kid.';
             console.log(error_msg);
             alert(error_msg);
+    });
+}
+
+function delete_user(data){
+    console.log('delete... ', data)
+    //user_id = 'myuserid';
+    user_id = data.user_id;
+    url = API_BASE_URL + 'user/' + user_id;
+    console.log('url', url);
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function(result) {
+            success_msg = 'Kid deleted.';
+            console.log(success_msg);
+            alert(success_msg);
+        }
     });
 }
