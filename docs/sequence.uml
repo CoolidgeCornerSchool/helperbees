@@ -8,7 +8,7 @@ actor kid
 participant "Sign Up"
 database system
 participant "Home"
-kid -> "Sign Up" : offers service individually\nor as a team (up to 3)\nfrom dropdown list
+kid -> "Sign Up" : offers service from\ndropdown list
 "Sign Up" -> system : service stored\nin system
 system -> parent : system emails parent of primary contact\nthat new service has been offered\n(and as many other parents as possible)
 
