@@ -17,6 +17,12 @@ A web site for the 8th Grade Services Fair
 - [Services students can choose to offer](https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/edit?usp=sharing)
 - [Kanban board](https://github.com/CoolidgeCornerSchool/helperbees/projects/1)
 
+## Contributing
+
+Please see our [Contributing Guide][] for ways you can help.
+
+[Contributing Guide]: CONTRIBUTING.md
+
 ## Contact us
 
 Please email ccs.helperbees@gmail.com with any questions.
