@@ -16,6 +16,7 @@ A web site for the 8th Grade Services Fair
 - [Design document](https://docs.google.com/document/d/1JI9w9T86nuy-ye3p9G39fhAXcWPfHrVvmQS3n9Q5bKg/edit?usp=sharing)
 - [Services students can choose to offer](https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/edit?usp=sharing)
 - [Kanban board](https://github.com/CoolidgeCornerSchool/helperbees/projects/1)
+- [API documentation](api.md)
 - [Sequence diagram (also below, subject to change!)](https://raw.githubusercontent.com/CoolidgeCornerSchool/helperbees/master/docs/sequence.png)
 
 [![Helper Bees sequence diagram](docs/sequence.png?raw=true "Helper Bees sequence diagram")](https://raw.githubusercontent.com/CoolidgeCornerSchool/helperbees/master/docs/sequence.png)
