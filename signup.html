@@ -4,8 +4,6 @@ title: Sign up
 layout: default
 ---
 
-
-
 <h1>Want to help?</h1>
 
 <p>Kids: sign up to offer services</p>
@@ -17,67 +15,77 @@ layout: default
       <label for="what">What service are you offering?</label>
     </div>
     <div class="form-row align-items-center mb-2">
-	<label for="offer_type" class="col-2 mr-2">Type:</label>
-	<select class="form-control col-3 mr-2" id="offer_type">
-	  <option class="choose">Choose a type:</option>
-	  <option value="other">Other...</option>
-	</select>
-	<input type="text" class="form-control col-3 d-none" placeholder="or something else..." id="offer_type_other"></input>
+      <label for="offer_type" class="col-2 mr-2">Type:</label>
+      <select class="form-control col-3 mr-2" id="offer_type">
+        <option class="choose">Choose a type:</option>
+        <option value="other">Other...</option>
+      </select>
+      <input
+        type="text"
+        class="form-control col-3 d-none"
+        placeholder="or something else..."
+        id="offer_type_other"
+      />
     </div>
     <div class="form-row align-items-center mb-2">
       <label for="10-for" class="col-2 mr-2">Price: $10 for</label>
-      <input type="text" class="col-2 form-control mr-2" id="offer_per_hour" placeholder="?"></input>
+      <input type="text" class="col-2 form-control mr-2" id="offer_per_hour" placeholder="?" />
       <select class="col-2 form-control" id="offer_units">
-	  <option value="hour">hour</option>
-	  <option value="visit">visits</option>
-	  <option value="item">item</option>
+        <option value="hour">hour</option>
+        <option value="visit">visits</option>
+        <option value="item">item</option>
       </select>
     </div>
 
     <div class="form-row mb-2">
       <label class="col-2 col-form-label" for="offer_type">About this:</label>
       <div class="col-6">
-	<textarea rows="4" class="form-control" id="offer_description" placeholder="Describe your service"></textarea>
+        <textarea
+          rows="4"
+          class="form-control"
+          id="offer_description"
+          placeholder="Describe your service"
+        ></textarea>
       </div>
     </div>
   </div>
 
-
   <h3>Who</h3>
-    <form class="mb-5">
-      <label class="col-form-label mt-3" for="first_name">Student</label>
-      <div class="form-row mb-2">
-	<div class="col-3">
-	  <input type="text" class="form-control" id="first_name" placeholder="first name">
-	</div>
-	<div class="col-3">
-	  <input type="text" class="form-control" id="last_name" placeholder="last name">
-	</div>
-	<div class="col-2">
-	  <select class="custom-select" id="grade">
-	    <option value="" selected>Grade...</option>
-	    {% for grade in site.data.grades %}
-	    <option value="{{ grade }}">{{ grade }}</option>{% endfor %}
-	  </select>
-	</div>
+  <form class="mb-5">
+    <label class="col-form-label mt-3" for="first_name">Student</label>
+    <div class="form-row mb-2">
+      <div class="col-3">
+        <input type="text" class="form-control" id="first_name" placeholder="first name" />
       </div>
-      <label class="col-form-label mt-3" for="parent_name">Parent</label>
-      <div class="form-row mb-2">
-	<div class="col-6">
-	  <input type="text" class="form-control" id="parent_name" placeholder="parent's name">
-	</div>
-	</div>
-      <div class="form-row">
-	<div class="col-3">
-	  <input type="tel" class="form-control" id="parent_phone" placeholder="parent's phone">
-	</div>
-	<div class="col-3">
-	  <input type="email" class="form-control" id="parent_email" placeholder="parent's email">
-	</div>
+      <div class="col-3">
+        <input type="text" class="form-control" id="last_name" placeholder="last name" />
       </div>
+      <div class="col-2">
+        <select class="custom-select" id="grade">
+          <option value="" selected>Grade...</option>
+          {% for grade in site.data.grades %}
+          <option value="{{ grade }}">{{ grade }}</option
+          >{% endfor %}
+        </select>
+      </div>
+    </div>
+    <label class="col-form-label mt-3" for="parent_name">Parent</label>
+    <div class="form-row mb-2">
+      <div class="col-6">
+        <input type="text" class="form-control" id="parent_name" placeholder="parent's name" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-3">
+        <input type="tel" class="form-control" id="parent_phone" placeholder="parent's phone" />
+      </div>
+      <div class="col-3">
+        <input type="email" class="form-control" id="parent_email" placeholder="parent's email" />
+      </div>
+    </div>
 
+    <button type="submit" class="btn btn-primary mt-4 mb-5">Sign up</button>
+  </form>
 
-  <button type="submit" class="btn btn-primary mt-4 mb-5">Sign up</button>
+  <script src="assets/js/signup.js"></script>
 </form>
-
-<script src="assets/js/signup.js"></script>
