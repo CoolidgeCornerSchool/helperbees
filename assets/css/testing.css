@@ -1,0 +1,9 @@
+.alert-box .alert {
+    display: none;
+}
+
+.spinner {
+    display: none;
+    font-size: 200%;
+    color: #888;
+}

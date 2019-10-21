@@ -69,12 +69,12 @@ function submit_data() {
     .done(function(msg) {
       success_msg = 'Kid added with user id ' + msg.user_id;
       console.log(success_msg);
-      alert(success_msg);
+      show_alert({ result: 'success' });
     })
     .fail(function(xhr, textStatus, errorThrown) {
-      error_msg = 'Unable to add kid.';
+      error_msg = 'Unable to add student.';
       console.log(error_msg);
-      alert(error_msg);
+      show_alert({ result: error_msg });
     });
 }
 
@@ -90,7 +90,7 @@ function delete_user(data) {
     success: function(result) {
       success_msg = 'Kid deleted.';
       console.log(success_msg);
-      alert(success_msg);
+      show_alert({ result: 'success' });
     },
   });
 }
@@ -138,4 +138,19 @@ function populate_services_dropdown() {
   };
 
   request.send();
+}
+
+function show_alert(result_struct) {
+  $('.spinner').hide();
+  $('.alert-box').show();
+  var result = result_struct.result;
+  if (result == 'success') {
+    $('.alert-box .fail').hide();
+    $('.alert-box .success').show();
+  } else {
+    $('.alert-box .success').hide();
+    $('.alert-box .fail').show();
+    $('.alert-box .fail .reason').html(result);
+  }
+  return false;
 }
