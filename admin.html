@@ -4,15 +4,63 @@ title: Admin
 layout: default
 ---
 
-<h4><em>admin page</em></h4>
+<div class="spinner"><i class="fa fa-spin fa-cog"></i></div>
+<div class="alert-box">
+  <div class="success alert alert-success">
+    <p>Success!</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="fail alert alert-danger">
+    <div>
+      Oops, there was a problem:
+      <div class="reason"></div>
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
 
 <h1>Admin</h1>
 
-
-<p>Placeholder: admin pages</p>
-
 <ul>
-  <li>listings of kids</li>
-  <li>listings of available services</li>
-  <li>sales reports</li>
+  <li>listings of kids (below)</li>
+  <li>listings of available services (see sign up form)</li>
+  <li>sales reports (some day)</li>
 </ul>
+
+<h2>Listings of kids</h2>
+
+<form>
+  <div class="form-group">
+    <label for="names">Pick a name</label>
+    <select class="form-control" id="names"
+      ><option>Pick someone...</option></select
+    >
+  </div>
+</form>
+
+<table class="table show_user col-4 d-none">
+  <thead>
+    <tr>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Color</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="first"></td>
+      <td class="last"></td>
+      <td class="color"></td>
+    </tr>
+  </tbody>
+</table>
+
+<form id="delete_user" class="show_user d-none">
+  <button class="btn post btn-primary">Delete</button>
+</form>
+
+<script src="assets/js/admin.js"></script>
