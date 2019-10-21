@@ -10,14 +10,14 @@ database system
 participant "Home"
 kid -> "Sign Up" : offers service from\ndropdown list
 "Sign Up" -> system : service stored\nin system
-system -> parent : system emails parent of primary contact\nthat new service has been offered\n(and as many other parents as possible)
+system -> parent : system emails parent that new\nservice has been offered
 
 actor customer
 participant "Admin"
 actor admins
 customer -> "Home" : shops and\nclicks "Buy"
 "Home" -> system : order placed\nand payment\nsent to PTO
-system -> parent : system emails parent of primary contact,\nsharing email address and phone number\nof customer
+system -> parent : system emails parent with\nemail address and phone number\nof customer
 system -> admins : system emails admins about order being placed
 parent -> kid : parent\ntalks\nto kid
 kid -> customer : kid contacts customer\nand provides service
