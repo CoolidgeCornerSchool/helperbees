@@ -1,7 +1,28 @@
+import json
 import logging
 
 LOG_LEVEL = logging.INFO
+API_ID = 'pxa9qyui26'
 
+CORS_HEADERS = { 'Content-Type': 'application/json',
+                 'Access-Control-Allow-Origin': '*' }
+
+def response(code, data):
+    """
+    :param code: http response code
+    :param data: string or dict to be returned to browser
+    :return: dict - lambda/API request response
+    """
+    if isinstance(data, str):
+        body = data
+    elif isinstance(data, dict):
+        body = json.dumps(data)
+    else:
+        raise ValueError(f'Unsupported data type ({data.__class__}) for {data}')
+    return { "statusCode": code,
+             'headers': CORS_HEADERS,
+             "body": body}
+    
 
 def log_setup():
     """

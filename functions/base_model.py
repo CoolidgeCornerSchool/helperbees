@@ -3,30 +3,11 @@ import json
 import string
 import secrets
 import logging
-from common import log_setup
+from common import log_setup, response
 from botocore.exceptions import ClientError
 
 LOG = log_setup()
 
-CORS_HEADERS = { 'Content-Type': 'application/json',
-                 'Access-Control-Allow-Origin': '*' }
-
-def response(code, data):
-    """
-    :param code: http response code
-    :param data: string or dict to be returned to browser
-    :return: dict - lambda/API request response
-    """
-    if isinstance(data, str):
-        body = data
-    elif isinstance(data, dict):
-        body = json.dumps(data)
-    else:
-        raise ValueError(f'Unsupported data type ({data.__class__}) for {data}')
-    return { "statusCode": code,
-             'headers': CORS_HEADERS,
-             "body": body}
-    
 
 class BaseModel:
     singleton = None
@@ -62,6 +43,17 @@ class BaseModel:
                              ConditionExpression=f'attribute_not_exists({self.partition_key})')
         return new_id
 
+    def validate_for_create(self, item):
+        """
+        If item is valid, return it with is_error=False
+        If there's an error, return the error response (as dict) along with is_error=True
+        :param item: item to be validated
+        :return: tuple of (object, is_error)
+        """
+        if self.partition_key in item:
+            return response(400, 'Cannot supply item_id in request'), True
+        return item, False
+
     # POST /user
     def create(self, event, context):
         """
@@ -70,8 +62,10 @@ class BaseModel:
         item, err = safe_json(event['body'])
         if err:
             return item
-        if self.partition_key in item:
-            return response(400, 'Cannot supply item_id in request')
+
+        item, err = self.validate_for_create(item)
+        if err:
+            return item
 
         i = 0
         while True:
