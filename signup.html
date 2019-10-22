@@ -71,21 +71,13 @@ layout: default
 
   <h3>Who</h3>
   <form class="mb-5">
-    <label class="col-form-label mt-3" for="first_name">Student</label>
+    <label class="col-form-label mt-3" for="first_name">8th Grade Student</label>
     <div class="form-row mb-2">
       <div class="col-3">
         <input type="text" class="form-control" id="first_name" placeholder="first name" required />
       </div>
       <div class="col-3">
         <input type="text" class="form-control" id="last_name" placeholder="last name" required />
-      </div>
-      <div class="col-2">
-        <select class="custom-select" id="grade">
-          <option value="" selected>Grade...</option>
-          {% for grade in site.data.grades %}
-          <option value="{{ grade }}">{{ grade }}</option
-          >{% endfor %}
-        </select>
       </div>
     </div>
     <label class="col-form-label mt-3" for="parent_name">Parent</label>
