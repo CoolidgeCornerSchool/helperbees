@@ -42,7 +42,13 @@ function on_load_user(data) {
   // Put data into the table
   $('.show_user .first').text(data.first_name);
   $('.show_user .last').text(data.last_name);
-  $('.show_user .color').text(data.color);
+  // TODO: Remove all these '' once these parent fields are required.
+  $('.show_user .parent_name').text('');
+  $('.show_user .parent_name').text(data.parent_name);
+  $('.show_user .parent_email').text('');
+  $('.show_user .parent_email').text(data.parent_email);
+  $('.show_user .parent_phone').text('');
+  $('.show_user .parent_phone').text(data.parent_phone);
   $('#delete_user').on('submit', function(e) {
     delete_user(data);
     e.preventDefault();
