@@ -5,18 +5,18 @@ title Helper Bees Sequence Diagram
 
 actor parent
 actor kid
-participant "Sign Up"
+participant "Volunteer to be \n a Helper Bee"
 database system
-participant "Home"
-kid -> "Sign Up" : offers service from\ndropdown list
-"Sign Up" -> system : service stored\nin system
+participant "Request\na Helper"
+kid -> "Volunteer to be \n a Helper Bee" : offers service from\ndropdown list
+"Volunteer to be \n a Helper Bee" -> system : service stored\nin system
 system -> parent : system emails parent that new\nservice has been offered
 
 actor customer
 participant "Admin"
 actor admins
-customer -> "Home" : shops and\nclicks "Buy"
-"Home" -> system : order placed\nand payment\nsent to PTO
+customer -> "Request\na Helper" : shops and\nclicks "Buy"
+"Request\na Helper" -> system : order placed\nand payment\nsent to PTO
 system -> parent : system emails parent with\nemail address and phone number\nof customer
 system -> admins : system emails admins about order being placed
 parent -> kid : parent\ntalks\nto kid

@@ -1,8 +1,8 @@
 - tab: home
-  name: Home
+  name: Request a Helper
   url: /
 - tab: signup
-  name: Sign up
+  name: Volunteer to be a Helper Bee
   url: /signup
 - tab: admin
   name: Admin
