@@ -15,7 +15,7 @@ system -> parent : system emails parent that new\nservice has been offered
 actor customer
 participant "Admin"
 actor admins
-customer -> "Request\na Helper" : shops and\nclicks "Buy"
+customer -> "Request\na Helper" : browses services and\nclicks "Donate"
 "Request\na Helper" -> system : order placed\nand payment\nsent to PTO
 system -> parent : system emails parent with\nemail address and phone number\nof customer
 system -> admins : system emails admins about order being placed
