@@ -6,6 +6,12 @@ A web site for the 8th Grade Services Fair
 
 8th grade students will offer services in the neighboorhood such as dog walking or snow shoveling to raise money for activities throughout the year.
 
+## Mission
+
+Helper Bees is an experiment run by the parents of the Coolidge Corner School in Brookline, Massachusetts. Our mission is to raise money for student activities, build a strong community, and give students an opportunity to volunteer.
+
+Parents and students must raise money each year to fund everything from the school play to class events. As parents we challenged ourselves to imagine a way to do this in a way that involves the whole community.
+
 ## Status
 
 At a high level, the code is under heavy development and is NOT yet ready for even a soft launch.
