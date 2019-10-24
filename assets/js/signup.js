@@ -90,10 +90,22 @@ function submit_data() {
   data = get_data();
   console.log('url', url);
   $.post(url, JSON.stringify(data))
-    .done(function(msg) {
-      success_msg = 'Kid added with user id ' + msg.user_id;
-      console.log(success_msg);
-      show_alert({ result: 'success' });
+    .done(function(dataOut, textStatus, xhr) {
+      var status = xhr.status;
+      console.log(status);
+      console.log('dataOut: ' + dataOut);
+      console.log('dataOut.user_id: ' + dataOut.user_id);
+      statusCode = dataOut.user_id.statusCode;
+      console.log('statusCode: ' + statusCode);
+      body = dataOut.user_id.body;
+      if (statusCode === undefined) {
+        success_msg = 'Kid added with user id ' + dataOut.user_id;
+        console.log(success_msg);
+        show_alert({ result: 'success' });
+      } else {
+        error_msg = 'Unable to add student. Status: ' + body;
+        show_alert({ result: error_msg });
+      }
     })
     .fail(function(xhr, textStatus, errorThrown) {
       error_msg = 'Unable to add student.';
