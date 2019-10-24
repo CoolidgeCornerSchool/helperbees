@@ -88,6 +88,7 @@ function get_data() {
 function submit_data() {
   url = API_BASE_URL + 'user';
   data = get_data();
+  data.grade = '8';
   console.log('url', url);
   $.post(url, JSON.stringify(data))
     .done(function(dataOut, textStatus, xhr) {
