@@ -7,6 +7,9 @@
 - tab: admin
   name: Admin
   url: /admin
+- tab: landing
+  name: Test Landing
+  url: /test-landing
 - tab: testing
   name: Just for testing
   url: /testing
