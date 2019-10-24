@@ -46,7 +46,7 @@ function on_change_offer_type(){
 		team_cell.append(member.first_name+' '+member.initial+' (grade='+member.grade+')');
 	    }
 	    let type_cell = $('<td/>').text(offer.type + ' (per '  + ' ' + offer.unit + ') ' );
-	    let buy_btn = $('<td/>').append($('<button/>').addClass('btn btn-sm btn-primary').text('Buy'));
+	    let buy_btn = $('<td/>').append($('<button/>').addClass('btn btn-sm btn-primary').text('Donate'));
 	    let offer_row = $('<tr/>').append(buy_btn, type_cell, team_cell)
 		.addClass('align-items-center')
 		.attr('offer_id', offer.offer_id)

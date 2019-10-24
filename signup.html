@@ -1,6 +1,6 @@
 ---
 tab: signup
-title: Sign up
+title: Volunteer to be a Helper Bee
 layout: default
 ---
 
@@ -47,7 +47,7 @@ layout: default
       />
     </div>
     <div class="form-row align-items-center mb-2">
-      <label for="10-for" class="col-2 mr-2">Price: $10 for</label>
+      <label for="10-for" class="col-2 mr-2">Donation: $10 for</label>
       <input type="text" class="col-2 form-control mr-2" id="offer_per_hour" placeholder="?" />
       <select class="col-2 form-control" id="offer_units">
         <option value="hour">hour</option>
@@ -71,35 +71,45 @@ layout: default
 
   <h3>Who</h3>
   <form class="mb-5">
-    <label class="col-form-label mt-3" for="first_name">Student</label>
+    <label class="col-form-label mt-3" for="first_name">8th Grade Student</label>
     <div class="form-row mb-2">
       <div class="col-3">
-        <input type="text" class="form-control" id="first_name" placeholder="first name" />
+        <input type="text" class="form-control" id="first_name" placeholder="first name" required />
       </div>
       <div class="col-3">
-        <input type="text" class="form-control" id="last_name" placeholder="last name" />
-      </div>
-      <div class="col-2">
-        <select class="custom-select" id="grade">
-          <option value="" selected>Grade...</option>
-          {% for grade in site.data.grades %}
-          <option value="{{ grade }}">{{ grade }}</option
-          >{% endfor %}
-        </select>
+        <input type="text" class="form-control" id="last_name" placeholder="last name" required />
       </div>
     </div>
     <label class="col-form-label mt-3" for="parent_name">Parent</label>
     <div class="form-row mb-2">
       <div class="col-6">
-        <input type="text" class="form-control" id="parent_name" placeholder="parent's name" />
+        <input
+          type="text"
+          class="form-control"
+          id="parent_name"
+          placeholder="parent's name"
+          required
+        />
       </div>
     </div>
     <div class="form-row">
       <div class="col-3">
-        <input type="tel" class="form-control" id="parent_phone" placeholder="parent's phone" />
+        <input
+          type="tel"
+          class="form-control"
+          id="parent_phone"
+          placeholder="parent's phone"
+          required
+        />
       </div>
       <div class="col-3">
-        <input type="email" class="form-control" id="parent_email" placeholder="parent's email" />
+        <input
+          type="email"
+          class="form-control"
+          id="parent_email"
+          placeholder="parent's email"
+          required
+        />
       </div>
     </div>
 

@@ -73,7 +73,16 @@ function on_load_service_types(data) {
 function get_data() {
   let first_name = $('input#first_name').val();
   let last_name = $('input#last_name').val();
-  return { first_name: first_name, last_name: last_name };
+  let parent_name = $('input#parent_name').val();
+  let parent_phone = $('input#parent_phone').val();
+  let parent_email = $('input#parent_email').val();
+  return {
+    first_name: first_name,
+    last_name: last_name,
+    parent_name: parent_name,
+    parent_phone: parent_phone,
+    parent_email: parent_email,
+  };
 }
 
 function submit_data() {
