@@ -3,11 +3,10 @@ import json
 import string
 import secrets
 import logging
-from common import log_setup, response
+from common import log_setup, response, safe_json
 from botocore.exceptions import ClientError
 
 LOG = log_setup()
-
 
 class BaseModel:
     singleton = None
@@ -15,7 +14,6 @@ class BaseModel:
 
     def __init__(self):
         self.dynamo = boto3.client('dynamodb')
-
 
     @classmethod
     def get_singleton(cls):
@@ -28,21 +26,6 @@ class BaseModel:
         return cls.singleton
 
 
-    def create_attempt_put(self, item):
-        """
-        This is invoked by create.
-        It tries to store a newly-created item.
-        Hopefully the new randomly-generated ID is unique, but if it isn't,
-        this will throw an error and will be retried with a different random ID.
-        """
-        new_id = secrets.token_urlsafe(self.id_size)
-        item[self.partition_key] = new_id
-        
-        self.dynamo.put_item(TableName=self.tablename,
-                             Item=to_dynamo(item),
-                             ConditionExpression=f'attribute_not_exists({self.partition_key})')
-        return new_id
-
     def validate_for_create(self, item):
         """
         If item is valid, return it with is_error=False
@@ -54,19 +37,30 @@ class BaseModel:
             return response(400, 'Cannot supply item_id in request'), True
         return item, False
 
-    # POST /user
+
+    # POST /<thing>
     def create(self, event, context):
         """
         Create a new entry with a new unique id
+        :param event: AWS Lambda incoming event
+        :param context: AWS Lambda incoming context
+        :return item_id:
         """
         item, err = safe_json(event['body'])
         if err:
             return item
+        new_key = self.create_with_item(item)
+        return response(200, {self.partition_key: new_key})
+
+    def create_with_item(self, item):
+        """
+        :param item: dict with values for item to be created with a new unique id
+        :return: new_key
+        """
 
         item, err = self.validate_for_create(item)
         if err:
             return item
-
         i = 0
         while True:
             # Retry if our random key collides
@@ -85,12 +79,29 @@ class BaseModel:
             except:
                 logging.exception('Error')
                 raise
-        return response(200, {self.partition_key: new_key})
+        return new_key
 
-    # PUT /user
+    def create_attempt_put(self, item):
+        """
+        This is invoked by create.
+        It tries to store a newly-created item.
+        Hopefully the new randomly-generated ID is unique, but if it isn't,
+        this will throw an error and will be retried with a different random ID.
+        """
+        new_id = secrets.token_urlsafe(self.id_size)
+        item[self.partition_key] = new_id
+        
+        self.dynamo.put_item(TableName=self.tablename,
+                             Item=to_dynamo(item),
+                             ConditionExpression=f'attribute_not_exists({self.partition_key})')
+        return new_id
+
+    # PUT /<thing>
     def update(self, event, context):
         """
         Updates the entry by replacing it
+        :param event: AWS Lambda incoming event
+        :param context: AWS Lambda incoming context        
         """
         item_id = event['pathParameters'][self.partition_key]
         item, err = safe_json(event['body'])
@@ -114,35 +125,52 @@ class BaseModel:
     def update_hook(self, item):
         return item
 
-    # GET /user/{item_id}
+    # GET /<thing>/{item_id}
     def get(self, event, context):
+        """
+        :param event: AWS Lambda incoming event
+        :param context: AWS Lambda incoming context
+        """
         item_id = event['pathParameters'][self.partition_key]
+        item = self.get_by_id(item_id)
+        if item:
+            result = self.mask_fields(item)
+            return response(200, result)
+        return response(404, 'Item not found')
+
+    def get_by_id(self, item_id):
+        """
+        :param item_id:
+        :return: dict - item if found, or None
+        """
         try:
-            data = self.dynamo.get_item(TableName=self.tablename,
-                                        Key={self.partition_key: {'S': item_id}})
+            response = self.dynamo.get_item(TableName=self.tablename,
+                                            Key={self.partition_key: {'S': item_id}})
         except ClientError as err:
             error_code = err.response['Error']['Code']
             logging.exception(f'ERROR {error_code}: {err}')
             raise
-        item = data.get('Item', None)
+        item = response.get('Item', None)
         if item:
-            result = self.mask_fields(to_json(item))
-            return response(200, result)
-        return response(404, 'Item not found')
+            return to_json(item)
 
-    # GET /user
+    # GET /<thing>
     def get_all(self, event, context):
         """
+        :param event: AWS Lambda incoming event
+        :param context: AWS Lambda incoming context
         :return: a list of all items. At scale, this should be paginated.
         """
         data = self.dynamo.scan(TableName=self.tablename)
         items = [self.mask_fields(to_json(i)) for i in data['Items']]
         return response(200, {'result': items})
 
-    # DELETE /user/{item_id}
+    # DELETE /<thing>/{item_id}
     def delete(self, event, context):
         """
         Deletes an item
+        :param event: AWS Lambda incoming event
+        :param context: AWS Lambda incoming context
         """
         item_id = event['pathParameters'][self.partition_key]
         result = self.dynamo.delete_item(TableName=self.tablename,
@@ -171,17 +199,6 @@ def to_dynamo(item):
     return { k:{"S":str(v)} for k,v in item.items()}
 
 
-def safe_json(json_string):
-    """
-    If JSON string is parsed into a dict, return it with is_error=False
-    If there's a parse error, return the error response (as dict) along with is_error=True
-    :param string: JSON string to be parsed
-    :return: tuple of (object, is_error).
-    """
-    try:
-        return json.loads(json_string), False
-    except json.decoder.JSONDecodeError as err:
-        return response(400, f"Error parsing JSON: {err}"), True
 
 def to_dynamo_update(item):
     """
