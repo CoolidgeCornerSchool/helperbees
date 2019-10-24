@@ -21,7 +21,7 @@ system -> parent : system emails parent with\nemail address and phone number\nof
 system -> admins : system emails admins about order being placed
 parent -> kid : parent\ntalks\nto kid
 kid -> customer : kid contacts customer\nand provides service
-admins -> "Admin" : admins\nclick\n"Sales"
-"Admin" -> system : get sales data
+admins -> "Admin" : admins\nclicks\n"Reports"
+"Admin" -> system : get data on kids, donations, etc.
 
 @enduml
