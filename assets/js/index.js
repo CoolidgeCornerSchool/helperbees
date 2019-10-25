@@ -45,11 +45,21 @@ function on_change_offer_type() {
       let team_cell = $('<td/>');
       let kid = offer.user_id;
       team_cell.append(kid);
-      let type_cell = $('<td/>').text(offer.offer_type + ' (per ' + ' ' + offer.offer_units + ') ');
+      let type_cell = $('<td/>').text(
+        offer.offer_type +
+          ' (per ' +
+          ' ' +
+          offer.offer_units +
+          ', number of ' +
+          offer.offer_units +
+          's: ' +
+          offer.offer_per_hour +
+          ') ',
+      );
       let buy_btn = $('<td/>').append(
         $('<button/>')
           .addClass('btn btn-sm btn-primary')
-          .text('Donate'),
+          .text('Donate $10'),
       );
       let offer_row = $('<tr/>')
         .append(buy_btn, type_cell, team_cell)
