@@ -2,7 +2,7 @@
 
 $(document).ready(init_shop);
 
-const offers_url = '/dummy_offers.json';
+const offers_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/offer';
 var offers = null;
 var offer_types = {};
 
@@ -12,10 +12,10 @@ function init_shop() {
 }
 
 function on_load_offers(data) {
-  offers = data;
+  offers = data.result;
   for (var i in offers) {
     offer = offers[i];
-    offer_types[offer.type] = true;
+    offer_types[offer.offer_type] = true;
   }
   let dropdown = $('select#offer_type');
   let ot_list = Object.keys(offer_types);
@@ -35,24 +35,18 @@ function on_change_offer_type() {
   let header = $('<tr/>').append(
     $('<th/>'),
     $('<th/>').text('Description'),
-    $('<th/>').text('Team'),
+    $('<th/>').text('Helper Bee'),
   );
   offerdivs.append(header);
   for (var i in offers) {
     let offer = offers[i];
-    if (offer.type == type) {
+    if (offer.offer_type == type) {
       let team_cell = $('<td/>');
-      let members = offer.team.members;
-      for (var j in members) {
-        let member = members[j];
-        if (j > 0) {
-          team_cell.append(', ');
-        }
-        team_cell.append(
-          member.first_name + ' ' + member.initial + ' (grade=' + member.grade + ')',
-        );
-      }
-      let type_cell = $('<td/>').text(offer.type + ' (per ' + ' ' + offer.unit + ') ');
+      let kid = offer.user_id;
+      team_cell.append(
+        kid,
+      );
+      let type_cell = $('<td/>').text(offer.offer_type + ' (per ' + ' ' + offer.offer_units + ') ');
       let buy_btn = $('<td/>').append(
         $('<button/>')
           .addClass('btn btn-sm btn-primary')
