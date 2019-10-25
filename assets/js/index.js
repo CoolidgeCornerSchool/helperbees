@@ -43,9 +43,7 @@ function on_change_offer_type() {
     if (offer.offer_type == type) {
       let team_cell = $('<td/>');
       let kid = offer.user_id;
-      team_cell.append(
-        kid,
-      );
+      team_cell.append(kid);
       let type_cell = $('<td/>').text(offer.offer_type + ' (per ' + ' ' + offer.offer_units + ') ');
       let buy_btn = $('<td/>').append(
         $('<button/>')
