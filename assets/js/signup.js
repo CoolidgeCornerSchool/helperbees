@@ -71,12 +71,20 @@ function on_load_service_types(data) {
 }
 
 function get_data() {
+  let offer_type = $('#offer_type').val();
+  let offer_per_hour = $('#offer_per_hour').val();
+  let offer_units = $('#offer_units').val();
+  let offer_description = $('#offer_description').val();
   let first_name = $('input#first_name').val();
   let last_name = $('input#last_name').val();
   let parent_name = $('input#parent_name').val();
   let parent_phone = $('input#parent_phone').val();
   let parent_email = $('input#parent_email').val();
   return {
+    offer_type: offer_type,
+    offer_per_hour: offer_per_hour,
+    offer_units: offer_units,
+    offer_description: offer_description,
     first_name: first_name,
     last_name: last_name,
     parent_name: parent_name,
@@ -86,8 +94,9 @@ function get_data() {
 }
 
 function submit_data() {
-  url = API_BASE_URL + 'user';
+  url = API_BASE_URL + 'offer_and_user';
   data = get_data();
+  console.log(JSON.stringify(data));
   data.grade = '8';
   console.log('url', url);
   $.post(url, JSON.stringify(data))
