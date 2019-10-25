@@ -54,7 +54,8 @@ function on_change_offer_type() {
           offer.offer_units +
           's: ' +
           offer.offer_per_hour +
-          ') ',
+          '): ' +
+          offer.offer_description,
       );
       let buy_btn = $('<td/>').append(
         $('<button/>')
