@@ -3,12 +3,24 @@
 $(document).ready(init_shop);
 
 const offers_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/offer';
+const kids_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/user';
 var offers = null;
 var offer_types = {};
+var kids = {};
 
 function init_shop() {
+  $.get(kids_url).done(on_load_kids);
   $.get(offers_url).done(on_load_offers);
   $('select#offer_type').change(on_change_offer_type);
+}
+
+// TODO: Is it possible for /offer to return kid details so we don't need this?
+function on_load_kids(data) {
+  kidarray = data.result;
+  for (var i in kidarray) {
+    kidelement = kidarray[i];
+    kids[kidelement.user_id] = kidelement;
+  }
 }
 
 function on_load_offers(data) {
@@ -44,7 +56,10 @@ function on_change_offer_type() {
     if (offer.offer_type == type) {
       let team_cell = $('<td/>');
       let kid = offer.user_id;
-      team_cell.append(kid);
+      kid_details = kids[kid];
+      console.log(kid_details);
+      let last_initial = kid_details.last_name.substring(0, 1);
+      team_cell.append(kid_details.first_name + ' ' + last_initial);
       let type_cell = $('<td/>').text(
         offer.offer_type +
           ' (per ' +
