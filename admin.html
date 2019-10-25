@@ -25,12 +25,6 @@ layout: default
 
 <h1>Admin</h1>
 
-<ul>
-  <li>listings of kids (below)</li>
-  <li>listings of available services (see sign up form)</li>
-  <li>donation reports (some day)</li>
-</ul>
-
 <h2>Listings of kids</h2>
 
 <form>
@@ -66,5 +60,36 @@ layout: default
 <form id="delete_user" class="show_user d-none">
   <button class="btn post btn-primary">Delete</button>
 </form>
+
+<h2>Listings of services</h2>
+
+<div class="form-group">
+  <label for="what">Pick a service</label>
+  <div class="form-row align-items-center mb-2">
+    <div class="col-1">
+      <label for="offer_type">Available:</label>
+    </div>
+    <div class="col-2">
+      <select class="form-control" id="offer_type">
+        <option class="choose">Available services:</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <input
+        type="text"
+        class="form-control d-none"
+        placeholder="or something else..."
+        id="offer_type_other"
+      />
+    </div>
+  </div>
+  <table class="table table-striped offers"></table>
+</div>
+
+<h2>Donation reports</h2>
+
+<div class="form-group">
+  <label for="what">Not yet.</label>
+</div>
 
 <script src="assets/js/admin.js"></script>

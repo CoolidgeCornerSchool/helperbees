@@ -1,6 +1,9 @@
 $(document).ready(init_page);
 
 const API_BASE_URL = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/';
+const offers_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/offer';
+var offers = null;
+var offer_types = {};
 
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
@@ -10,6 +13,8 @@ function init_page() {
   $.getJSON(url, null, on_load_users);
   // adds the ‘load_user’ callback to the names menu (<SELECT/>)
   $('#names').change(load_user);
+  $.get(offers_url).done(on_load_offers);
+  $('select#offer_type').change(on_change_offer_type);
 }
 
 // This is called when the list of all users arrives from the back end.
@@ -85,4 +90,54 @@ function show_alert(result_struct) {
     $('.alert-box .fail .reason').html(result);
   }
   return false;
+}
+
+function on_load_offers(data) {
+  offers = data.result;
+  for (var i in offers) {
+    offer = offers[i];
+    offer_types[offer.offer_type] = true;
+  }
+  let dropdown = $('select#offer_type');
+  let ot_list = Object.keys(offer_types);
+  ot_list.sort();
+  for (var i in ot_list) {
+    let t = ot_list[i];
+    let option = $('<option/>')
+      .attr('value', t)
+      .text(t);
+    dropdown.append(option);
+  }
+}
+
+function on_change_offer_type() {
+  let type = $(this).val();
+  let offerdivs = $('table.offers').empty();
+  let header = $('<tr/>').append(
+    $('<th/>'),
+    $('<th/>').text('Description'),
+    $('<th/>').text('Helper Bee'),
+  );
+  offerdivs.append(header);
+  for (var i in offers) {
+    let offer = offers[i];
+    if (offer.offer_type == type) {
+      let team_cell = $('<td/>');
+      let kid = offer.user_id;
+      team_cell.append(kid);
+      let type_cell = $('<td/>').text(offer.offer_type + ' (per ' + ' ' + offer.offer_units + ') ');
+      let buy_btn = $('<td/>').append(
+        $('<button/>')
+          .addClass('btn btn-sm btn-primary')
+          // Delete button
+          .text('FIXME'),
+      );
+      let offer_row = $('<tr/>')
+        .append(buy_btn, type_cell, team_cell)
+        .addClass('align-items-center')
+        .attr('offer_id', offer.offer_id)
+        .attr('per_unit', offer.per_unit);
+      offerdivs.append(offer_row);
+    }
+  }
 }
