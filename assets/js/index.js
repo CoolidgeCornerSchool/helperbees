@@ -40,6 +40,7 @@ function on_change_offer_type() {
   offerdivs.append(header);
   for (var i in offers) {
     let offer = offers[i];
+    console.log(offer);
     if (offer.offer_type == type) {
       let team_cell = $('<td/>');
       let kid = offer.user_id;
