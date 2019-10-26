@@ -1,14 +1,19 @@
 import os
 
-# to run locall
-# start docker
+# to run locally, start docker, then
 # $ sam local start-api
 
+# This will start a web service listening at http://localhost:3000
+# with the Lambdas defined in install/template.yml
 
+# If ENV='prd', deploy_lambdas.py will push code to AWS and update the lambdas in the cloud.
+# If ENV='dev', run 'sam local start-api' to serve lambdas at localhost.
 ENV='prd'
 
 INSTALL_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.join(INSTALL_DIR, '..')
+
+# Running deploy_lambdas.py will zip up Lambda code and place it into this S3 bucket
 S3_BUCKET = 'helperbees'
 
 # CLEAN_BUILD=False is faster when running deploy_lambdas.py
