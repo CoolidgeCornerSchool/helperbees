@@ -64,9 +64,9 @@ function on_change_offer_type() {
         offer.offer_type +
           ' (per ' +
           ' ' +
-          offer.offer_units +
+          offer.offer_unit +
           ', number of ' +
-          offer.offer_units +
+          offer.offer_unit +
           's: ' +
           offer.offer_per_hour +
           '): ' +
