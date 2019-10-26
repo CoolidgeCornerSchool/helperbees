@@ -1,3 +1,20 @@
+"""
+This exports a JSON document describing all of the REST endpoints
+published by AWS API Gateway.
+Basically, these are all of the create/read/write/delete endpoints.
+
+This code defines a REST endpoint, GET /swagger
+which serves up the output of the AWS API Gateway get_export() command.
+
+You can view the raw JSON by visiting
+  https://{API_BASE_URL}/swagger or
+  https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/swagger
+
+You can view these with a cute GUI by visiting
+  http://helperbees.org/api
+This redirects to petstore.swagger.io, which hosts the cute GUI.
+"""
+
 import boto3
 import json
 from base_model import response
