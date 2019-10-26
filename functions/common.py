@@ -2,6 +2,10 @@ import json
 import logging
 
 LOG_LEVEL = logging.INFO
+
+DISABLE_EMAIL = False # If true, don't send any emails
+
+# AWS API Gateway id
 API_ID = 'pxa9qyui26'
 
 CORS_HEADERS = { 'Content-Type': 'application/json',

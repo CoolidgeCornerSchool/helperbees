@@ -7,7 +7,7 @@
 import os
 import boto3
 import subprocess
-from settings import ROOT_DIR, S3_BUCKET, INSTALL_DIR, ENV
+from settings import ROOT_DIR, S3_BUCKET, INSTALL_DIR, ENV, CLEAN_BUILD
 
 S3 = boto3.client('s3')
 S3_ZIP_FILE = 'functions.zip'
@@ -33,8 +33,16 @@ def deploy(env):
     If env='dev', assumes local dev with SAM
     """
     # Zip package
-    zip_cmd = ['zip', '-r9', LOCAL_ZIP_PATH, '.']
+    if CLEAN_BUILD and os.path.exists(LOCAL_ZIP_PATH):
+        os.remove(LOCAL_ZIP_PATH)
+
+    if not os.path.exists(LOCAL_ZIP_PATH):
+        zip_lib_cmd = ['zip', '-r9', LOCAL_ZIP_PATH, 'lib/']
+        subprocess.call(zip_lib_cmd, cwd=ROOT_DIR)
+
+    zip_cmd = ['zip', '-r9', LOCAL_ZIP_PATH, '.', '-x', '*~']
     subprocess.call(zip_cmd, cwd=os.path.join(ROOT_DIR, 'functions'))
+    
     if env == 'prd':
         # Upload to S3
         upload_artifact(env, LOCAL_ZIP_PATH, S3_ZIP_FILE)

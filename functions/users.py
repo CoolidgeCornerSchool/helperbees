@@ -1,5 +1,4 @@
 import secrets
-import logging
 from base_model import BaseModel, to_dynamo, to_json
 from common import response
 
@@ -20,7 +19,6 @@ class User(BaseModel):
         if user_id:
             # Supplied user_id -> look up values and return existing user
             result = self.get_by_id(user_id)
-            logging.info(f'get_by_id result={result}' )
             if result:
                 return result, False
             else:
@@ -28,8 +26,7 @@ class User(BaseModel):
         # call base method
         item, is_err = super().validate_for_create(item)
         if is_err:
-            return item            
-        logging.info(f'no get_by_id')
+            return item
         first_name = item.get('first_name', None)
         last_name = item.get('last_name', None)
         user_id, is_err = self.lookup_by_name(first_name, last_name)
@@ -39,7 +36,7 @@ class User(BaseModel):
             return {'user_id' : user_id}, False # found existing user
         # will need to create a new user
         result = {'create_new_user': True}
-        required_user_fields = ['first_name', 'last_name', 'grade',
+        required_user_fields = ['first_name', 'last_name', 
                                 'parent_name','parent_phone', 'parent_email']                                
         for field in required_user_fields:
             if field not in item:
@@ -55,17 +52,16 @@ class User(BaseModel):
         If user is not found, this is not an error [returns (None, False)]
         """
         if not (first_name and last_name):
-            return response(400, f'Missing name: "{first_name}" "{last_name}"')
+            return response(400, f'Missing name: "{first_name}" "{last_name}"'), True
         try:
-            response = self.dynamo.query(
+            result = self.dynamo.query(
                 ExpressionAttributeValues={ ':fn': { 'S': first_name },
                                             ':ln': { 'S': last_name }},
                 KeyConditionExpression='first_name = :fn AND last_name = :ln',
                 TableName=self.tablename,
                 IndexName='full_name-index'
                 )
-            logging.info(f'response = {response}')
-            items = response['Items']
+            items = result['Items']
             if len(items) == 0:
                 return (None, False)
             elif len(items) > 1:
@@ -92,6 +88,8 @@ class User(BaseModel):
         Hopefully the new randomly-generated ID is unique, but if it isn't,
         this will throw an error and will be retried with a different random ID.
         """
+        if 'create_new_user' in item:
+            del item['create_new_user']
         new_id = secrets.token_urlsafe(self.id_size)
         item['user_id'] = new_id
         item['login_code'] = secrets.token_urlsafe(self.id_size)
@@ -126,3 +124,14 @@ def user_get_all(event, context):
 # DELETE /user/{user_id}
 def user_delete(event, context):
     return USER.delete(event, context)
+
+
+# Not yet implemented
+# GET /login/{login_code}
+def login(event, context):
+    user = USER.lookup_by_login(login)
+
+# Not yet implemented
+# GET /remind/{email}
+def remind_code(event, context):
+    user = USER.lookup_by_email(email)

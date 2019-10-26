@@ -2,8 +2,16 @@ import json
 import secrets
 from base_model import BaseModel
 from common import response, safe_json
+from sendmail import send, render_template
 from users import USER
-import logging
+
+RECIPIENTS = {
+    'STEVE': 'steve@strassmann.com',
+    'PHIL' : 'phildurbin@gmail.com',
+    'STEVE_AND_PHIL' : 'steve@strassmann.com, phildurbin@gmail.com',
+    'NOBODY' : None}
+
+CONFIRMATION_TO = 'STEVE_AND_PHIL'
 
 class Offer(BaseModel):
     tablename = 'offers'
@@ -16,14 +24,13 @@ class Offer(BaseModel):
         """
         # optional field: 'offer_type_other'
         result = { 'offer_type_other' : item.get('offer_type_other', "<empty>") }
-        fields = ['offer_type', 'offer_description', 'offer_units', 'offer_per_hour']
+        fields = ['offer_type', 'offer_description', 'offer_unit', 'offer_per_hour']
         for field in fields:
             value = item.get(field, None)
             if value:
                 result[field] = value
             else:
                 msg = f'Missing some required fields in offer: missing "{field}"'
-                logging.warn(msg)
                 return response(400, msg), True
         return result, False
 
@@ -44,34 +51,52 @@ class Offer(BaseModel):
             return offer_item
 
         user_item, is_err = USER.validate_for_create(item)
-        logging.info(f'POOF = {user_item}')
-
         if is_err:
             # if error, return it
             return user_item
+
         # user_item is either a reference to an existing user or a spec for a new user
-        logging.info(f'create user_item = {user_item}')
+        # only return a login_code if a new user has been created
         if user_item.get('create_new_user', False):
             del user_item['create_new_user']
             user_id = USER.create_with_item(user_item)
+            user = USER.get_by_id(user_id)
+            login_code = user['login_code']
+            user_item['login_code'] = login_code
         else:
             user_id = user_item.get('user_id', None)
+            login_code = None
             if not user_id:
                 return response(400, "Missing user_id")
 
         offer_item['user_id'] = user_id
+        offer_id = self.create_with_item(offer_item)
+        result = {'user_id': user_id, 'offer_id': offer_id}
+        # only return a login_code if a new user has been created
+        if login_code:
+            result['login_code'] = login_code
+        self.send_confirmation_email(offer_item, user_item)
+        return response(200, result)
 
-        new_event = {'body': json.dumps(offer_item)}
-        resp = self.create(new_event, context)
-
-        if resp['statusCode'] != 200:
-            raise Exception(f"{resp['statusCode']}: {resp['body']}")
-        offer_id = json.loads(resp['body'])['offer_id']
-        return response(200, {'user_id': user_id, 'offer_id': offer_id})
+    def send_confirmation_email(self, offer_item, user_item):
+        recipient = RECIPIENTS.get(CONFIRMATION_TO, None)
+        if not recipient:
+            logging.warn(f'Not sending mail to anyone : CONFIRMATION_TO={CONFIRMATION_TO}')
+            return
+        new_user = 'login_code' in user_item
+        values = offer_item.copy()
+        if 'first_name' not in user_item:
+            user_item = USER.get_by_id(user_item['user_id'])
+        values.update(user_item)
+        if new_user:
+            template = 'confirm_offer_newuser.txt'
+        else:
+            template = 'confirm_offer_user.txt'
+        body = render_template(template, values)
+        return send(recipient, 'Welcome to HelperBees', body)
 
 # Singleton
 OFFERS = Offer.get_singleton()
-
 
 # POST /offer_and_user
 def offer_create_with_user(event, context):
@@ -92,3 +117,4 @@ def offer_get_all(event, context):
 # DELETE /offer/{offer_id}
 def offer_delete(event, context):
     return OFFERS.delete(event, context)
+

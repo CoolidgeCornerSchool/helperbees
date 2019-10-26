@@ -1,0 +1,33 @@
+<html>
+<head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+  <script>
+    // *** change this to your client_id ***
+    const CLIENT_ID = '958880294296-fvcp1nvpkjajombq46bnpdthphtlca3c.apps.googleusercontent.com';
+
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: CLIENT_ID,
+          scope : 'https://www.googleapis.com/auth/gmail.send'
+        });
+      });
+    }
+  </script>
+</head>
+
+<body>
+  <button id="signinButton">Sign in with Google</button>
+<script>
+  $('#signinButton').click(function() {
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+
+  function signInCallback(authResult){
+      console.log(authResult);
+  }
+</script>
+
+</body>
+</html>

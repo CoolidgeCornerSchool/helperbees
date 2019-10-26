@@ -66,7 +66,7 @@ class BaseModel:
             # Retry if our random key collides
             i += 1
             if i>1:
-                logging.warning(f' *** repeating N={i}: create {self.__class__}')
+                logging.warning(f' *** repeating CREATE_WITH_ITEM N={i}: create {self.__class__}')
             try:
                 new_key = self.create_attempt_put(item)
                 break # success: exit loop

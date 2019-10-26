@@ -1,0 +1,18 @@
+Dear {{ first_name }},
+
+Thank you for signing up! Here's what we have you down for:
+
+  Name: {{ first_name }} {{ last_name }}
+  Parent: {{ parent_name }}
+  Parent phone: {{ parent_phone }}
+  Parent email: {{ parent_phone }}
+
+You have signed up to provide this service:
+
+  Type: {{ offer_type }}
+  Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}s.
+  Description: {{ offer_description }}
+
+
+To view your HelperBees page, visit http://helperbees.org/login/{{ login_code }}
+If you need any help, please contact Christina Knopp at caknopp@me.com.
