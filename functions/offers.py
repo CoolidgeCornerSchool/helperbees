@@ -8,10 +8,10 @@ from users import USER
 RECIPIENTS = {
     'STEVE': 'steve@strassmann.com',
     'PHIL' : 'phildurbin@gmail.com',
-    'STEVE_AND_PHIL' : 'steve@strassmann.com, phildurbin@gmail.com',
+    'DEVS' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
     'NOBODY' : None}
 
-CONFIRMATION_TO = 'STEVE_AND_PHIL'
+CONFIRMATION_TO = 'DEVS'
 
 class Offer(BaseModel):
     tablename = 'offers'

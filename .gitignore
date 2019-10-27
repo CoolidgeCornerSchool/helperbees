@@ -1,2 +1,8 @@
 _site
 .sass-cache
+.jekyll-cache
+__pycache__
+functions.zip
+refresh.json
+lib/
+old/
