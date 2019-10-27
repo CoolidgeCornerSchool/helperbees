@@ -5,7 +5,7 @@ Thank you for signing up! Here's what we have you down for:
   Name: {{ first_name }} {{ last_name }}
   Parent: {{ parent_name }}
   Parent phone: {{ parent_phone }}
-  Parent email: {{ parent_phone }}
+  Parent email: {{ parent_email }}
 
 You have signed up to provide this service:
 
