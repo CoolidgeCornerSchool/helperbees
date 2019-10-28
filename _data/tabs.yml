@@ -7,6 +7,11 @@
 - tab: faq
   name: FAQ
   url: /faq
+
+- tab: noop
+  name: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+  url: ''
+
 - tab: admin
   name: Admin
   url: /admin
