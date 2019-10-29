@@ -13,5 +13,5 @@ You have signed up to provide this service:
   Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}s.
   Description: {{ offer_description }}
 
-To view your HelperBees page, visit http://helperbees.org/login/{{ login_code }}
+To view your HelperBees page, visit http://helperbees.org/login#{{ login_code }}
 If you need any help, please contact Christina Knopp at caknopp@me.com.
