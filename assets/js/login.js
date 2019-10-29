@@ -42,7 +42,6 @@ function delete_cookie(name, path = '/') {
 
 // If the user is logged in, save user details in USER_INFO.
 function init_login(){
-    console.log('init login');
     let path = window.location.pathname;
     let hash = window.location.hash;
     if (path == '/login' && hash.length > 2){
@@ -55,7 +54,6 @@ function init_login(){
 	// Browser is visiting http://{HOST}/login#{login_code}
 	let old_code = get_cookie(LOGIN_COOKIE);
 	if (old_code){
-	    console.log('old cookie', old_code);
 	    let url = API_BASE_URL + '/user/login/' + old_code;
 	    $.get(url, on_login);
 	}
@@ -63,7 +61,7 @@ function init_login(){
 }
 
 function on_login(data){
-    console.log('logged in with', data);
+    console.log('logged in:', data);
     $('nav .tab-my_page').removeClass('d-none');
     USER_INFO.resolve(data);
 }
