@@ -1,11 +1,13 @@
+---
+---
 /* Javascript loaded for the signup.html page */
 
 $(document).ready(init_signup);
 
-const API_BASE_URL = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/';
+const API_BASE_URL = "{{ site.api_base_url }}";
 
-const service_types_url =
-  'https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/export?gid=0&format=tsv';
+// Google Sheet with known service types
+const service_types_url = "{{ site.service_types_url }}";
 
 function init_signup() {
   $.get(service_types_url).done(on_load_service_types);
@@ -94,7 +96,7 @@ function get_data() {
 }
 
 function submit_data() {
-  url = API_BASE_URL + 'offer_and_user';
+  url = API_BASE_URL + '/offer_and_user';
   data = get_data();
   console.log(JSON.stringify(data));
   data.grade = '8';

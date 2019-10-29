@@ -1,16 +1,18 @@
+---
+---
 $(document).ready(init_page);
 
-const API_BASE_URL = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/';
-const offers_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/offer';
+const API_BASE_URL = "{{ site.api_base_url }}";
+const offers_url = API_BASE_URL + '/offer';
+const users_url = API_BASE_URL + '/user';
 var offers = null;
 var offer_types = {};
 
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
-  let url = API_BASE_URL + 'user';
   // get a list of all users from the back end
-  $.getJSON(url, null, on_load_users);
+  $.getJSON(users_url, null, on_load_users);
   // adds the ‘load_user’ callback to the names menu (<SELECT/>)
   $('#names').change(load_user);
   $.get(offers_url).done(on_load_offers);
@@ -34,7 +36,7 @@ function on_load_users(data) {
 function load_user() {
   let user_id = $(this).val();
   if (typeof user_id != 'undefined') {
-    let url = API_BASE_URL + 'user/' + user_id;
+    let url = users_url + '/' + user_id;
     $.getJSON(url, null, on_load_user);
   }
 }
@@ -64,7 +66,7 @@ function delete_user(data) {
   console.log('delete... ', data);
   //user_id = 'myuserid';
   user_id = data.user_id;
-  url = API_BASE_URL + 'user/' + user_id;
+  url = users_url + '/' + user_id;
   console.log('url', url);
   $.ajax({
     url: url,

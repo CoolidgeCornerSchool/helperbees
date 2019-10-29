@@ -1,11 +1,13 @@
+---
+---
 $(document).ready(init_page);
 
-const API_BASE_URL = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/';
+const API_BASE_URL = "{{ site.api_base_url }}";
 
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
-  let url = API_BASE_URL + 'user';
+  let url = API_BASE_URL + '/user';
   // get a list of all users from the back end
   $.getJSON(url, null, on_load_users);
   // adds the ‘load_user’ callback to the names menu (<SELECT/>)
@@ -35,7 +37,7 @@ function on_load_users(data) {
 function load_user() {
   let user_id = $(this).val();
   if (typeof user_id != 'undefined') {
-    let url = API_BASE_URL + 'user/' + user_id;
+    let url = API_BASE_URL + '/user/' + user_id;
     $.getJSON(url, null, on_load_user);
   }
 }
@@ -62,7 +64,7 @@ function get_data() {
 }
 
 function submit_data() {
-  url = API_BASE_URL + 'user';
+  url = API_BASE_URL + '/user';
   data = get_data();
   console.log('url', url);
   $.post(url, JSON.stringify(data))
@@ -82,7 +84,7 @@ function delete_user(data) {
   console.log('delete... ', data);
   //user_id = 'myuserid';
   user_id = data.user_id;
-  url = API_BASE_URL + 'user/' + user_id;
+  url = API_BASE_URL + '/user/' + user_id;
   console.log('url', url);
   $.ajax({
     url: url,
@@ -96,48 +98,47 @@ function delete_user(data) {
 }
 
 function populate_services_dropdown() {
-  let dropdown = document.getElementById('services-dropdown');
-  dropdown.length = 0;
+    let dropdown = document.getElementById('services-dropdown');
+    dropdown.length = 0;
 
-  //let defaultOption = document.createElement('option');
-  //defaultOption.text = 'Choose';
-  //dropdown.add(defaultOption);
+    //let defaultOption = document.createElement('option');
+    //defaultOption.text = 'Choose';
+    //dropdown.add(defaultOption);
 
-  dropdown.selectedIndex = 0;
+    dropdown.selectedIndex = 0;
 
-  const url =
-    'https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/export?gid=0&format=tsv';
+    const url = "{{ site.service_types_url }}";
 
-  const request = new XMLHttpRequest();
-  request.open('GET', url, true);
+    const request = new XMLHttpRequest();
+    request.open('GET', url, true);
 
-  request.onload = function() {
-    if (request.status === 200) {
-      //const data = JSON.parse(request.responseText);
-      const data = request.responseText;
-      console.log(data);
-      var x = data.split('\n');
-      let option;
-      for (var i = 1; i < x.length; i++) {
-        y = x[i].split('\t');
-        x[i] = y;
-        console.log(x[i]);
-        console.log(x[1]);
-        option = document.createElement('option');
-        option.text = y[0];
-        option.value = y[0];
-        dropdown.add(option);
-      }
-    } else {
-      // Reached the server, but it returned an error
-    }
-  };
+    request.onload = function() {
+	if (request.status === 200) {
+	    //const data = JSON.parse(request.responseText);
+	    const data = request.responseText;
+	    console.log(data);
+	    var x = data.split('\n');
+	    let option;
+	    for (var i = 1; i < x.length; i++) {
+		y = x[i].split('\t');
+		x[i] = y;
+		console.log(x[i]);
+		console.log(x[1]);
+		option = document.createElement('option');
+		option.text = y[0];
+		option.value = y[0];
+		dropdown.add(option);
+	    }
+	} else {
+	    // Reached the server, but it returned an error
+	}
+    };
 
-  request.onerror = function() {
-    console.error('An error occurred fetching the JSON from ' + url);
-  };
-
-  request.send();
+    request.onerror = function() {
+	console.error('An error occurred fetching the JSON from ' + url);
+    };
+    
+    request.send();
 }
 
 function show_alert(result_struct) {

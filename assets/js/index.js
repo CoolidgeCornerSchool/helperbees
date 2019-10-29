@@ -1,9 +1,12 @@
+---
+---
 /* Javascript loaded for the signup.html page */
 
 $(document).ready(init_shop);
 
-const offers_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/offer';
-const kids_url = 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/user';
+const API_BASE_URL = "{{ site.api_base_url }}";
+const offers_url = API_BASE_URL + '/offer';
+const kids_url = API_BASE_URL + '/user';
 var offers = null;
 var offer_types = {};
 var kids = {};

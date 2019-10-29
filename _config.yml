@@ -1,3 +1,10 @@
+title: Helper Bees
+
 plugins:  
     - jekyll-redirect-from
-title: Helper Bees
+
+# Amazon AWS base url for API Gateway
+api_base_url: 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev'
+
+# Google Sheet with known service types
+service_types_url: 'https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/export?gid=0&format=tsv'
