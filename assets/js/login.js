@@ -44,15 +44,15 @@ function delete_cookie(name, path = '/') {
 function init_login(){
     console.log('init login');
     let path = window.location.pathname;
-    let regex = /\/login\/(.*)$/;
-    if (regex.test(path)){
-	// New login: browser is visiting http://{HOST}/login/{login_code}
-	new_code = regex.exec(path)[1];
+    let hash = window.location.hash;
+    if (path == '/login' && hash.length > 2){
+	// New login: browser is visiting http://{HOST}/login/#{login_code}
+	new_code = hash.substr(1);
 	set_cookie(LOGIN_COOKIE, new_code);
 	// Redirect to user page
 	window.location.pathname = 'my_page';
     } else {
-	// Browser is visiting http://{HOST}/login/{login_code}
+	// Browser is visiting http://{HOST}/login#{login_code}
 	let old_code = get_cookie(LOGIN_COOKIE);
 	if (old_code){
 	    console.log('old cookie', old_code);

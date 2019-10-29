@@ -14,7 +14,7 @@ function init_about_me(user_info){
 	let value = user_info[field];
 	$('form#about_me #'+field).val(value);
     }
-    let link_url = '{{ site.url }}/login/' + user_info.login_code;
+    let link_url = '{{ site.url }}/login#' + user_info.login_code;
     let link = $('<a/>').attr('href', link_url).text(link_url);
     $('div#login_link').append(link);
     $('.logging-in').addClass('d-none');

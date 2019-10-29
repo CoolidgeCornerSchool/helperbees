@@ -57,7 +57,7 @@ function on_load_user(data) {
   $('.show_user .parent_phone').text(data.parent_phone);
     
 
-  let link_url = '{{ site.url }}/login/' + data.login_code;
+  let link_url = '{{ site.url }}/login#' + data.login_code;
   let link = $('<a/>').attr('href', link_url).text(link_url);
   $('.show_user .login_link').html(link);
   $('#delete_user').on('submit', function(e) {
