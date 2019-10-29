@@ -2,8 +2,6 @@
 ---
 $(document).ready(init_page);
 
-const API_BASE_URL = "{{ site.api_base_url }}";
-
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {

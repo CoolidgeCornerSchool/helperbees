@@ -1,79 +1,70 @@
-// see
-// https://developers.google.com/identity/sign-in/web/reference
+/*
+To log in, visit the login URL.
+When a user (kid) account is created, they are issued a new login_code.
+This code appears in a login URL emailed to the parent, and is also saved in a cookie in their browser.
+As long as the browser has the cookie, USER_INFO should be populated with the user's details.
 
-const google_client_id = '958880294296-npvqs3418t62qbcvaqb05qb0briht2oe.apps.googleusercontent.com';
+If the login URL is lost, you can request it to be sent again to the parent's email. (not yet implemented)
+*/
+$(document).ready(init_login);
 
-// promise that would be resolved when gapi would be loaded
-const gapiPromise = (function(){
-    var deferred = $.Deferred();
-    zot = deferred;
-    window.onLoadCallback = function(){
-	console.log('window loaded');
-	deferred.resolve(gapi);
-    };
-    return deferred.promise()
-}());
+const LOGIN_COOKIE = 'helperbee_login';
+const LOGIN_DAYS = 30;
 
-//var authInited = gapiPromise.then(function(){
-//    console.log('authInited', "gapi=", gapi);
-//    gapi.auth2.init({client_id: google_client_id});
-//});
+// If the user is logged in, it takes a few seconds for USER_INFO to load.
+// You must write this as a callback. This will be called when USER_INFO gets loaded,
+// then your function can do what it wants.
+// 
+// function my_function(user_info){
+//     .. do something with user_info ..
+// }
+//
+// USER_INFO.then(my_function);
+//
 
-const google_client = {
+const USER_INFO = $.Deferred();
 
-    auth2: null,  // The Sign-In client object.
+function set_cookie(name, value, days = LOGIN_DAYS, path = '/') {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString()
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path + ';SameSite=Lax';
+}
 
-    load: function() {
-	// Initializes the Sign-In client.
-	let self = this;
-	console.log('loading gapi', self);
-	gapiPromise.then(()=>
-			 {
-			     console.log('now loading');
-			     gapi.load('auth2', self.on_loaded.call(self));
-			 });
-    },
+function get_cookie(name) {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=')
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r
+  }, '')
+}
 
-    on_loaded: function(){
-	console.log('is_loaded', this, gapi);
-	// Retrieve the singleton for the GoogleAuth library and set up the client.
-	this.auth2 = gapi.auth2.init({ client_id: google_client_id });
+function delete_cookie(name, path = '/') {
+  set_cookie(name, '', -1, path)
+}
 
-	// Handle successful sign-ins.
-	function onSuccess (user) {
-	    console.log('Signed in as ' + user.getBasicProfile().getName());
-	};
-
-	// Handle sign-in failures.
-	function onFailure (error) {
-	    console.log(error);
-	};
-
-	// Attach the click handler to the sign-in button
-	// https://developers.google.com/identity/sign-in/web/reference#googleauthattachclickhandlercontainer_options_onsuccess_onfailure
-	// auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
-    },
-
-    is_signed_in: function(){
-	if (this.auth2 == null){
-	    return false;
+// If the user is logged in, save user details in USER_INFO.
+function init_login(){
+    console.log('init login');
+    let path = window.location.pathname;
+    let regex = /\/login\/(.*)$/;
+    if (regex.test(path)){
+	// New login: browser is visiting http://{HOST}/login/{login_code}
+	new_code = regex.exec(path)[1];
+	set_cookie(LOGIN_COOKIE, new_code);
+	// Redirect to user page
+	window.location.pathname = 'my_page';
+    } else {
+	// Browser is visiting http://{HOST}/login/{login_code}
+	let old_code = get_cookie(LOGIN_COOKIE);
+	if (old_code){
+	    console.log('old cookie', old_code);
+	    let url = API_BASE_URL + '/user/login/' + old_code;
+	    $.get(url, on_login);
 	}
-	return this.auth2.isSignedIn.get();
-    },
-
-    user_profile: function(){
-	if (this.auth2 == null){
-	    return null;
-	}
-	return auth2.currentUser.get().getBasicProfile();
-    },
-
-    get_id_token: function(){
-	if (this.auth2 == null){
-	    return null;
-	}
-	return auth2.currentUser.get().getAuthResponse().id_token;
     }
 }
 
-$(document).ready(google_client.load.call(google_client));
+function on_login(data){
+    console.log('logged in with', data);
+    $('nav .tab-my_page').removeClass('d-none');
+    USER_INFO.resolve(data);
+}
+

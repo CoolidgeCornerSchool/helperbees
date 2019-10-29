@@ -8,6 +8,7 @@
       <a class="nav-link tab-{{item.tab}}
                {% if item.tab == page.tab %}active{% endif %}
                {% if item.tab == 'hidden_admin' %}d-none{% endif %}
+               {% if item.tab == 'my_page' %}d-none{% endif %}
                "
 	 href="{{ item.url }}">{{ item.name }}</a> 
     </li>

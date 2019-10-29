@@ -4,7 +4,6 @@
 
 $(document).ready(init_shop);
 
-const API_BASE_URL = "{{ site.api_base_url }}";
 const offers_url = API_BASE_URL + '/offer';
 const kids_url = API_BASE_URL + '/user';
 var offers = null;

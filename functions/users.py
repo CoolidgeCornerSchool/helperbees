@@ -1,11 +1,12 @@
 import secrets
+import logging
 from base_model import BaseModel, to_dynamo, to_json
 from common import response
 
 class User(BaseModel):
     tablename = 'users'
     partition_key = 'user_id'
-    masked_fields = ['login_code']
+    #masked_fields = ['login_code']
 
     def validate_for_create(self, item):
         """
@@ -72,6 +73,28 @@ class User(BaseModel):
         except Exception:
             raise
 
+    def lookup_by_login(self, login_code):
+        """
+        :return: user record, or None
+        """
+        try:
+            result = self.dynamo.query(
+                ExpressionAttributeValues={ ':l': { 'S': login_code }},
+                KeyConditionExpression='login_code = :l',
+                TableName=self.tablename,
+                IndexName='login_code-index'
+                )
+            items = result['Items']
+            if len(items) == 0:
+                return None
+            elif len(items) > 1:
+                logging.error(f'More than one record found for login_code={login_code}')
+                return None
+            else:
+                return to_json(items[0])
+        except Exception:
+            raise
+
     def update_hook(self, item):
         """
         Prevent updates for login_code.
@@ -125,11 +148,15 @@ def user_get_all(event, context):
 def user_delete(event, context):
     return USER.delete(event, context)
 
-
-# Not yet implemented
 # GET /login/{login_code}
-def login(event, context):
-    user = USER.lookup_by_login(login)
+def user_login(event, context):
+    login_code = event['pathParameters'].get('login_code', None)
+    if not login_code:
+        return response(400, 'Missing login_code parameter')
+    user = USER.lookup_by_login(login_code)
+    if not user:
+        return response(404, 'User not found')
+    return response(200, user)
 
 # Not yet implemented
 # GET /remind/{email}

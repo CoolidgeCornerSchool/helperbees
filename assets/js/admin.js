@@ -2,7 +2,6 @@
 ---
 $(document).ready(init_page);
 
-const API_BASE_URL = "{{ site.api_base_url }}";
 const offers_url = API_BASE_URL + '/offer';
 const users_url = API_BASE_URL + '/user';
 var offers = null;
@@ -56,6 +55,11 @@ function on_load_user(data) {
   $('.show_user .parent_email').text(data.parent_email);
   $('.show_user .parent_phone').text('');
   $('.show_user .parent_phone').text(data.parent_phone);
+    
+
+  let link_url = '{{ site.url }}/login/' + data.login_code;
+  let link = $('<a/>').attr('href', link_url).text(link_url);
+  $('.show_user .login_link').html(link);
   $('#delete_user').on('submit', function(e) {
     delete_user(data);
     e.preventDefault();

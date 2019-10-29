@@ -4,6 +4,9 @@
 - tab: signup
   name: Volunteer to be a Helper Bee
   url: /signup
+- tab: my_page
+  name: My page
+  url: /my_page
 - tab: faq
   name: FAQ
   url: /faq

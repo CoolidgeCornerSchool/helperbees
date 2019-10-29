@@ -4,7 +4,6 @@
 
 $(document).ready(init_signup);
 
-const API_BASE_URL = "{{ site.api_base_url }}";
 
 // Google Sheet with known service types
 const service_types_url = "{{ site.service_types_url }}";

@@ -18,7 +18,7 @@ LOCAL_ZIP_PATH  = os.path.join(os.path.abspath(BUILD_DIR), 'functions.zip')
 
 LAMBDA = boto3.client('lambda')
 
-FUNCTIONS = [ 'user_get', 'user_get_all', 'user_create', 'user_update', 'user_delete',
+FUNCTIONS = [ 'user_get', 'user_get_all', 'user_create', 'user_update', 'user_delete', 'user_login',
               'offer_create_with_user',
               'offer_get', 'offer_get_all', 'offer_update', 'offer_delete',
               'get_swagger' ] 
