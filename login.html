@@ -2,9 +2,23 @@
 ---
 <html>
   <head>
+    <meta name="google-signin-client_id" content="{{ site.login_client_id }}">
     {% include bootstrap.html %}
     <script type="text/javascript">const API_BASE_URL = "{{ site.api_base_url }}";</script>
     <script src="/assets/js/login.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="/assets/css/styles.css">
   </head>
+  <body>
+    <div class="container admin d-none mt-5">
+      <h1>Admin login</h1>
+      <a href="/admin"><i class="fa fa-caret-left"></i> Admin</a>
+      <div class="login">
+	<div class="g-signin2 d-inline-block mt-5 mb-3" data-onsuccess="on_google_signin"></div>
+	<div class="avatar d-none"></div><span class="username"></span>
+      </div>
+      <button class="mt-5 btn btn-sm sign_out btn-outline-primary disabled" onclick="google_signout()">Sign out</button>
+    </div>
+  </body>
 </html>
 

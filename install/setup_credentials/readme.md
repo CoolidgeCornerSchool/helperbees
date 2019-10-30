@@ -56,7 +56,9 @@ Read [Google Sign-in for Server Side](https://developers.google.com/identity/sig
   >>> credentials_json = json.loads(credentials.to_json())
   >>> json.dump(credentials_json, open('refresh.json', 'w'))
   ```
-  * This file contains your *refresh token*. Save this file into `functions/keys/refresh.json`.
+  * This file contains your *refresh token*. Save this file into the location specified by `CREDENTIALS_FILE` in `functions/sendmail.py`.
+ (`functions/keys/refresh.json`).
+
   
 ### How to restore saved credentials from a saved json file
  ```
