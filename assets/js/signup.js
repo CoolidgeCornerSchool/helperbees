@@ -19,31 +19,38 @@ function init_signup() {
 }
 
 function on_change_offer_type() {
-  let val = $(this).val();
-  let other = $('form.signup input#offer_type_other');
-  var option = $('option:selected', this);
-  $('#offer_unit option').removeAttr('disabled');
-  $('#offer_per_hour')
-    .val('')
-    .removeClass('form-control-plaintext');
-  if (val == 'other') {
-    other.removeClass('d-none');
-    $('#offer_unit').val(unit);
-  }
-  if (val != 'other') {
-    other.val('').addClass('d-none');
-    let unit = option.attr('unit');
-    let per_hour = option.attr('per_hour');
-    if (typeof unit != 'undefined') {
-      $('#offer_unit').val(unit);
-      $('#offer_unit option:not(:selected)').attr('disabled', true);
+    let val = $(this).val();
+    let other = $('form.signup input#offer_type_other');
+    var option = $('option:selected', this);
+    $('#offer_unit option').removeAttr('disabled');
+    $('#offer_per_hour').val('')
+	.removeClass('form-control-plaintext');
+    if (val == 'other') {
+	other.removeClass('d-none');
+	$('#10-for').text('$10 for');
+	$('#10-for').addClass('col-1').removeClass('col');
+	$('#offer_per_hour, #offer_unit').removeClass('d-none');
+	$('#offer_per_hour').val(1);
     }
-    if (typeof per_hour != 'undefined') {
-      console.log;
-      $('#offer_per_hour').val(per_hour);
-      $('#offer_per_hour').addClass('form-control-plaintext');
+    if (val != 'other') {
+	$('#10-for').removeClass('col-1').addClass('col');
+	$('#offer_per_hour, #offer_unit').addClass('d-none').removeClass('d-inline-block');
+	other.val('').addClass('d-none');
+	let unit = option.attr('unit');
+	let per_hour = option.attr('per_hour');
+	let plural = '';
+	if (per_hour > 1){
+	    plural = 's';
+	}
+	$('#10-for').text('$10 for '+per_hour+ ' ' + unit + plural);
+	if (typeof unit != 'undefined') {
+	    $('#offer_unit').val(unit);
+	}
+	if (typeof per_hour != 'undefined') {
+	    $('#offer_per_hour').val(per_hour);
+	    $('#offer_per_hour').addClass('form-control-plaintext');
+	}
     }
-  }
 }
 
 function on_change_offer_type_other() {

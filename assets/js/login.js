@@ -84,19 +84,30 @@ function on_login(data){
     USER_INFO.resolve(data);
 }
 
-// Print info in the console.
-USER_INFO.then(print_user_info);
-
 function print_user_info(user){
     console.log('logged in as', user.first_name, user.last_name, '<'+user.parent_email+'>');
 }
 
+// Print info in the console.
+USER_INFO.then(print_user_info);
+
 /* ---------------------------------------------------------------------------------------------------------
  *** Part 2: Logging in as an Admin  ***
 
-1. visit https://developers.google.com/identity/sign-in/web/sign-in 
-2. click 'configure a project' and proceed according to directions on that page.
+When setting this up for a new project, you'll need to create new Google web sign-in credentials.
+This is a OAuth 2.0 client ID with default scope (email and profile is all we need).
+
+There's a second set of credentials for sending email. See install/setup_credentials/readme.md.
+The send-email credentials are not the same as the admin-login credentials.
+They have different scopes: sending email is much more sensitive, and is only set up for exactly
+one user.
+
+1. To configure admin-login, visit https://developers.google.com/identity/sign-in/web/sign-in 
+2. Click 'configure a project' and proceed according to directions on that page.
+   You will be creating a second project (separate from the send-email project).
 3. Configure your project: calling from "web browser"
+4. Add your web site urls to 'Authorized javascript origins'. Don't forget to hit 'save'.
+5. Set the value of 'login_client_id' in '_config.yml' with the client-id for admin-login.
 
  */
 
@@ -131,6 +142,7 @@ function google_signout(googleUser) {
 // This gets resolved with the google user, if there is one.
 const GOOGLE_PROFILE = $.Deferred();
 
+// This is called on every page ('admin login' callback in _includes/head.html)
 function on_load_google_api(){
     gapi.load('auth2', function(){
 	// Retrieve the singleton for the GoogleAuth library and set up the client.
@@ -146,9 +158,9 @@ function on_load_google_api(){
     });
 }
 
-// Print info in the console.
-GOOGLE_PROFILE.then(print_google_login);
-
 function print_google_login(profile){
     console.log('Admin logged in as', profile.getName(), '<'+profile.getEmail()+'>');
 }
+
+// Print info in the console.
+GOOGLE_PROFILE.then(print_google_login);
