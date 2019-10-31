@@ -23,22 +23,27 @@ layout: default
   </div>
 </div>
 
-<h1>Want to help?</h1>
+<div class="container">
+  <h1>Volunteer to be a Helper Bee</h1>
 
-<p>Kids: sign up to offer services</p>
+  <p>It’s easy. Sign up there to volunteer to do a job for someone in
+    our community. (What’s a job you are good at? What do you love to do?)
+    People will donate money for your volunterer work.</p>
+
+  <p>Your money goes toward YOUR Class Activities - the school play,
+    Thompson Island outing, pizza parties, etc. <a href="/faq">Learn more.</a>
 
 
-<h3>What</h3>
+<h3>What job will you do that would be worth $10?</h3>
+
 <form class="signup">
-  <div class="form-group row">
-    <label class="col" for="what"><em>What service are you offering?</em></label>
-  </div>
 
   <div class="form-group row align-items-center mb-2">
-    <label class="col-2" for="offer_type">Type:</label>
+    <label class="col-2" for="offer_type">What type:</label>
     <div class="col-6 form-inline">
       <select class="form-control col mr-2" id="offer_type" required>
-        <option class="choose"></option>
+        <option class="choose">View all jobs...</option>
+	<option class="hr" disabled>──────────</option>
         <option value="other">Other...</option>
       </select>
       <input type="text" class="form-control col d-none" placeholder="or something else..." id="offer_type_other"/>
@@ -61,7 +66,8 @@ layout: default
   <div class="form-group row mb-2">
       <label class="col-2 col-form-label" for="offer_type">About this:</label>
       <div class="col-6">
-        <textarea rows="4" class="form-control" id="offer_description" placeholder="Describe your service" required></textarea>
+        <textarea rows="4" class="form-control" id="offer_description"
+		  placeholder="Describe what you will offer. How many times? How long?" required></textarea>
       </div>
   </div>
 </form>

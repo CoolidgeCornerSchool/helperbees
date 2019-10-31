@@ -48,7 +48,6 @@ function on_change_offer_type() {
 	}
 	if (typeof per_hour != 'undefined') {
 	    $('#offer_per_hour').val(per_hour);
-	    $('#offer_per_hour').addClass('form-control-plaintext');
 	}
     }
 }
@@ -61,8 +60,10 @@ function on_change_offer_type_other() {
 }
 
 function on_load_service_types(data) {
+    // data is a tab-delimited table, one row per entry
   let dropdown = $('form.signup select#offer_type');
   let rows = data.split('\n');
+  rows.sort();
   rows.reverse(); // Items are appending in reverse order
   rows.pop(); // remove header
   for (var i in rows) {
@@ -74,7 +75,7 @@ function on_load_service_types(data) {
     let option = $('<option/>')
       .attr({ value: name, per_hour: per_hour, unit: unit })
       .text(name);
-    dropdown.find('.choose').after(option);
+    dropdown.find('.hr').after(option);
   }
 }
 
