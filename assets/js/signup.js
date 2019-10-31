@@ -63,9 +63,9 @@ function on_load_service_types(data) {
     // data is a tab-delimited table, one row per entry
   let dropdown = $('form.signup select#offer_type');
   let rows = data.split('\n');
+  rows.pop(); // remove header
   rows.sort();
   rows.reverse(); // Items are appending in reverse order
-  rows.pop(); // remove header
   for (var i in rows) {
     let row = rows[i];
     let cols = row.split('\t');
