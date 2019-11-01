@@ -28,7 +28,7 @@ const LOGIN_DAYS = 30;
 
 // If the user is logged in, it takes a few seconds for USER_INFO to load.
 // You must write this as a callback. This will be called when USER_INFO gets loaded,
-// then your function can do what it wants.
+// then your function can do what it wants. For an example, see print_user_info below.
 // 
 // function my_function(user_info){
 //     .. do something with user_info ..
@@ -144,12 +144,15 @@ const GOOGLE_PROFILE = $.Deferred();
 
 // This is called on every page ('admin login' callback in _includes/head.html)
 function on_load_google_api(){
+    console.log('google 1');
     gapi.load('auth2', function(){
 	// Retrieve the singleton for the GoogleAuth library and set up the client.
+	console.log('google 2');
 	auth2 = gapi.auth2.init({
             client_id: login_client_id,
             cookiepolicy: 'single_host_origin'
 	}).then((auth)=>{
+	    console.log('google 3');
 	    if (auth.isSignedIn.get()){
 		let profile = auth.currentUser.get().getBasicProfile();
 		GOOGLE_PROFILE.resolve(profile);
@@ -164,3 +167,5 @@ function print_google_login(profile){
 
 // Print info in the console.
 GOOGLE_PROFILE.then(print_google_login);
+
+console.log('loaded login.js')

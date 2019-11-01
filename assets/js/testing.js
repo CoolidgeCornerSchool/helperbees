@@ -114,14 +114,14 @@ function populate_services_dropdown() {
 	if (request.status === 200) {
 	    //const data = JSON.parse(request.responseText);
 	    const data = request.responseText;
-	    console.log(data);
+	    //console.log(data);
 	    var x = data.split('\n');
 	    let option;
 	    for (var i = 1; i < x.length; i++) {
 		y = x[i].split('\t');
 		x[i] = y;
-		console.log(x[i]);
-		console.log(x[1]);
+		//console.log(x[i]);
+		//console.log(x[1]);
 		option = document.createElement('option');
 		option.text = y[0];
 		option.value = y[0];
@@ -152,4 +152,46 @@ function show_alert(result_struct) {
     $('.alert-box .fail .reason').html(result);
   }
   return false;
+}
+
+// Create a new deferred that returns the same value as deferred.
+// If timeout, resolves with default
+// default time = wait 1 second
+
+function with_timeout(deferred, default_value, time=1000){
+    let impatient = $.Deferred();
+    function go_ahead(){
+	if ( deferred.state() === "pending" ){
+	    impatient.resolve(default_value);
+	}
+    }
+    deferred.then((result)=>impatient.resolve(result));
+    setTimeout(go_ahead, time);
+    return impatient;
+}
+
+function send_test_post(){
+    // wait for both kid_login and admin_login
+    console.log('send test post1');
+
+    function post(kid_login, admin_login){
+	console.log('send test post2', kid_login, admin_login);
+	let headers = {};
+	if (admin_login){
+	    admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+	    headers['Authorization'] = 'Bearer '+admin_token;
+	}
+	if (kid_login){
+	    console.log('kid_login', kid_login)
+	    login_code = kid_login.login_code;
+	    headers['UserLogin'] = login_code;
+	} else {
+	    login_code = 'no_code';
+	}
+	console.log('headers = ', headers);
+	url = API_BASE_URL + '/user/login/' + login_code;
+	$.ajax({url: url, headers:headers});
+	console.log(url, headers);
+    }
+    $.when(with_timeout(USER_INFO, 'user'), with_timeout(GOOGLE_PROFILE, null)).then(post);
 }

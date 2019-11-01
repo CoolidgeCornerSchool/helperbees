@@ -65,7 +65,7 @@ function on_load_service_types(data) {
   let rows = data.split('\n');
   rows.shift(); // remove header
   rows.sort();
-  rows.reverse(); // Items are appending in reverse order
+  rows.reverse(); // Items are appended in reverse order
   for (var i in rows) {
     let row = rows[i];
     let cols = row.split('\t');
