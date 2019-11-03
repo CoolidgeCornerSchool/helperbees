@@ -12,16 +12,14 @@ var offer_types = {};
 function init_page() {
     // get a list of all users from the back end
 
-    GOOGLE_PROFILE.then(()=>{
-    	admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-	headers = {'Authorization' : 'Bearer '+admin_token};
+    with_admin_headers((headers)=>{
 	$.ajax({
 	    dataType: "json",
 	    url: users_url,
 	    headers: headers,
 	    success: on_load_users
 	});
-    })
+    });
     // adds the ‘load_user’ callback to the names menu (<SELECT/>)
     $('#names').change(load_user);
     
@@ -32,23 +30,30 @@ function init_page() {
 // This is called when the list of all users arrives from the back end.
 // It adds all the OPTION menu items to the names menu.
 function on_load_users(data) {
-  for (var i in data.result) {
-    let user = data.result[i];
-    let name = user.first_name + ' ' + user.last_name;
-    let option = $('<option/>')
-      .attr('value', user.user_id)
-      .text(name);
-    $('#names').append(option);
-  }
+    console.log('init4');
+    for (var i in data.result) {
+	let user = data.result[i];
+	let name = user.first_name + ' ' + user.last_name;
+	let option = $('<option/>')
+	    .attr('value', user.user_id)
+	    .text(name);
+	$('#names').append(option);
+    }
 }
 
 // This is called when the names menu changes (see init_page)
 function load_user() {
-  let user_id = $(this).val();
-  if (typeof user_id != 'undefined') {
-    let url = users_url + '/' + user_id;
-    $.getJSON(url, null, on_load_user);
-  }
+    let user_id = $(this).val();
+    if (typeof user_id != 'undefined') {
+	let url = users_url + '/' + user_id;
+	with_admin_headers((headers)=>{
+	    $.ajax({dataType: "json",
+		    url: url,
+		    headers: headers,
+		    success: on_load_user
+		   });
+	});
+    }
 }
 
 // This is called when the data for one user arrives from the back end.
@@ -78,20 +83,24 @@ function on_load_user(data) {
 }
 
 function delete_user(data) {
-  console.log('delete... ', data);
-  //user_id = 'myuserid';
-  user_id = data.user_id;
-  url = users_url + '/' + user_id;
-  console.log('url', url);
-  $.ajax({
-    url: url,
-    type: 'DELETE',
-    success: function(result) {
-      success_msg = 'Kid deleted.';
-      console.log(success_msg);
-      show_alert({ result: 'success' });
-    },
-  });
+    console.log('delete... ', data);
+    //user_id = 'myuserid';
+    user_id = data.user_id;
+    url = users_url + '/' + user_id;
+    console.log('url', url);
+    
+    with_admin_headers((headers)=>{
+	$.ajax({
+	    url: url,
+	    headers: headers,
+	    type: 'DELETE',
+	    success: function(result) {
+		success_msg = 'Kid deleted.';
+		console.log(success_msg);
+		show_alert({ result: 'success' });
+	    },
+	});
+    });
 }
 
 function show_alert(result_struct) {

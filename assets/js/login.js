@@ -144,20 +144,27 @@ const GOOGLE_PROFILE = $.Deferred();
 
 // This is called on every page ('admin login' callback in _includes/head.html)
 function on_load_google_api(){
-    console.log('google 1');
     gapi.load('auth2', function(){
 	// Retrieve the singleton for the GoogleAuth library and set up the client.
-	console.log('google 2');
 	auth2 = gapi.auth2.init({
             client_id: login_client_id,
             cookiepolicy: 'single_host_origin'
 	}).then((auth)=>{
-	    console.log('google 3');
 	    if (auth.isSignedIn.get()){
 		let profile = auth.currentUser.get().getBasicProfile();
 		GOOGLE_PROFILE.resolve(profile);
 	    }
 	});
+    });
+}
+
+// Invokes callback with admin headers as its argument.
+// headers is a JSON object like {'Authorization': 'Bearer eyXXQYYZZ'}
+function with_admin_headers(callback){
+    GOOGLE_PROFILE.then(()=>{
+    	admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+	headers = {'Authorization' : 'Bearer '+admin_token};
+	callback(headers);
     });
 }
 
@@ -168,4 +175,4 @@ function print_google_login(profile){
 // Print info in the console.
 GOOGLE_PROFILE.then(print_google_login);
 
-console.log('loaded login.js')
+
