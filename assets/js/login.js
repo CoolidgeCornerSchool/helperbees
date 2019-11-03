@@ -84,6 +84,16 @@ function on_login(data){
     USER_INFO.resolve(data);
 }
 
+// Invokes callback with user headers as its argument.
+// headers is a JSON object like {'UserLogin': 'XXQYYZZ'}
+// NOTE: If not logged in as a user, the callback will never be called.
+function with_user_auth(callback){
+    USER_INFO.then((user)=>{
+	headers = {'UserLogin' : user.login_code};
+	callback(headers);
+    });
+}
+
 function print_user_info(user){
     console.log('logged in as', user.first_name, user.last_name, '<'+user.parent_email+'>');
 }
@@ -118,10 +128,13 @@ const login_client_id = "{{ site.login_client_id }}";
 function on_google_signin(googleUser) {
     $('button.sign_out').removeClass('disabled btn-outline-primary').addClass('btn-primary');
     var profile = googleUser.getBasicProfile();
+    /*
+    // Examples of useful data
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    */
     $('.avatar, .username').removeClass('d-none');
     $('.avatar').css('background-image', 'url(' + profile.getImageUrl() + ')')
     $('.username').text(profile.getEmail());
@@ -160,14 +173,12 @@ function on_load_google_api(){
 
 // Invokes callback with admin headers as its argument.
 // headers is a JSON object like {'Authorization': 'Bearer eyXXQYYZZ'}
-function with_admin_headers(callback){
-    console.log('debug 5')
+// NOTE: If not logged in as admin, the callback will never be called.
+function with_admin_auth(callback){
     GOOGLE_PROFILE.then(()=>{
-	console.log('debug 6')
     	admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 	headers = {'Authorization' : 'Bearer '+admin_token};
 	callback(headers);
-	console.log('debug 7')
     });
 }
 
@@ -177,5 +188,3 @@ function print_google_login(profile){
 
 // Print info in the console.
 GOOGLE_PROFILE.then(print_google_login);
-
-

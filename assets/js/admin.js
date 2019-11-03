@@ -11,18 +11,18 @@ var offer_types = {};
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
     // get a list of all users from the back end
-    console.log('debug 1')
-    with_admin_headers((headers)=>{
-	console.log('debug 2')
+
+    with_admin_auth((headers)=>{
+	// change displayed alert from 'not logged in' to 'logged in'
+	$('.not-login-alert').addClass('d-none');
+	$('.login-alert').removeClass('d-none');
 	$.ajax({
 	    dataType: "json",
 	    url: users_url,
 	    headers: headers,
 	    success: on_load_users
 	});
-	console.log('debug 3')
     });
-    console.log('debug 4')
     // adds the ‘load_user’ callback to the names menu (<SELECT/>)
     $('#names').change(load_user);
     
@@ -33,7 +33,6 @@ function init_page() {
 // This is called when the list of all users arrives from the back end.
 // It adds all the OPTION menu items to the names menu.
 function on_load_users(data) {
-    console.log('init4');
     for (var i in data.result) {
 	let user = data.result[i];
 	let name = user.first_name + ' ' + user.last_name;
@@ -49,7 +48,7 @@ function load_user() {
     let user_id = $(this).val();
     if (typeof user_id != 'undefined') {
 	let url = users_url + '/' + user_id;
-	with_admin_headers((headers)=>{
+	with_admin_auth((headers)=>{
 	    $.ajax({dataType: "json",
 		    url: url,
 		    headers: headers,
@@ -92,7 +91,7 @@ function delete_user(data) {
     url = users_url + '/' + user_id;
     console.log('url', url);
     
-    with_admin_headers((headers)=>{
+    with_admin_auth((headers)=>{
 	$.ajax({
 	    url: url,
 	    headers: headers,
