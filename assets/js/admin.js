@@ -10,12 +10,23 @@ var offer_types = {};
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
-  // get a list of all users from the back end
-  $.getJSON(users_url, null, on_load_users);
-  // adds the ‘load_user’ callback to the names menu (<SELECT/>)
-  $('#names').change(load_user);
-  $.get(offers_url).done(on_load_offers);
-  $('select#offer_type').change(on_change_offer_type);
+    // get a list of all users from the back end
+
+    GOOGLE_PROFILE.then(()=>{
+    	admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+	headers = {'Authorization' : 'Bearer '+admin_token};
+	$.ajax({
+	    dataType: "json",
+	    url: users_url,
+	    headers: headers,
+	    success: on_load_users
+	});
+    })
+    // adds the ‘load_user’ callback to the names menu (<SELECT/>)
+    $('#names').change(load_user);
+    
+    $.get(offers_url).done(on_load_offers);
+    $('select#offer_type').change(on_change_offer_type);
 }
 
 // This is called when the list of all users arrives from the back end.
