@@ -11,15 +11,18 @@ var offer_types = {};
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
     // get a list of all users from the back end
-
+    console.log('debug 1')
     with_admin_headers((headers)=>{
+	console.log('debug 2')
 	$.ajax({
 	    dataType: "json",
 	    url: users_url,
 	    headers: headers,
 	    success: on_load_users
 	});
+	console.log('debug 3')
     });
+    console.log('debug 4')
     // adds the ‘load_user’ callback to the names menu (<SELECT/>)
     $('#names').change(load_user);
     

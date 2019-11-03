@@ -161,10 +161,13 @@ function on_load_google_api(){
 // Invokes callback with admin headers as its argument.
 // headers is a JSON object like {'Authorization': 'Bearer eyXXQYYZZ'}
 function with_admin_headers(callback){
+    console.log('debug 5')
     GOOGLE_PROFILE.then(()=>{
+	console.log('debug 6')
     	admin_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 	headers = {'Authorization' : 'Bearer '+admin_token};
 	callback(headers);
+	console.log('debug 7')
     });
 }
 
