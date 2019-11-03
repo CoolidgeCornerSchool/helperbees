@@ -1,5 +1,6 @@
 import json
 import secrets
+import logging
 from base_model import BaseModel
 from common import response, safe_json, with_user, with_admin
 from sendmail import send, render_template
@@ -75,7 +76,7 @@ class Offer(BaseModel):
         if login_code:
             result['login_code'] = login_code
         self.send_confirmation_email(offer_item, user_item)
-        return response(200, result), False
+        return result, False
 
     def send_confirmation_email(self, offer_item, user_item):
         recipient = RECIPIENTS.get(CONFIRMATION_TO, None)
@@ -102,7 +103,9 @@ def offer_create_with_user(event, context):
     item, err = safe_json(event['body'])
     if err:
         return item
-    result = OFFERS.create_with_user(item)
+    result, is_err = OFFERS.create_with_user(item)
+    if is_err:
+        return result
     return response(200, result)
 
 # PUT /offer
