@@ -1,7 +1,7 @@
 import secrets
 import logging
-from base_model import BaseModel, to_dynamo, to_json
-from common import response
+from base_model import BaseModel
+from common import response, with_admin, with_user, safe_json, to_dynamo, to_json
 
 class User(BaseModel):
     tablename = 'users'
@@ -130,23 +130,51 @@ USER = User.get_singleton()
 
 # POST /user
 def user_create(event, context):
-    return USER.create(event, context)
+    item, err = safe_json(event['body'])
+    if err:
+        return item
+    new_key = USER.create(item)
+    return response(200, {'user_id': new_key})
 
 # PUT /user
-def user_update(event, context):
-    return USER.update(event, context)
+@with_user
+@with_admin
+def user_update(event, context, user=None, admin=None):
+    item_id = event['pathParameters']['user_id']
+    item, err = safe_json(event['body'])
+    if err:
+        return item
+    if USER.update(item_id, item):
+        return response(200, 'Successfully updated')
 
 # GET /user/{user_id}
-def user_get(event, context):
-    return USER.get(event, context)
+@with_user
+@with_admin
+def user_get(event, context, user=None, admin=None):
+    item_id = event['pathParameters']['user_id']
+    if not (admin or (user and user['user_id'] == item_id)):
+        return response(401, 'Unauthorized')
+    item = USER.get_by_id(item_id)
+    if item:
+        return response(200, item)
+    return response(404, 'Item not found')
 
 # GET /user
-def user_get_all(event, context):
-    return USER.get_all(event, context)
+@with_admin
+def user_get_all(event, context, admin=None):
+    if not admin:
+        return response(401, 'Unauthorized')
+    items = USER.get_all()
+    return response(200, {'result': items})
 
 # DELETE /user/{user_id}
-def user_delete(event, context):
-    return USER.delete(event, context)
+@with_admin
+def user_delete(event, context, admin=None):
+    if not admin:
+        return response(401, 'Unauthorized')
+    item_id = event['pathParameters']['user_id']
+    success = USER.delete(item_id)
+    return response(200, {'success': success})
 
 # GET /login/{login_code}
 def user_login(event, context):

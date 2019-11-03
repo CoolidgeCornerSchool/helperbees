@@ -1,0 +1,223 @@
+Globals:
+  Api:
+    Cors:
+      AllowHeaders: "'Content-Type,Authorization,userlogin'"
+      AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
+      AllowOrigin:  "'*'"
+      AllowCredentials: true
+
+Resources:
+  BeesApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+
+  UserGet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_get
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user/{user_id}
+            Method: GET
+  UserGetAll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_get_all
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: GET
+  UserCreate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_create
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user
+            Method: POST
+  UserUpdate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_update
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user/{user_id}
+            Method: PUT
+  UserDelete:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_delete
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user/{user_id}
+            Method: DELETE
+  UserLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: users.user_login
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /user/login/{login_code}
+            Method: GET
+
+  OfferGet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: offers.offer_get
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /offer/{offer_id}
+            Method: GET
+  OfferGetAll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: offers.offer_get_all
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /offer
+            Method: GET
+  OfferCreateWithUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: offers.offer_create_with_user
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /offer_and_user
+            Method: POST
+  OfferUpdate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: offers.offer_update
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /offer/{offer_id}
+            Method: PUT
+  OfferDelete:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: offers.offer_delete
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /offer/{offer_id}
+            Method: DELETE
+
+
+  OrderGet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: orders.order_get
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /order/{order_id}
+            Method: GET
+  OrderGetAll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: orders.order_get_all
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: GET
+  OrderCreate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: orders.order_create
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: POST
+  OrderUpdate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: orders.order_update
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /order/{order_id}
+            Method: PUT
+  OrderDelete:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: orders.order_delete
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /order/{order_id}
+            Method: DELETE
+
+  GetSwagger:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: swagger.get_swagger
+      CodeUri: ./functions.zip
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /swagger
+            Method: GET
+

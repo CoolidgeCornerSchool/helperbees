@@ -3,7 +3,7 @@ import json
 import string
 import secrets
 import logging
-from common import log_setup, response, safe_json
+from common import log_setup, response, to_json, to_dynamo, to_dynamo_update
 from botocore.exceptions import ClientError
 
 LOG = log_setup()
@@ -39,20 +39,7 @@ class BaseModel:
 
 
     # POST /<thing>
-    def create(self, event, context):
-        """
-        Create a new entry with a new unique id
-        :param event: AWS Lambda incoming event
-        :param context: AWS Lambda incoming context
-        :return item_id:
-        """
-        item, err = safe_json(event['body'])
-        if err:
-            return item
-        new_key = self.create_with_item(item)
-        return response(200, {self.partition_key: new_key})
-
-    def create_with_item(self, item):
+    def create(self, item):
         """
         :param item: dict with values for item to be created with a new unique id
         :return: new_key
@@ -97,16 +84,14 @@ class BaseModel:
         return new_id
 
     # PUT /<thing>
-    def update(self, event, context):
+    def update(self, item_id, item):
         """
         Updates the entry by replacing it
-        :param event: AWS Lambda incoming event
-        :param context: AWS Lambda incoming context        
+        :param item_id:
+        :param item: partial spec of values to be updated
+        :return: True if succeeds
         """
-        item_id = event['pathParameters'][self.partition_key]
-        item, err = safe_json(event['body'])
-        if err:
-            return item
+
         # Don't attempt to update the partition key
         item = {k:v for (k,v) in item.items() if k != self.partition_key}
         item = self.update_hook(item)
@@ -120,62 +105,46 @@ class BaseModel:
         except Exception as err:
             logging.exception(f'Error: {err}')
             raise
-        return response(200, {self.partition_key: item_id})
+        return True
 
     def update_hook(self, item):
         return item
 
     # GET /<thing>/{item_id}
-    def get(self, event, context):
-        """
-        :param event: AWS Lambda incoming event
-        :param context: AWS Lambda incoming context
-        """
-        item_id = event['pathParameters'][self.partition_key]
-        item = self.get_by_id(item_id)
-        if item:
-            result = self.mask_fields(item)
-            return response(200, result)
-        return response(404, 'Item not found')
-
     def get_by_id(self, item_id):
         """
         :param item_id:
         :return: dict - item if found, or None
         """
         try:
-            response = self.dynamo.get_item(TableName=self.tablename,
+            resp = self.dynamo.get_item(TableName=self.tablename,
                                             Key={self.partition_key: {'S': item_id}})
         except ClientError as err:
             error_code = err.response['Error']['Code']
             logging.exception(f'ERROR {error_code}: {err}')
             raise
-        item = response.get('Item', None)
+        item = resp.get('Item', None)
         if item:
             return to_json(item)
 
     # GET /<thing>
-    def get_all(self, event, context):
+    def get_all(self):
         """
-        :param event: AWS Lambda incoming event
-        :param context: AWS Lambda incoming context
         :return: a list of all items. At scale, this should be paginated.
         """
         data = self.dynamo.scan(TableName=self.tablename)
-        items = [self.mask_fields(to_json(i)) for i in data['Items']]
-        return response(200, {'result': items})
+        items = [to_json(item) for item in data['Items']]
+        return items
 
     # DELETE /<thing>/{item_id}
-    def delete(self, event, context):
+    def delete(self, item_id):
         """
         Deletes an item
-        :param event: AWS Lambda incoming event
-        :param context: AWS Lambda incoming context
+        :param item_id: item to delete
         """
-        item_id = event['pathParameters'][self.partition_key]
         result = self.dynamo.delete_item(TableName=self.tablename,
                                     Key={self.partition_key: {'S': item_id}})
-        return response(200, {'success': True})
+        return True
 
     def mask_fields(self, item):
         if hasattr(self, 'masked_fields'):
@@ -183,43 +152,3 @@ class BaseModel:
         else:
             return item
 
-
-def to_json(item):
-    """
-    :param item: verbose item (in dynamodb structure)
-    :return: simple dict
-    """
-    return { k:list(v.values())[0] for k,v in item.items()}
-
-def to_dynamo(item):
-    """
-    Dynamodb requires dict markup declaring the type of every entity
-    This marks up the results object.
-    """
-    return { k:{"S":str(v)} for k,v in item.items()}
-
-
-
-def to_dynamo_update(item):
-    """
-    :param item: dict of key/value pairs of attributes to update in DynamoDb
-    :return: dict of two expressions used by dynamo.update_item()
-    Usage:
-     >>> to_dynamo_update({'size' : 'large'})
-     ->
-     {'UpdateExpression': 'set size = :a',
-      'ExpressionAttributeValues': {':a': {'S': 'large'}}}
-     
-    """
-    assert isinstance(item, dict)
-    assert len(item)<26, f"Item too big, must be <26 keys"
-    vars = {}
-    values = {}
-    for (i, k) in enumerate(item):
-        var = ':{}'.format(string.ascii_lowercase[i])
-        values[var] = {'S' : item[k]}
-        vars[k] = var
-    expr = 'set ' + ', '.join(f'{k} = {v}' for (k,v) in vars.items())
-    return {'UpdateExpression' : expr,
-            'ExpressionAttributeValues' : values}
-            

@@ -27,7 +27,7 @@ def get_service():
     credentials_json = json.load(open(CREDENTIALS_FILE))
     clean_json = {k:v for (k,v) in credentials_json.items() if k not in ['_class', '_module', 'invalid']}
     credentials = OAuth2Credentials(**clean_json)
-    return build('gmail', 'v1', credentials=credentials)
+    return build('gmail', 'v1', credentials=credentials, cache_discovery=False)
 
 GMAIL = get_service()
 
