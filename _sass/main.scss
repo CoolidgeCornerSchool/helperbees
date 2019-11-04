@@ -60,6 +60,13 @@ nav .navbar-brand {
      }
   }
 }
+.section3 {
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    .display-3 { font-variant: small-caps;
+        .cap {font-size: 115%};
+    }
+}
 
 .admin .avatar {
     width: 40px;
