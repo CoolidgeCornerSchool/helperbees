@@ -184,7 +184,7 @@ function send_test_post(){
 	if (kid_login){
 	    console.log('kid_login', kid_login)
 	    login_code = kid_login.login_code;
-	    headers['UserLogin'] = login_code;
+	    headers['userlogin'] = login_code;
 	} else {
 	    login_code = 'no_code';
 	}

@@ -10,6 +10,7 @@ var offer_types = {};
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
+    $('.spinner, .alert-box').hide();
     // get a list of all users from the back end
 
     with_admin_auth((headers)=>{

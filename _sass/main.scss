@@ -1,36 +1,3 @@
-/* Image for Parallax Section */
-
-.parallax {
-    min-height: 600px;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.section1 {
-    background-image: url("https://www.hmfh.com/wp-content/uploads/2018/11/Coolidge-04CROP.jpg");
-}
-.section2 {
-    background-image: url("https://static.wixstatic.com/media/54a867_c041783db7e948bead9cfcd73e1ab503~mv2_d_3000_1578_s_2.jpg/v1/fill/w_2872,h_1578,fp_0.50_0.50,q_90/54a867_c041783db7e948bead9cfcd73e1ab503~mv2_d_3000_1578_s_2.webp");
-
-    li {
-	color: #333;
-        font-size: 150%;
-	background-color: rgba(255,255,255,0.5);
-        min-height: 12em;
-    } 
-}
-
-.admin .avatar {
-    width: 40px;
-    height: 40px;
-    background-size: cover;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-}
-    
 nav .navbar-brand {
     .hb {
 	display: inline-block;
@@ -41,4 +8,64 @@ nav .navbar-brand {
 	   font-size: 80%;
         }
     }
+}
+
+
+.parallax {
+    min-height: 600px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+.section1 {
+    .display-3 { font-variant: small-caps; }
+    .lead { font-size: 170%; }
+    .learn_more {
+	display: block;
+	color: white;
+    }
+    min-height: 300px;
+    background-color: #699F46;
+    text-align: center;
+}
+
+.section2 {
+    text-align: center;
+    table {
+/*
+      border-collapse: separate;
+      border-spacing: 1.2em;	*/
+      td {
+	   min-width: 8em;
+           min-height: 6em;
+	span {
+           color: #333;
+           padding: 3em 0;
+	   min-width: 12em;
+           min-height: 6em;
+           display: inline-block;
+           background-color: #FDE73F;
+        }
+        font-size: 150%;
+
+     }
+  }
+}
+
+.admin .avatar {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+.unused {
+    .photo1 { background-image: url("https://www.hmfh.com/wp-content/uploads/2018/11/Coolidge-04CROP.jpg");}
+    .photo2 { background-image: url("https://static.wixstatic.com/media/54a867_c041783db7e948bead9cfcd73e1ab503~mv2_d_3000_1578_s_2.jpg/v1/fill/w_2872,h_1578,fp_0.50_0.50,q_90/54a867_c041783db7e948bead9cfcd73e1ab503~mv2_d_3000_1578_s_2.webp"); }
 }

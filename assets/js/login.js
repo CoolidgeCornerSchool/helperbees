@@ -186,5 +186,10 @@ function print_google_login(profile){
     console.log('Admin logged in as', profile.getName(), '<'+profile.getEmail()+'>');
 }
 
+// enable 'admin' button in navbar if logged in
+GOOGLE_PROFILE.then(()=>{
+    $('.tab-admin').removeClass('d-none');
+});
+
 // Print info in the console.
 GOOGLE_PROFILE.then(print_google_login);

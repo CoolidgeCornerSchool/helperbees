@@ -9,13 +9,14 @@ $(document).ready(init_signup);
 const service_types_url = "{{ site.service_types_url }}";
 
 function init_signup() {
-  $.get(service_types_url).done(on_load_service_types);
-  $('form.signup select#offer_type').change(on_change_offer_type);
-  $('form.signup input#offer_type_other').change(on_change_offer_type_other);
-  $('form.signup').on('submit', function(e) {
-    submit_data();
-    e.preventDefault(); //prevent form from submitting
-  });
+    $('.spinner, .alert-box').hide();
+    $.get(service_types_url).done(on_load_service_types);
+    $('form.signup select#offer_type').change(on_change_offer_type);
+    $('form.signup input#offer_type_other').change(on_change_offer_type_other);
+    $('form.signup').on('submit', function(e) {
+	submit_data();
+	e.preventDefault(); //prevent form from submitting
+    });
 }
 
 function on_change_offer_type() {
