@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+
 nav .navbar-brand {
     .hb {
 	display: inline-block;
@@ -22,7 +24,10 @@ nav .navbar-brand {
 
 
 .section1 {
-    .display-3 { font-variant: small-caps; }
+    font-family: 'Nunito', sans-serif;
+    .display-3 { font-variant: small-caps;
+        .cap {font-size: 115%};
+     }   
     .lead { font-size: 170%; }
     .learn_more {
 	display: block;
