@@ -51,6 +51,7 @@ function on_load_offers(data) {
 }
 
 function on_change_offer_type() {
+    let offer_count = 0;
   let type = $(this).val();
   let offerdivs = $('table.offers').empty();
   let header = $('<tr/>').append(
@@ -94,7 +95,14 @@ function on_change_offer_type() {
         .addClass('align-items-center')
         .attr('offer_id', offer.offer_id)
         .attr('per_unit', offer.per_unit);
-      offerdivs.append(offer_row);
+	offerdivs.append(offer_row);
+	offer_count += 1;
     }
   }
+    if (offer_count > 0){
+	$('table.offers').removeClass('d-none');
+    } else {
+	$('table.offers').addClass('d-none');
+    }	
+ 
 }

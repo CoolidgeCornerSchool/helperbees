@@ -4,34 +4,25 @@ title: Request a Helper
 layout: default
 ---
 
-<h4><em>Landing page</em></h4>
+<h1>Request a Helper</h1>
 
-<h1>Looking for help?</h1>
+<p class="lead">You donate $10. You select a job. An eighth grader volunteer
+  will get it done. Your donation goes toward their activities like
+the school play and class outings. <a href="/faq">Learn more</a>.</p>
 
-<p>Placeholder: people looking for services</p>
 
-<h3>Shop</h3>
-<div class="form-group">
-  <label for="what">What would you like?</label>
-  <div class="form-row align-items-center mb-2">
-    <div class="col-1">
-      <label for="offer_type">Available:</label>
-    </div>
-    <div class="col-2">
-      <select class="form-control" id="offer_type">
-        <option class="choose">Available services:</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <input
-        type="text"
-        class="form-control d-none"
-        placeholder="or something else..."
-        id="offer_type_other"
-      />
-    </div>
+<div class="row mb-5">
+  <div class="offset-1">
+    <select id="offer_type">
+      <option class="choose">View all jobs...</option>
+      <option class="hr" disabled>──────────</option>
+    </select>
   </div>
-  <table class="table table-striped offers"></table>
 </div>
+
+<div class="row">
+  <table class="d-none table table-striped offers"></table>
+</div>
+
 
 <script src="assets/js/request_helper.js"></script>
