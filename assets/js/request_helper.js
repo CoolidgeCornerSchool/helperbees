@@ -13,14 +13,29 @@ function init_shop() {
     $('select#offer_type').change(on_change_offer_type);
 }
 
-// TODO: Is it possible for /offer to return kid details so we don't need this?
-function on_load_kids(data) {
-  kidarray = data.result;
-  for (var i in kidarray) {
-    kidelement = kidarray[i];
-    kids[kidelement.user_id] = kidelement;
-  }
+function paypal_button(offer_id, offer_type){
+    let url = "https://www.paypal.com/cgi-bin/webscr"
+    let form = $('<form/>').attr({action: url, method: "post", target:"_top"});
+    let fields = {
+	business: "SLDPEE4HT6FHA", // merchant ID
+	cmd: "_donations",
+	amount: "10.00",
+	item_name: "HelperBees (" + offer_type + ")",
+	custom: offer_id,
+	shopping_url: "https://helperbees/request_helper",
+	notify_url: "https://helperbees.org/paypal_completed",
+	image_url: "https://www.brookline.k12.ma.us/cms/lib/MA01907509/Centricity/Template/GlobalAssets/images/logos/devotion.jpg",
+	return: "https://helperbees.org/request_thankyou"
+    }
+    form.append($('<button/>').attr("type","submit").addClass("btn btn-primary").text("Donate $10"));
+    for (var name in fields){
+	let input = $('<input/>').attr({type: "hidden", name: name, value: fields[name]});
+	form.append(input);
+    }
+    return form;
 }
+
+
 
 function on_load_offers(data) {
     offers = data.result;
@@ -85,11 +100,9 @@ function on_change_offer_type() {
           '): ' +
           offer.offer_description,
       );
-      let buy_btn = $('<td/>').append(
-        $('<button/>')
-          .addClass('btn btn-sm btn-primary')
-          .text('Donate $10'),
-      );
+	let buy_btn = $('<td/>').append(
+	    paypal_button(offer.offer_id, offer.offer_type)
+	);
       let offer_row = $('<tr/>')
         .append(buy_btn, type_cell, team_cell)
         .addClass('align-items-center')
