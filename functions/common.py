@@ -100,38 +100,43 @@ def get_user_by_login_code(login_code):
         return None
     return to_json(items[0])
     
-"""
-def get_auth(event):
-    headers = event.get('headers')
-    admin_login = headers.get('Authorization', None)
-    login_code = headers.get('userlogin', None)
-    if not login_code:
-        login_code = headers.get('Userlogin', None)
-    admin = None
-    if admin_login:
-        tokens = admin_login.split()
-        if len(tokens)==2 and tokens[0]=="Bearer":
-            try:
-                admin = validate(tokens[1], LOGIN_CLIENT_ID)[1]
-            except Exception as err:
-                # validation failed
-"""
-
-
 def to_json(item):
     """
     :param item: verbose item (in dynamodb structure)
     :return: simple dict
     """
-    return { k:list(v.values())[0] for k,v in item.items()}
+    result = {}
+    for k,v in item.items():
+        if "S" in v:
+            result[k] = v["S"]
+        elif "N" in v:
+            result[k] = v["N"]
+        elif "M" in v:
+            result[k] = to_json(v["M"])
+        elif "L" in v:
+            result[k] = [to_json(elt) for elt in v["L"]]
+        else:
+            result[k] = v
+    return result
 
 def to_dynamo(item):
     """
     Dynamodb requires dict markup declaring the type of every entity
     This marks up the results object.
     """
-    return { k:{"S":str(v)} for k,v in item.items()}
-
+    result = {}
+    for k, v in item.items():
+        if isinstance(v, str):
+            result[k] = {"S": str(v)}
+        elif isinstance(v, (int, float)):
+            result[k] = {"N": str(v)}
+        elif isinstance(v, dict):
+            result[k] = {"M": to_dynamo(v)}
+        elif isinstance(v, list):
+            result[k] = {"L": [to_dynamo(elt) for elt in v]}
+        else:
+            result[k] = {"S": str(v)}
+    return result
 
 
 def to_dynamo_update(item):

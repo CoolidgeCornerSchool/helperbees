@@ -18,7 +18,7 @@ class Order(BaseModel):
 ORDERS = Order.get_singleton()
 
 # for confirmation API requests
-PAYPAL_TEST_URL = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
+PAYPAL_SANDBOX_URL = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
 PAYPAL_LIVE_URL = 'https://ipnpb.paypal.com/cgi-bin/webscr'
 
 def get_paypal_confirmation(data, url=PAYPAL_LIVE_URL):
@@ -31,19 +31,23 @@ def get_paypal_confirmation(data, url=PAYPAL_LIVE_URL):
     data['cmd'] = '_notify-validate'
     headers = {'User-Agent': user_agent}
     response = requests.post(url, data=data, headers=headers)
-    logging.info(f" PAYPAL={response.text}, status={response.status_code}")
     return response.text
 
 # POST /order
 def order_create(event, context):
+    """
+    Event is a POST from Paypal's IPN (instant payment notification) callback
+    containing all the details of a completed Paypal offer.
+    """
     item = {i[0]:i[1] for i in parse_qsl(event['body'])}
     confirmation = get_paypal_confirmation(item)
     item['confirmation'] = confirmation
     if 'custom' in item:
+        # 'custom' field contains offer_id. If present, insert it as a nested object
         offer_id = item['custom']
         offer = OFFERS.get_by_id(offer_id)
         if offer:
-            item.update(offer)
+            item['offer'] = offer
     new_key = ORDERS.create(item)
     return response(200, {'order_id': new_key})
 
