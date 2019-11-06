@@ -21,6 +21,7 @@ LAMBDA = boto3.client('lambda')
 FUNCTIONS = [ 'user_get', 'user_get_all', 'user_create', 'user_update', 'user_delete', 'user_login',
               'offer_create_with_user',
               'offer_get', 'offer_get_all', 'offer_update', 'offer_delete',
+              'order_create', 'order_get', 'order_get_all', 'order_delete',
               'get_swagger' ] 
 
 def upload_artifact(env, local_filename, s3_filename):

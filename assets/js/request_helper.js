@@ -23,7 +23,7 @@ function paypal_button(offer_id, offer_type){
 	item_name: "HelperBees (" + offer_type + ")",
 	custom: offer_id,
 	shopping_url: "https://helperbees/request_helper",
-	notify_url: "https://helperbees.org/paypal_completed",
+	notify_url: "https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/order",
 	image_url: "https://www.brookline.k12.ma.us/cms/lib/MA01907509/Centricity/Template/GlobalAssets/images/logos/devotion.jpg",
 	return: "https://helperbees.org/request_thankyou"
     }

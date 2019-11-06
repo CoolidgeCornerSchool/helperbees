@@ -50,7 +50,10 @@ def with_admin(func):
     def wrapper(event, context, **kwargs):
         admin = None
         headers = event.get('headers')
-        auth = headers.get('Authorization', None)
+        if headers:
+            auth = headers.get('Authorization', None)
+        else:
+            auth = None
         if auth:
             tokens = auth.split()
             if len(tokens)==2 and tokens[0]=="Bearer":
@@ -73,10 +76,13 @@ def with_user(func):
     def wrapper(event, context, **kwargs):
         user = None
         headers = event.get('headers')
-        login_code = headers.get('userlogin', None)
-        if not login_code:
-            # Try different case - not sure why both are being passed in
-            login_code = headers.get('Userlogin', None)
+        if headers:
+            login_code = headers.get('userlogin', None)
+            if not login_code:
+                # Try different case - not sure why both are being passed in
+                login_code = headers.get('Userlogin', None)
+        else:
+            login_code = None
         if login_code:
             user = get_user_by_login_code(login_code)
         return func(event, context, user=user, **kwargs)
