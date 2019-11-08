@@ -127,7 +127,11 @@ function render_offer_row(offer){
     if (type_txt == 'other' && offer.offer_type_other != '<empty>'){
 	type_txt += ': ' + offer.offer_type_other;
     }
-    type_txt += ' (' + offer.offer_per_hour + ' per ' + offer.offer_unit + ') ';
+    let plural = '';
+    if (offer.offer_per_hour != 1){
+	plural = 's';
+    }
+    type_txt += ' (' + offer.offer_per_hour + ' ' + offer.offer_unit + plural + ') ';
     let type = $('<div/>').text(type_txt);
     let desc = $('<div/>').text(offer.offer_description);
     let about = $('<td/>').append(type, desc);
