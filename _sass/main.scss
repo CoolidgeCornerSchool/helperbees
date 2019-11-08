@@ -1,73 +1,53 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
 
+/* Helperbees brand logo */
 nav .navbar-brand {
-    .hb {
-	display: inline-block;
-    .hb1 {
-     font-weight: bold;
-        } 
-       .hb2 {
-	   font-size: 80%;
+    .hb { display: inline-block;
+          .hb1 { font-weight: bold; } 
+          .hb2 { font-size: 80%; }
         }
-    }
 }
 
-
+/* Parallax boxes on home page */
 .parallax {
-    min-height: 600px;
+    font-family: 'Nunito', sans-serif;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
-
-
-
-.section1 {
-    font-family: 'Nunito', sans-serif;
+    text-align: center;
     .display-3 { font-variant: small-caps;
         .cap {font-size: 115%};
-     }   
+    }
     .lead { font-size: 170%; }
+}
+
+.section1 {
+    .display-3.line2 { margin-top: -2.5rem }
+    background-color: #699F46;
     .learn_more {
 	display: block;
 	color: white;
     }
-    min-height: 300px;
-    background-color: #699F46;
-    text-align: center;
 }
 
 .section2 {
     text-align: center;
-    table {
-/*
-      border-collapse: separate;
-      border-spacing: 1.2em;	*/
-      td {
-	   min-width: 8em;
-           min-height: 6em;
-	span {
-           color: #333;
-           padding: 3em 0;
-	   min-width: 12em;
-           min-height: 6em;
-           display: inline-block;
-           background-color: #FDE73F;
-        }
+    .jobs .col {
+	margin: .6em .6em;
+        padding: 2em .2em;
+	background-color: #FDE73F;
         font-size: 150%;
-
-     }
-  }
-}
-.section3 {
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    .display-3 { font-variant: small-caps;
-        .cap {font-size: 115%};
+        &:hover {
+	background-color: darken(#FDE73F, 14%);
+        }
     }
 }
 
+
+/* Admin pages */
+
+/* Google login avatar */
 .admin .avatar {
     width: 40px;
     height: 40px;

@@ -10,11 +10,17 @@ const service_types_url = "{{ site.service_types_url }}";
 function init_home(){
     $.get(service_types_url).done(on_load_services);
     $('select#offer_type').change(choose_service);
+    $('.jobs .col').click(choose_service);
+    $('.section5 button').click(on_send_feedback);
 }
 
-// User clicked on service menu
+// User clicked on service menu or clicked a big yellow button
 function choose_service(){
-    let val = $(this).val();
+    let val = $(this).val();           // value for drop-down menu
+    let button_text = $(this).text();  // value for big yellow buttons
+    if (val == '' && button_text != ''){
+	val = button_text;
+    }
     // navigate to new location
     window.location.href = '/request_helper#'+encodeURI(val).replace('/','<slash>');
 }
@@ -39,5 +45,10 @@ function on_load_services(data) {
     }
 }
 
-
+function on_send_feedback(){
+    let msg_body = $('.section5 #body').val();
+    let url = "mailto:ccs.helperbees@gmail.com?subject=feedback&body=" + encodeURI(msg_body);
+    document.location.href=url;
+    return false;
+}
 

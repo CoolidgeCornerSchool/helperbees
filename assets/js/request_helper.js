@@ -19,7 +19,7 @@ function paypal_button(offer_id, offer_type){
     let fields = {
 	business: "SLDPEE4HT6FHA", // merchant ID
 	cmd: "_donations",
-	amount: "10.00",
+	amount: "00.01",
 	item_name: "HelperBees (" + offer_type + ")",
 	custom: offer_id,
 	shopping_url: "https://helperbees/request_helper",
