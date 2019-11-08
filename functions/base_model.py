@@ -10,7 +10,7 @@ LOG = log_setup()
 
 class BaseModel:
     singleton = None
-    id_size = 6                # length of generated ID token
+    id_size = 8   # length of generated ID token
 
     def __init__(self):
         self.dynamo = boto3.client('dynamodb')
@@ -44,7 +44,6 @@ class BaseModel:
         :param item: dict with values for item to be created with a new unique id
         :return: new_key
         """
-
         item, err = self.validate_for_create(item)
         if err:
             return item

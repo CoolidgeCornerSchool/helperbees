@@ -19,7 +19,7 @@ function paypal_button(offer_id, offer_type){
     let fields = {
 	business: "SLDPEE4HT6FHA", // merchant ID
 	cmd: "_donations",
-	amount: "00.01",
+	amount: "10.00",
 	item_name: "HelperBees (" + offer_type + ")",
 	custom: offer_id,
 	shopping_url: "https://helperbees/request_helper",
@@ -27,7 +27,14 @@ function paypal_button(offer_id, offer_type){
 	image_url: "https://www.brookline.k12.ma.us/cms/lib/MA01907509/Centricity/Template/GlobalAssets/images/logos/devotion.jpg",
 	return: "https://helperbees.org/request_thankyou"
     }
-    form.append($('<button/>').attr("type","submit").addClass("btn btn-primary").text("Donate $10"));
+    let button_text = "Donate $10";
+    let button_style = "btn-primary";
+    if (offer_type == 'testing'){
+	fields.amount = "0.01";
+	button_text = "Test: $0.01";
+	button_style = "btn-info";
+    }
+    form.append($('<button/>').attr("type","submit").addClass("btn").addClass(button_style).text(button_text));
     for (var name in fields){
 	let input = $('<input/>').attr({type: "hidden", name: name, value: fields[name]});
 	form.append(input);
@@ -35,10 +42,16 @@ function paypal_button(offer_id, offer_type){
     return form;
 }
 
-
+const test_offer = {
+    offer_type: 'testing',
+    offer_unit: 'item',
+    offer_per_hour: 1,
+    offer_description: 'Testing the payment and confirmation system'
+};
 
 function on_load_offers(data) {
     offers = data.result;
+    offers.push(test_offer);
     for (var i in offers) {
 	offer = offers[i];
 	offer_types[offer.offer_type] = true;

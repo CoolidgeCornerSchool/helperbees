@@ -17,11 +17,12 @@ DYNAMO = boto3.client('dynamodb')
 API_ID = 'pxa9qyui26'
 LOGIN_CLIENT_ID = '635073293377-g9q675lgb6ek99l0fd92lhjvkk62kptl.apps.googleusercontent.com'
 
-CORS_HEADERS = { 'Content-Type': 'application/json',
-                 'Access-Control-Allow-Origin': '*',
-                 'Access-Control-Allow-Credentials' : True,
-                 'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,UserLogin',            
-                 }
+CORS_HEADERS = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials' : True,
+    'Access-Control-Allow-Headers':'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,UserLogin',            
+    }
 
 def response(code, data):
     """
@@ -89,6 +90,10 @@ def with_user(func):
     return wrapper
 
 def get_user_by_login_code(login_code):
+    """
+    Look up user by the login_code.
+    :return: user (dict) or None.
+    """
     result = DYNAMO.query(
         ExpressionAttributeValues={ ':l': { 'S': login_code }},
         KeyConditionExpression='login_code = :l',
@@ -123,6 +128,7 @@ def to_dynamo(item):
     """
     Dynamodb requires dict markup declaring the type of every entity
     This marks up the results object.
+    :return: a dynamo-marked dict
     """
     result = {}
     for k, v in item.items():
@@ -137,7 +143,6 @@ def to_dynamo(item):
         else:
             result[k] = {"S": str(v)}
     return result
-
 
 def to_dynamo_update(item):
     """
@@ -162,8 +167,6 @@ def to_dynamo_update(item):
     return {'UpdateExpression' : expr,
             'ExpressionAttributeValues' : values}
             
-
-
 def safe_json(json_string):
     """
     If JSON string is parsed into a dict, return it with is_error=False
@@ -175,7 +178,6 @@ def safe_json(json_string):
         return json.loads(json_string), False
     except json.decoder.JSONDecodeError as err:
         return response(400, f"Error parsing JSON: {err}"), True
-
 
 def log_setup():
     """

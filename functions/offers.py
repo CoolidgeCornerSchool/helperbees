@@ -7,12 +7,11 @@ from sendmail import send, render_template
 from users import USER
 
 RECIPIENTS = {
-    'STEVE': 'steve@strassmann.com',
-    'PHIL' : 'phildurbin@gmail.com',
     'DEVS' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
+    'NORMAL' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
     'NOBODY' : None}
 
-CONFIRMATION_TO = 'STEVE'
+CONFIRMATION_TO = 'NORMAL'
 
 class Offer(BaseModel):
     tablename = 'offers'
@@ -83,6 +82,9 @@ class Offer(BaseModel):
         if not recipient:
             logging.warn(f'Not sending mail to anyone : CONFIRMATION_TO={CONFIRMATION_TO}')
             return
+        # If 'NORMAL', add parent_email to the recipients list.
+        if CONFIRMATION_TO == 'NORMAL' and 'parent_email' in user_item:
+            recipient += ',' + user_item['parent_email']
         new_user = 'login_code' in user_item
         values = offer_item.copy()
         if 'first_name' not in user_item:
