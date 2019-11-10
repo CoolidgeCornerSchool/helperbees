@@ -2,8 +2,7 @@
 ---
 $(document).ready(init_page);
 
-const offers_url = API_BASE_URL + '/offer';
-const users_url = API_BASE_URL + '/user';
+
 var offers = null;
 var offer_types = {};
 
@@ -11,25 +10,68 @@ var offer_types = {};
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
     $('.spinner, .alert-box').hide();
-    // get a list of all users from the back end
 
+    // When logged in as admin, load all the data
+    load_admin_data();
+
+    // ADMIN_USERS tab
+    // adds the ‘load_user’ callback to the names menu
+    $('#names').change(load_user);
+
+    // ADMIN_OFFERS tab (login not required to view data)
+    $.get(API_BASE_URL + '/offer').done(on_load_offers);
+    $('select#offer_type').change(on_change_offer_type);
+
+    // ADMIN_OFFERS tab
+}
+
+// When logged in as admin, load all the data
+function load_admin_data(){
     with_admin_auth((headers)=>{
 	// change displayed alert from 'not logged in' to 'logged in'
 	$('.not-login-alert').addClass('d-none');
 	$('.login-alert').removeClass('d-none');
+	// get a list of all users from the back end
 	$.ajax({
 	    dataType: "json",
-	    url: users_url,
+	    url: API_BASE_URL + '/user',
 	    headers: headers,
 	    success: on_load_users
 	});
+	// get a list of all orders from the back end	
+	$.ajax({
+	    dataType: "json",
+	    url: API_BASE_URL + '/order',
+	    headers: headers,
+	    success: on_load_orders
+	});
     });
-    // adds the ‘load_user’ callback to the names menu (<SELECT/>)
-    $('#names').change(load_user);
-    
-    $.get(offers_url).done(on_load_offers);
-    $('select#offer_type').change(on_change_offer_type);
 }
+
+
+function on_load_orders(data) {
+    $('.no_orders').addClass('d-none');
+    $('.admin_orders').removeClass('d-none');
+    $('.admin_orders tbody').empty();
+    for (var i in data.result){
+	let order = data.result[i];
+	$('.admin_orders').append(make_order_row(order));
+    }
+}
+
+
+// returns <div/>
+function make_order_row(order){
+    let row = $('<tr/>');
+    row.append($('<td/>').text(new Date(order.payment_date).toLocaleString()));
+    row.append($('<td/>').text(order.order_id));
+    row.append($('<td/>').append($('<a/>').text(order.first_name + ' ' + order.last_name)
+				 .attr('href', 'mailto:'+ order.payer_email)));
+    row.append($('<td/>').text('$'+order.payment_gross));
+    
+    return row;
+}
+
 
 // This is called when the list of all users arrives from the back end.
 // It adds all the OPTION menu items to the names menu.
