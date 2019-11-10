@@ -6,6 +6,8 @@ $(document).ready(init_page);
 var offers = null;
 var offer_types = {};
 
+const users_url = API_BASE_URL + '/user';
+
 // This is how jQuery calls a function to initialize the page.
 // It will be executed after all the html, css, and js for the page have been loaded.
 function init_page() {
@@ -34,7 +36,7 @@ function load_admin_data(){
 	// get a list of all users from the back end
 	$.ajax({
 	    dataType: "json",
-	    url: API_BASE_URL + '/user',
+	    url: users_url,
 	    headers: headers,
 	    success: on_load_users
 	});
