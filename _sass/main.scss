@@ -47,6 +47,10 @@ nav .navbar-brand {
 
 /* Admin pages */
 
+.nav-tabs .nav-item .nav-link.active {
+  background-color: #EEE;
+}
+
 /* Google login avatar */
 .admin .avatar {
     width: 40px;

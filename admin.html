@@ -4,98 +4,65 @@ title: Admin
 layout: default
 ---
 
-<div class="spinner"><i class="fa fa-spin fa-cog"></i></div>
-<div class="alert-box">
-  <div class="success alert alert-success">
-    <p>Success!</p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="fail alert alert-danger">
-    <div>
-      Oops, there was a problem:
-      <div class="reason"></div>
-    </div>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-</div>
-
 <h1>Admin</h1>
 
-<a href="/login#admin" class="mt-3 mb-5"><i class="fa fa-caret-right"></i> Admin login</a>
 <div class="not-login-alert"><i class="fa fa-times text-danger mr-2"></i>Admin: not logged in</div>
 <div class="login-alert d-none"><i class="fa fa-check text-success mr-2"></i>Admin: logged in</div>
 
-<h2 class="mt-5">Listings of kids</h2>
+<ul class="nav nav-tabs mt-5" id="adminTabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Admin home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="login-tab" href="/login#admin">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="true">Kids</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="offers-tab" data-toggle="tab" href="#offers" role="tab" aria-controls="offers" aria-selected="false">Catalog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false">Sales</a>
+      </li>
+</ul>
 
-<form>
-  <div class="form-group">
-    <label for="names">Pick a name</label>
-    <select class="form-control" id="names"
-      ><option>Pick someone...</option></select
-    >
+<div class="tab-content" id="adminTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <p class="mt-5">This is the admin page for HelperBees.</p>
   </div>
-</form>
-
-<table class="table show_user col-4 d-none">
-  <thead>
-    <tr>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Parent name</th>
-      <th scope="col">Parent email</th>
-      <th scope="col">Parent phone</th>
-      <th scope="col">Login link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="first"></td>
-      <td class="last"></td>
-      <td class="parent_name"></td>
-      <td class="parent_email"></td>
-      <td class="parent_phone"></td>
-      <td class="login_link"></td>      
-    </tr>
-  </tbody>
-</table>
-
-<form id="delete_user" class="show_user d-none">
-  <button class="btn post btn-primary">Delete</button>
-</form>
-
-<h2>Listings of services</h2>
-
-<div class="form-group">
-  <label for="what">Pick a service</label>
-  <div class="form-row align-items-center mb-2">
-    <div class="col-1">
-      <label for="offer_type">Available:</label>
-    </div>
-    <div class="col-2">
-      <select class="form-control" id="offer_type">
-        <option class="choose">Available services:</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <input
-        type="text"
-        class="form-control d-none"
-        placeholder="or something else..."
-        id="offer_type_other"
-      />
-    </div>
+  <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+    {% include_relative admin_users.html %}
   </div>
-  <table class="table table-striped offers"></table>
+  <div class="tab-pane fade" id="offers" role="tabpanel" aria-labelledby="offers-tab">
+    {% include_relative admin_offers.html %}
+  </div>
+  <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+    {% include_relative admin_orders.html %}
+  </div>
 </div>
 
-<h2>Donation reports</h2>
-
-<div class="form-group">
-  <label for="what">Not yet.</label>
+<!-- alert boxes, unused for now -->
+<div class="d-none">
+  <div class="spinner"><i class="fa fa-spin fa-cog"></i></div>
+  <div class="alert-box">
+    <div class="success alert alert-success">
+      <p>Success!</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	<span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="fail alert alert-danger">
+      <div>
+	Oops, there was a problem:
+	<div class="reason"></div>
+      </div>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	<span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
 </div>
+
 
 <script src="assets/js/admin.js"></script>
