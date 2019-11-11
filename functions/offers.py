@@ -13,7 +13,7 @@ RECIPIENTS = {
     'NOBODY' : None}
 
 # change this when debugging so confirmation email only goes to the selected recipients
-CONFIRMATION_TO = 'STEVE'
+CONFIRMATION_TO = 'NORMAL'
 
 class Offer(BaseModel):
     tablename = 'offers'
@@ -58,6 +58,8 @@ class Offer(BaseModel):
 
         # user_item is either a reference to an existing user or a spec for a new user
         # only return a login_code if a new user has been created
+        # user is the newly created user
+        user = None
         if user_item.get('create_new_user', False):
             del user_item['create_new_user']
             user_id = USER.create(user_item)
@@ -69,7 +71,12 @@ class Offer(BaseModel):
             login_code = None
             if not user_id:
                 return response(400, "Missing user_id"), True
-
+        if not user:
+            # if user is not freshly created, fetch their details
+            user = USER.get_by_id(user_id)
+        # populate offer with some user info
+        offer_item['user_first_name'] = user['first_name']
+        offer_item['user_last_name'] = user['last_name']
         offer_item['user_id'] = user_id
         offer_id = self.create(offer_item)
         result = {'user_id': user_id, 'offer_id': offer_id}
@@ -80,6 +87,7 @@ class Offer(BaseModel):
         return result, False
 
     def send_confirmation_email(self, offer_item, user_item):
+        logging.info(f'send_confirmation_email offer={offer_item}')
         recipient = RECIPIENTS.get(CONFIRMATION_TO, None)
         if not recipient:
             logging.warn(f'Not sending mail to anyone : CONFIRMATION_TO={CONFIRMATION_TO}')
@@ -97,7 +105,9 @@ class Offer(BaseModel):
         else:
             template = 'confirm_offer_user.txt'
         body = render_template(template, values)
-        return send(recipient, 'Welcome to HelperBees', body)
+        result = send(recipient, 'Welcome to HelperBees', body)
+        logging.info(f'send_confirmation_email sent to={recipient}')
+        return result
 
 # Singleton
 OFFERS = Offer.get_singleton()
@@ -134,13 +144,23 @@ def offer_get(event, context):
     item_id = event['pathParameters']['offer_id']
     item = OFFERS.get_by_id(item_id)
     if item:
+        redact_name(item)
         return response(200, item)
     return response(404, 'Item not found')
 
 # GET /offer
-def offer_get_all(event, context):
+@with_admin
+def offer_get_all(event, context, admin=None):
     items = OFFERS.get_all()
+    if not admin:
+        for item in items:
+            redact_name(item)
     return response(200, {'result': items})
+
+def redact_name(item):
+    if 'user_last_name' in item:
+        item['user_last_name']  = item['user_last_name'][0]
+    return item
 
 # DELETE /offer/{offer_id}
 @with_user

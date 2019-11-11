@@ -139,12 +139,14 @@ function render_offer_row(offer){
     let type = $('<div/>').text(type_txt);
     let desc = $('<div/>').text(offer.offer_description);
     let about = $('<td/>').append(type, desc);
-    let buy_btn = $('<td/>')
-	.append(paypal_button(offer.offer_id, offer.offer_type)
-	       );
-    let bee = $('<td/>');
+    let helper_name = '';
+    if (typeof offer.user_first_name != 'undefined'){
+	helper_name = offer.user_first_name + ' ' + offer.user_last_name;
+    }
+    let helper = $('<td/>').text(helper_name);
+    let buy_btn = $('<td/>').append(paypal_button(offer.offer_id, offer.offer_type));
     return $('<tr/>')
-        .append(buy_btn, about, bee)
+        .append(buy_btn, about, helper)
         .addClass('align-items-center')
         .attr('offer_id', offer.offer_id);
 }
