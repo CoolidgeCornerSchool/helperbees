@@ -64,7 +64,7 @@ function on_load_orders(data) {
 }
 
 
-// returns <div/>
+// returns <tr/>
 function make_order_row(order){
     let row = $('<tr/>');
     row.append($('<td/>').text(new Date(order.payment_date).toLocaleString()));
@@ -85,6 +85,7 @@ function make_order_row(order){
 }
 
 
+// used when sorting, compares two objects (apply fcn to each object)
 function compare( a, b, fcn ) {
     let fa = fcn(a);
     let fb = fcn(b);
@@ -134,24 +135,18 @@ function on_load_user(data) {
     // By default, this table is invisible. Remove the d-none class to make it appear
     $('.show_user').removeClass('d-none');
     // Put data into the table
-    $('.show_user .first').text(data.first_name);
-    $('.show_user .last').text(data.last_name);
-  // TODO: Remove all these '' once these parent fields are required.
-  $('.show_user .parent_name').text('');
-  $('.show_user .parent_name').text(data.parent_name);
-  $('.show_user .parent_email').text('');
-  $('.show_user .parent_email').text(data.parent_email);
-  $('.show_user .parent_phone').text('');
-  $('.show_user .parent_phone').text(data.parent_phone);
-    
-
-  let link_url = '{{ site.url }}/login#' + data.login_code;
-  let link = $('<a/>').attr('href', link_url).text(link_url);
-  $('.show_user .login_link').html(link);
-  $('#delete_user').on('submit', function(e) {
-    delete_user(data);
-    e.preventDefault();
-  });
+    let fields = ['first_name', 'last_name', 'parent_name', 'parent_email', 'parent_phone'];
+    for (var i in fields){
+	let field = fields[i];
+	$('.show_user .'+field).text(data[field]);
+    }
+    let link_url = '{{ site.url }}/login#' + data.login_code;
+    let link = $('<a/>').attr('href', link_url).text(link_url);
+    $('.show_user .login_link').html(link);
+    $('#delete_user').on('submit', function(e) {
+	delete_user(data);
+	e.preventDefault();
+    });
 }
 
 function delete_user(data) {
