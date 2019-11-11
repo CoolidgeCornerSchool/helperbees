@@ -13,10 +13,8 @@ function init_signup() {
     $.get(service_types_url).done(on_load_service_types);
     $('form.signup select#offer_type').change(on_change_offer_type);
     $('form.signup input#offer_type_other').change(on_change_offer_type_other);
-    $('form.signup').on('submit', function(e) {
-	submit_data();
-	e.preventDefault(); //prevent form from submitting
-    });
+    $('form.signup').submit(submit_form_data);
+    $('form.signup button.signup').click(validate_offer_type);
 }
 
 function on_change_offer_type() {
@@ -80,71 +78,60 @@ function on_load_service_types(data) {
   }
 }
 
-function get_data() {
-  let offer_type = $('#offer_type').val();
-  let offer_per_hour = $('#offer_per_hour').val();
-  let offer_unit = $('#offer_unit').val();
-  let offer_description = $('#offer_description').val();
-  let first_name = $('input#first_name').val();
-  let last_name = $('input#last_name').val();
-  let parent_name = $('input#parent_name').val();
-  let parent_phone = $('input#parent_phone').val();
-  let parent_email = $('input#parent_email').val();
-  return {
-    offer_type: offer_type,
-    offer_per_hour: offer_per_hour,
-    offer_unit: offer_unit,
-    offer_description: offer_description,
-    first_name: first_name,
-    last_name: last_name,
-    parent_name: parent_name,
-    parent_phone: parent_phone,
-    parent_email: parent_email,
-  };
+function params_to_object(entries) {
+    let result = {}
+    for(let entry of entries) { // each 'entry' is a [key, value] tupple
+	const [key, value] = entry;
+	result[key] = value;
+    }
+    return result;
 }
 
-function submit_data() {
-  url = API_BASE_URL + '/offer_and_user';
-  data = get_data();
-  console.log(JSON.stringify(data));
-  data.grade = '8';
-  console.log('url', url);
-  $.post(url, JSON.stringify(data))
-    .done(function(dataOut, textStatus, xhr) {
-      var status = xhr.status;
-      console.log(status);
-      console.log('dataOut: ' + dataOut);
-      console.log('dataOut.user_id: ' + dataOut.user_id);
-      statusCode = dataOut.user_id.statusCode;
-      console.log('statusCode: ' + statusCode);
-      body = dataOut.user_id.body;
-      if (statusCode === undefined) {
-        success_msg = 'Kid added with user id ' + dataOut.user_id;
-        console.log(success_msg);
-        show_alert({ result: 'success' });
-      } else {
-        error_msg = 'Unable to add student. Status: ' + body;
-        show_alert({ result: error_msg });
-      }
-    })
-    .fail(function(xhr, textStatus, errorThrown) {
-      error_msg = 'Unable to add student.';
-      console.log(error_msg);
-      show_alert({ result: error_msg });
-    });
+function get_data(){
+    let params = $('form.signup').serialize();
+    let data = params_to_object(new URLSearchParams(params));
+    return data;
 }
 
-function show_alert(result_struct) {
-  $('.spinner').hide();
-  $('.alert-box').show();
-  var result = result_struct.result;
-  if (result == 'success') {
-    $('.alert-box .fail').hide();
-    $('.alert-box .success').show();
-  } else {
-    $('.alert-box .success').hide();
-    $('.alert-box .fail').show();
-    $('.alert-box .fail .reason').html(result);
-  }
-  return false;
+// Checks two fields: select#offer_type and input#offer_type_other.
+// For each field, calls
+//   setCustomValidity("")        # if valid or
+//   setCustomValidity("message") # if not valid
+function validate_offer_type(){
+    offer_type = $('select#offer_type');
+    offer_type_other = $('input#offer_type_other');
+    if (offer_type.val() == 'choose'){
+	offer_type[0].setCustomValidity("Choose the type of job");
+    } else if (offer_type.val() == 'other' &&
+	       (typeof offer_type_other.val() == 'undefined' || offer_type_other.val() == '')) {
+	offer_type_other[0].setCustomValidity("Tell us what kind");
+    } else {	
+	offer_type[0].setCustomValidity("");
+	offer_type_other[0].setCustomValidity("");
+    }
+}
+
+function submit_form_data() {
+    url = API_BASE_URL + '/offer_and_user';
+    let params = $('form.signup').serialize();
+    let data = params_to_object(new URLSearchParams(params));
+    if (data.offer_type != 'other'){
+	// don't include offer_type_other unless offer_type=='other'
+	delete data.offer_type_other;
+    }
+    data.grade = '8';
+    $.post(url, JSON.stringify(data)).then(say_thankyou);
+    return false;
+}
+
+function say_thankyou(data, status, xhr){
+    if (status == 'success'){
+	// set cookie with login_code
+	let new_code = data.login_code;
+	set_cookie(LOGIN_COOKIE, new_code);
+	// redirect to thankyou page
+	window.location.href= '/volunteer_thankyou';
+	return;
+    }
+    console.error("Error while handling form", data, status, xhr, xhr.status)
 }

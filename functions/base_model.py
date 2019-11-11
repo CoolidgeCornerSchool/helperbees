@@ -44,6 +44,7 @@ class BaseModel:
         :param item: dict with values for item to be created with a new unique id
         :return: new_key
         """
+        logging.info(f'CREATE item={item}')
         item, err = self.validate_for_create(item)
         if err:
             return item
@@ -52,7 +53,10 @@ class BaseModel:
             # Retry if our random key collides
             i += 1
             if i>1:
-                logging.warning(f' *** repeating CREATE_WITH_ITEM N={i}: create {self.__class__}')
+                logging.warning(f' *** repeating CREATE_WITH_ITEM N={i}: create {self.__class__} item={item}')
+            if i>5:
+                logging.error(f'Giving up after {i} tries. item = {item}')
+                return "fail"
             try:
                 new_key = self.create_attempt_put(item)
                 break # success: exit loop

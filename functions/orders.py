@@ -42,9 +42,9 @@ def order_create(event, context):
     item = {i[0]:i[1] for i in parse_qsl(event['body'])}
     confirmation = get_paypal_confirmation(item)
     item['confirmation'] = confirmation
-    if 'custom' in item:
-        # 'custom' field contains offer_id. If present, insert it as a nested object
-        offer_id = item['custom']
+    if 'item_number' in item:
+        # 'item_number' field contains offer_id. If present, insert it as a nested object
+        offer_id = item['item_number']
         offer = OFFERS.get_by_id(offer_id)
         if offer:
             item['offer'] = offer

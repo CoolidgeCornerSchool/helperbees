@@ -7,11 +7,13 @@ from sendmail import send, render_template
 from users import USER
 
 RECIPIENTS = {
+    'STEVE' : 'steve@strassmann.com',
     'DEVS' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
     'NORMAL' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
     'NOBODY' : None}
 
-CONFIRMATION_TO = 'NORMAL'
+# change this when debugging so confirmation email only goes to the selected recipients
+CONFIRMATION_TO = 'STEVE'
 
 class Offer(BaseModel):
     tablename = 'offers'

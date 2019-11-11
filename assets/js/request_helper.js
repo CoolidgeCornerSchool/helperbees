@@ -33,6 +33,7 @@ function paypal_button(offer_id, offer_type){
 	cmd: "_donations",
 	amount: "10.00",
 	item_name: "HelperBees (" + offer_type + ")",
+	item_number: offer_id,
 	custom: offer_id,
 	shopping_url: "https://helperbees/request_helper",
 	notify_url: "https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev/order",
@@ -46,6 +47,7 @@ function paypal_button(offer_id, offer_type){
 	button_text = "Test: $0.01";
 	button_style = "btn-info";
     }
+
     form.append($('<button/>').attr("type","submit").addClass("btn").addClass(button_style).text(button_text));
     for (var name in fields){
 	let input = $('<input/>').attr({type: "hidden", name: name, value: fields[name]});
@@ -63,6 +65,8 @@ function on_load_offers(data) {
 	offer = offers[i];
 	offer_types[offer.offer_type] = true;
     }
+    // clone the first offer's offer_id into the test_offer
+    test_offer.offer_id = offers[0].offer_id
     offers.push(test_offer);    
     // If url has hashtag (e.g. #babysitting) select it in menu
     let path = window.location.pathname;

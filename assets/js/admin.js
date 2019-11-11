@@ -67,10 +67,18 @@ function make_order_row(order){
     let row = $('<tr/>');
     row.append($('<td/>').text(new Date(order.payment_date).toLocaleString()));
     row.append($('<td/>').text(order.order_id));
-    row.append($('<td/>').append($('<a/>').text(order.first_name + ' ' + order.last_name)
-				 .attr('href', 'mailto:'+ order.payer_email)));
+    row.append($('<td/>').append(
+	$('<span/>').text(order.first_name + ' ' + order.last_name).addClass('mr-2'),
+	$('<a/>').text(order.payer_email).attr('href', 'mailto:'+ order.payer_email)));
     row.append($('<td/>').text('$'+order.payment_gross));
-    
+    let item_name = order.item_name;
+    let match = /HelperBees \((.*)\)/.exec(item_name);
+    if (match){
+	name = match[1];
+    } else {
+	name = item_name;
+    }
+    row.append($('<td/>').text(name));
     return row;
 }
 
