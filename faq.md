@@ -29,5 +29,5 @@ to ask how their child can help.
 
 If you have a specific job in mind, the following steps are recommended:
 
-- Contact 8th graders (directly or through a parent) and tell to include your specific job under in the description when they sign up.
+- Contact 8th graders (directly or through a parent) and tell them to include your specific job under in the description when they sign up.
 - Once the job is available, find it and click "Donate".
