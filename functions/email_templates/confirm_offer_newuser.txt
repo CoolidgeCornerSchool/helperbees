@@ -1,18 +1,11 @@
-Dear {{ first_name }},
+Dear {{ parent_name }},
 
-Thank you for signing up! Here's what we have you down for:
+Your child, {{ first_name }}, has signed up on HelperBees.org! They volunteered to do the following job: {{ offer_type }}. You and {{ first_name }} can update this job and volunteer to do additional jobs at your child's profile page - http://helperbees.org/login#{{ login_code }}
 
-  Name: {{ first_name }} {{ last_name }}
-  Parent: {{ parent_name }}
-  Parent phone: {{ parent_phone }}
-  Parent email: {{ parent_email }}
+When someone requests your child’s help, you will be contacted. You are in full control to decide if the person and the job are appropriate for your child. Please contact css.helperbees@gmail.com if you have questions. 
 
-You have signed up to provide this service:
+Thank you!
 
-  Type: {{ offer_type }}
-  Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}s.
-  Description: {{ offer_description }}
+The Organizers of Helper Bees
 
-
-To view your HelperBees page, visit http://helperbees.org/login#{{ login_code }}
-If you need any help, please contact Christina Knopp at caknopp@me.com.
+HelperBees.org is an experiment run by the parents of the Coolidge Corner School. Our mission is to to give students an opportunity to volunteer, to build a strong community, and to raise money for student activities. Learn more at https://www.helperbees.org
