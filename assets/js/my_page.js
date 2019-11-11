@@ -1,3 +1,5 @@
+---
+---
 $(document).ready(()=> {
     USER_INFO.then(init_about_me);
     $('button.logout').click(logout);
@@ -11,7 +13,8 @@ function init_about_me(user_info){
 	let value = user_info[field];
 	$('form#about_me #'+field).val(value);
     }
-    let link_url = '/login#' + user_info.login_code;
+    let site_url = "{{ site.url }}";
+    let link_url = site_url + '/login#' + user_info.login_code;
     let link = $('<a/>').attr('href', link_url).text(link_url);
     $('div#login_link').append(link);
     $('.logging-in').addClass('d-none');
