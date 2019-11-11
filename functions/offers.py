@@ -152,8 +152,22 @@ def offer_get(event, context):
 @with_admin
 def offer_get_all(event, context, admin=None):
     items = OFFERS.get_all()
-    if not admin:
-        for item in items:
+    # populate if missing names
+    for item in items:
+        user_id = item.get('user_id', None)
+        user_first_name = item.get('user_first_name', None)
+        user_last_name = item.get('user_last_name', None)
+        if user_first_name and user_last_name:
+            redact_name(item)
+            continue
+        if not user_id:
+            continue
+        user = USER.get_by_id(user_id)
+        if not user:
+            continue
+        item['user_first_name'] = user['first_name']
+        item['user_last_name'] = user['last_name']
+        if not admin:
             redact_name(item)
     return response(200, {'result': items})
 

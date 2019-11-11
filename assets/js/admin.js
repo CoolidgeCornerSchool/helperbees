@@ -212,9 +212,9 @@ function on_change_offer_type() {
     let type = $(this).val();
     let offerdivs = $('table.offers').empty();
     let header = $('<tr/>').append(
-	$('<th/>').text('Item'),
-	$('<th/>').text('Helper Bee'),
-	$('<th/>').text('Description')
+	$('<th/>').text('Item').css('width', '20%'),
+	$('<th/>').text('Helper Bee').css('width', '20%'),
+	$('<th/>').text('Description').css('width', '60%')
     );
     offerdivs.append(header);
     for (var i in offers) {
