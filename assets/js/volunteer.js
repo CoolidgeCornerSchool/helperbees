@@ -1,6 +1,6 @@
 ---
 ---
-/* Javascript loaded for the signup.html page */
+/* Javascript loaded for the volunteer.html page */
 
 $(document).ready(init_signup);
 
@@ -15,6 +15,18 @@ function init_signup() {
     $('form.signup input#offer_type_other').change(on_change_offer_type_other);
     $('form.signup').submit(submit_form_data);
     $('form.signup button.signup').click(validate_offer_type);
+    // USER_INFO is defined in login.js and resolves with kid's info if they are logged in.
+    USER_INFO.then(populate_user_info);
+}
+
+// If a kid is logged in, prepopulate the form with their info and make it read-only.
+function populate_user_info(user_info){
+    let fields = ['first_name', 'last_name', 'parent_phone', 'parent_email', 'parent_name'];
+    for (var i in fields){
+	let field = fields[i];
+	let input = $('form.signup input[name="'+field+'"]');
+	input.val(user_info[field]).attr('readonly', true);
+    }
 }
 
 function on_change_offer_type() {
@@ -128,7 +140,9 @@ function say_thankyou(data, status, xhr){
     if (status == 'success'){
 	// set cookie with login_code
 	let new_code = data.login_code;
-	set_cookie(LOGIN_COOKIE, new_code);
+	if (typeof new_code != 'undefined'){
+	    set_cookie(LOGIN_COOKIE, new_code);
+	}
 	// redirect to thankyou page
 	window.location.href= '/volunteer_thankyou';
 	return;
