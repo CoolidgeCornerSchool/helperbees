@@ -1,17 +1,41 @@
----
----
 /* Javascript loaded for the index.html page */
 
 $(document).ready(init_home);
 
-// Google Sheet with known service types
-const service_types_url = "{{ site.service_types_url }}";
+const offers_url = API_BASE_URL + '/offer';
+
+// All offers (includes many of the same offer_type)
+var offers = null;
+
+// enumerated distinct offer_types
+var offer_types = {};
 
 function init_home(){
-    $.get(service_types_url).done(on_load_services);
+    $.get(offers_url).done(on_load_offers);
     $('select#offer_type').change(choose_service);
     $('.jobs .col').click(choose_service);
     $('.section5 button').click(on_send_feedback);
+}
+
+function on_load_offers(data) {
+    offers = data.result;
+    // enumerate the distinct offer_types
+    for (var i in offers) {
+	offer = offers[i];
+	offer_types[offer.offer_type] = true;
+    }
+    let dropdown = $('select#offer_type');
+
+    // build dropdown menu from list of offer_types
+    let ot_list = Object.keys(offer_types);
+    ot_list.sort();
+    for (var i in ot_list) {
+	let offer_type = ot_list[i];
+	let option = $('<option/>')
+	    .attr('value', offer_type)
+	    .text(offer_type);
+	dropdown.append(option);
+    }
 }
 
 // User clicked on service menu or clicked a big yellow button
@@ -51,4 +75,3 @@ function on_send_feedback(){
     document.location.href=url;
     return false;
 }
-
