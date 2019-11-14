@@ -1,14 +1,11 @@
 Dear {{ customer_name }} & {{ parent_name }},
 
-Thank you for participating in HelperBees.org! 
+Thank you for participating in HelperBees.org! Please connect to decide on next steps on this request. 
 
-{{ customer_name }} donated {{ formatted_payment }}. They are requesting "{{ offer_type }}" from {{ kid_name }}.
-Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}{{ plural }}.
-Description: "{{ offer_description }}"
-{{ customer_message }}
+{{ customer_name }} donated {{ formatted_payment }} and requested "{{ offer_type }}" from {{ kid_name }}.
+Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}{{ plural }}. | Description: "{{ offer_description }}" | {{ customer_message }}
 
-{{ parent_name }} is this student’s parent or guardian. Please connect to decide on next steps.
-Note: We rely on the adults to work together to ensure the work is appropriate. 
+{{ parent_name }} is this student’s parent or guardian. 
 
 {{ parent_name }}: {{ parent_email }} or {{ parent_phone }}
 {{ customer_name }}:  {{ customer_email }}
