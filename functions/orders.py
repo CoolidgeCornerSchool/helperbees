@@ -35,7 +35,7 @@ class Order(BaseModel):
 
     def send_confirmation_email(self, order_item):
         logging.info(f'request helper: send_confirmation_email order={order_item}')
-        keys = ['order_id', 'payer_email', 'first_name', 'last_name', 'offer']
+        keys = ['order_id', 'payer_email', 'first_name', 'last_name', 'offer', 'memo', 'payment_gross']
         values = {k: order_item.get(k, None) for k in keys}
         if not values['offer']:
             logging.error(f'Error in order: missing offer {order_item}')
@@ -48,12 +48,19 @@ class Order(BaseModel):
             values['plural'] = 's'
         else:
             values['plural'] = ''
+        payment_gross = float(values['payment_gross'])
+        values['formatted_payment'] = f"${payment_gross:.2f}"
         if not (values['first_name'] and values['last_name']):
             logging.error(f'Error in order: missing customer name {order_item}')
             send('error in order', f'Error in order: missing customer name {order_item}', DEVS)
             return
         values['customer_name'] = values['first_name'] + ' ' + values['last_name']
         values['customer_email'] = values['payer_email']
+        # Customer might have included an optional message
+        if values['memo']:
+            values['customer_message'] = f"\n{values['customer_name']} wrote: \"{values['memo']}\""
+        else:
+            values['customer_message'] = ''
         if not values['user_id']:
             logging.error(f'Error in order: missing user_id {order_item}')
             send('error in order', f'Error in order: missing user_id {order_item}', DEVS)
