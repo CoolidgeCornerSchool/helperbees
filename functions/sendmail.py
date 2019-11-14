@@ -38,18 +38,21 @@ def render_template(template, values):
         result = pattern.sub(str(v), result)
     return result
 
-def send(recipient, subject, body):
+def send(subject, body, recipient, cc=None):
     """
     Immediately sends email from gmail account in CREDENTIALS_FILE.
-    :param recipient: string, e.g. 'user@host.com' or 'user1@a.com, user2@b.com'
     :param subject: string
     :param body: body of message
+    :param recipient: string, e.g. 'user@host.com' or 'user1@a.com, user2@b.com'
+    :param cc: string or None
     """
     if DISABLE_EMAIL:
         logging.warn(f'Email is disabled (DISABLE_EMAIL==True). No email sent to {recipient}.')
         return
     message = MIMEText(body)
     message['to'] = recipient
+    if cc:
+        message['cc'] = cc
     message['subject'] = subject
     body = {"raw" : base64.urlsafe_b64encode(message.as_string().encode('utf8')).decode('utf8')}
     return GMAIL.users().messages().send(userId='me', body=body).execute()

@@ -1,11 +1,19 @@
 Dear {{ parent_name }},
 
-Your child, {{ first_name }}, has signed up on HelperBees.org! They volunteered to do the following job: {{ offer_type }}. You and {{ first_name }} can update this job and volunteer to do additional jobs at your child's profile page - http://helperbees.org/login#{{ login_code }}
+Your child, {{ kid_first_name }}, has signed up on HelperBees.org!
+They volunteered to do the following job: {{ offer_type }}.
+The description is:
+ "{{ offer_description }}"
 
-When someone requests your child’s help, you will be contacted. You are in full control to decide if the person and the job are appropriate for your child. Please contact css.helperbees@gmail.com if you have questions. 
+You and {{ kid_first_name }} can update this job and volunteer to do additional jobs at your child's profile page:
+ http://helperbees.org/login#{{ login_code }}
+
+When someone requests your child’s help, you will be contacted by email.
+You are in full control to decide if the person and the job are appropriate for your child. Please contact css.helperbees@gmail.com if you have questions. 
 
 Thank you!
-
 The Organizers of Helper Bees
 
-HelperBees.org is an experiment run by the parents of the Coolidge Corner School. Our mission is to to give students an opportunity to volunteer, to build a strong community, and to raise money for student activities. Learn more at https://www.helperbees.org
+HelperBees.org is an experiment run by the parents of the Coolidge Corner School. Our mission is to to give students an opportunity to volunteer, to build a strong community, and to raise money for student activities.
+
+Learn more at https://www.helperbees.org

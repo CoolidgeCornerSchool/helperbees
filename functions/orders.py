@@ -4,15 +4,70 @@ import logging
 from urllib.parse import parse_qsl
 from base_model import BaseModel
 from common import response, safe_json, with_admin
+from sendmail import send, render_template
 from offers import OFFERS
+from users import USER
 
 DIR = os.path.dirname('__file__')
 sys.path.append(os.path.join(DIR, 'lib'))
 import requests
 
+# Send bug reports to devs
+DEVS = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com'
+# Send cc of normal confirmation messages to admins
+ADMIN = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com, ccs.helperbees@gmail.com'
+
 class Order(BaseModel):
     tablename = 'orders'
     partition_key = 'order_id'
+
+    def create(self, order_item):
+        """
+        :return: new_key
+        """
+        try:
+            result = super().create(order_item)
+            self.send_confirmation_email(order_item)
+            return result
+        except Exception as err:
+            logging.exception('error')
+            return 'error'
+
+    def send_confirmation_email(self, order_item):
+        logging.info(f'request helper: send_confirmation_email order={order_item}')
+        keys = ['order_id', 'payer_email', 'first_name', 'last_name', 'offer']
+        values = {k: order_item.get(k, None) for k in keys}
+        if not values['offer']:
+            logging.error(f'Error in order: missing offer {order_item}')
+            send('error in order', f'Error in order: missing offer {order_item}', DEVS)
+            return
+        offer = values['offer']
+        values.update(offer)
+        per_hour = int(offer['offer_per_hour'])
+        if per_hour != 1:
+            values['plural'] = 's'
+        else:
+            values['plural'] = ''
+        if not (values['first_name'] and values['last_name']):
+            logging.error(f'Error in order: missing customer name {order_item}')
+            send('error in order', f'Error in order: missing customer name {order_item}', DEVS)
+            return
+        values['customer_name'] = values['first_name'] + ' ' + values['last_name']
+        values['customer_email'] = values['payer_email']
+        if not values['user_id']:
+            logging.error(f'Error in order: missing user_id {order_item}')
+            send('error in order', f'Error in order: missing user_id {order_item}', DEVS)
+            return
+        user_item = USER.get_by_id(values['user_id'])
+        values['kid_name'] = user_item['first_name']
+        for key in ['parent_name', 'parent_email', 'parent_phone']:
+            values[key] = user_item[key]
+        recipients = values['payer_email'] + ',' + values['parent_email']
+        template = 'job_requested.txt'
+        body = render_template(template, values)
+        result = send('New Helperbees job requested', body, recipients, cc=ADMIN)
+        logging.info(f'orders send_confirmation_email sent to={recipients}')
+        return result
 
 # Singleton
 ORDERS = Order.get_singleton()
@@ -50,6 +105,7 @@ def order_create(event, context):
             item['offer'] = offer
     new_key = ORDERS.create(item)
     return response(200, {'order_id': new_key})
+
 
 # GET /order/{order_id}
 def order_get(event, context):

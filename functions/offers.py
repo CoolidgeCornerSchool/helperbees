@@ -6,14 +6,10 @@ from common import response, safe_json, with_user, with_admin
 from sendmail import send, render_template
 from users import USER
 
-RECIPIENTS = {
-    'STEVE' : 'steve@strassmann.com',
-    'DEVS' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
-    'NORMAL' : 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com',
-    'NOBODY' : None}
-
-# change this when debugging so confirmation email only goes to the selected recipients
-CONFIRMATION_TO = 'NORMAL'
+# Send bug reports to devs
+DEVS = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com'
+# Send cc of normal confirmation messages to admins
+ADMIN = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com, ccs.helperbees@gmail.com'
 
 class Offer(BaseModel):
     tablename = 'offers'
@@ -87,25 +83,22 @@ class Offer(BaseModel):
         return result, False
 
     def send_confirmation_email(self, offer_item, user_item):
-        logging.info(f'send_confirmation_email offer={offer_item}')
-        recipient = RECIPIENTS.get(CONFIRMATION_TO, None)
-        if not recipient:
-            logging.warn(f'Not sending mail to anyone : CONFIRMATION_TO={CONFIRMATION_TO}')
-            return
-        # If 'NORMAL', add parent_email to the recipients list.
-        if CONFIRMATION_TO == 'NORMAL' and 'parent_email' in user_item:
-            recipient += ',' + user_item['parent_email']
-        new_user = 'login_code' in user_item
+        logging.info(f'volunteer: send_confirmation_email offer={offer_item} user={user_item}')
         values = offer_item.copy()
         if 'first_name' not in user_item:
             user_item = USER.get_by_id(user_item['user_id'])
-        values.update(user_item)
-        if new_user:
-            template = 'confirm_offer_newuser.txt'
-        else:
-            template = 'confirm_offer_user.txt'
+        values['kid_first_name'] = user_item.get('first_name', None)
+        values['parent_name'] = user_item.get('parent_name', None)
+        values['parent_email'] = user_item.get('parent_email', None)
+        values['login_code'] = user_item.get('login_code', None)
+        if 'parent_email' not in user_item:
+            logging.error(f'Error: missing parent email: offer={offer_item} user={user_item}')
+            send('Error in signup', f'Error: missing parent email: offer={offer_item} user={user_item}', DEVS)
+            return
+        recipient = user_item['parent_email']
+        template = 'new_volunteer.txt'
         body = render_template(template, values)
-        result = send(recipient, 'Welcome to HelperBees', body)
+        result = send('Welcome to HelperBees', body, recipient, cc=ADMIN)
         logging.info(f'send_confirmation_email sent to={recipient}')
         return result
 

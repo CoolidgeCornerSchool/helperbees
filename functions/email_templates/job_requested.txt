@@ -1,27 +1,24 @@
-Dear {{ customer_name? }} & {{ parent_name }},
+Dear {{ customer_name }} & {{ parent_name }},
 
 Thank you for participating in HelperBees.org! 
 
-{{ customer_name? }} donated $10. They are requesting {{ offer_type }} from {{ first_name }}.
-Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}s.
-Description: {{ offer_description }} {{ first_name }}. 
+   {{ customer_name }} donated $10. They are requesting "{{ offer_type }}" from {{ kid_name }}.
+   Rate: $10 for {{ offer_per_hour }} {{ offer_unit }}{{ plural }}.
+   Description: "{{ offer_description }}" 
 
-{{ parent_name }} is this student’s parent or guardian. Please connect to decide on next steps. Note: We rely on the adults to work together to ensure the work is appropriate. 
+   {{ parent_name }} is this student’s parent or guardian. Please connect to decide on next steps.
+   Note: We rely on the adults to work together to ensure the work is appropriate. 
 
-{{ parent_name }}: {{ parent_email }} or {{ parent_phone }}
-{{ customer_name? }}:  {{ customer_email }} or {{ customer_phone }}
+   {{ parent_name }}: {{ parent_email }} or {{ parent_phone }}
+   {{ customer_name }}:  {{ customer_email }}
 
 Please contact css.helperbees@gmail.com if you have questions. 
 
-All the Best!
-
+All the best!
 The Organizers of Helper Bees
 
-HelperBees.org is an experiment run by the parents of the Coolidge Corner School. Our mission is to to give students an opportunity to volunteer, to build a strong community, and to raise money for student activities. Learn more at https://www.helperbees.org
+HelperBees.org is an experiment run by the parents of the Coolidge Corner School. Our mission is to to give students an opportunity to volunteer, to build a strong community, and to raise money for student activities.
 
+Learn more at https://www.helperbees.org
 
-
-
-
-
-
+(order id: {{ order_id }})
