@@ -6,9 +6,17 @@ layout: default
 
 ## Frequently Asked Questions (FAQ)
 
+<p>
+
 ### Is the Helper Bees website done? Is it ready? 
 
 No, the Helper Bees website is still under construction. You can play around with it but it is not ready yet.
+
+### Where will my $10 donation go?
+
+Your $10 donation will go toward the Coolidge Corner 8th grade PTO. The money raised will go toward 8th grade activities like the school play or aThompson Island trip.
+
+Students are volunteering their time.
 
 ### Do I have to be in 8th grade to be a Helper Bee?
 
