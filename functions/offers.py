@@ -9,7 +9,7 @@ from users import USER
 # Send bug reports to devs
 DEVS = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com'
 # Send cc of normal confirmation messages to admins
-ADMIN = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com, ccs.helperbees@gmail.com'
+ADMIN = 'steve@strassmann.com, phildurbin@gmail.com, futuresuzi@gmail.com'
 
 class Offer(BaseModel):
     tablename = 'offers'

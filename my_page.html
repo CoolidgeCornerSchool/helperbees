@@ -9,55 +9,48 @@ title: My Page
 <h1>My page</h1>
 
 <h2>About me</h2>
-  <div class="logging-in lead">Logging in</div>
-  <form id="about_me" class="d-none mb-5">
-    <label class="col-form-label mt-3" for="first_name">My name</label>
-    <div class="form-row mb-2">
-      <div class="col-3">
-        <input type="text" class="form-control" id="first_name" placeholder="first name" required />
-      </div>
-      <div class="col-3">
-        <input type="text" class="form-control" id="last_name" placeholder="last name" required />
-      </div>
+
+<div class="logging-in lead">Logging in</div>
+
+<form id="about_me" class="d-none mb-5">
+  <label class="col-form-label mt-3" for="first_name">My name</label>
+  <div class="form-row mb-2">
+    <div class="col-3">
+      <input type="text" class="form-control" id="first_name" placeholder="first name" required />
     </div>
-    <label class="col-form-label mt-3" for="parent_name">My parent</label>
-    <div class="form-row mb-2">
-      <div class="col-6">
-        <input
-          type="text"
-          class="form-control"
-          id="parent_name"
-          placeholder="parent's name"
-          required
-        />
-      </div>
+    <div class="col-3">
+      <input type="text" class="form-control" id="last_name" placeholder="last name" required />
     </div>
-    <div class="form-row">
-      <div class="col-3">
-        <input
-          type="tel"
-          class="form-control"
-          id="parent_phone"
-          placeholder="parent's phone"
-          required
-        />
-      </div>
-      <div class="col-3">
-        <input
-          type="email"
-          class="form-control"
-          id="parent_email"
-          placeholder="parent's email"
-          required
-        />
-      </div>
+  </div>
+  <label class="col-form-label mt-3" for="parent_name">My parent</label>
+  <div class="form-row mb-2">
+    <div class="col-6">
+      <input type="text" class="form-control" id="parent_name" placeholder="parent's name" required />
     </div>
-    <label class="col-form-label mt-3" for="login_link">My login link</label>
-    <div class="form-row mb-2">
-      <div id="login_link"></div>
+  </div>
+  <div class="form-row">
+    <div class="col-3">
+      <input type="tel" class="form-control" id="parent_phone" placeholder="parent's phone" required />
     </div>
-    <div class="form-row mb-2">
-      <button class="logout btn btn-sm btn-outline-danger mt-5">Logout</button>
+    <div class="col-3">
+      <input type="email" class="form-control" id="parent_email" placeholder="parent's email" required />
     </div>
+  </div>
+  <div class="form-row mt-3">
+    <label class="col-form-label" for="login_link">My login link:</label>
+    <div id="login_link" class="pt-2 mr-4"></div>
+    <button class="logout btn btn-sm btn-outline-danger ml-5">Logout</button>
+  </div>
 </form>
+
+<div class="volunteered d-none">
+  <h2>I volunteered for</h2>
+  <table class="items table"><tbody/></table>
+</div>
+
+<div class="sold d-none">
+  <h2>Sold</h2>
+  <table class="items table"><tbody/></table>
+</div>
+
 
