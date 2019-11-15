@@ -46,9 +46,9 @@ function show_orders(data, user_id){
     $('.sold .items tbody').empty().append(
         $('<tr/>').append(
 	    $('<th/>').text('Type'),
-	    $('<th/>').text('Date'),
 	    $('<th/>').text('Amount').css('text-align', 'center'),
 	    $('<th/>').text('Customer'),
+	    $('<th/>').text('Date sold'),
 	    $('<th/>').text('Rate'),
 	    $('<th/>').text('Description')));
     
@@ -104,9 +104,9 @@ function make_order_row(order){
     let date = new Date(order.payment_date).toLocaleString();
     let row = $('<tr/>').append(
 	$('<td/>').text(type),
-	$('<td/>').text(date),
 	$('<td/>').text(amount).css('text-align', 'right').addClass('pr-2'),
 	$('<td/>').append(customer),
+	$('<td/>').text(date),
 	$('<td/>').text(rate),
 	$('<td/>').text(offer.offer_description));
     return row;
