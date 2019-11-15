@@ -6,8 +6,6 @@ layout: default
 
 ## Frequently Asked Questions (FAQ)
 
-<p>
-
 ### Is the Helper Bees website done? Is it ready? 
 
 No, the Helper Bees website is still under construction. You can play around with it but it is not ready yet.
