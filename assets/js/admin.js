@@ -144,7 +144,7 @@ function on_load_user(data) {
     let link = $('<a/>').attr('href', link_url).text(link_url);
     $('.show_user .login_link').html(link);
     $('#delete_user').on('submit', function(e) {
-	delete_user(data);
+	// delete_user(data);  // DISABLED until we have integrity: delete linked offers too
 	e.preventDefault();
     });
 }
