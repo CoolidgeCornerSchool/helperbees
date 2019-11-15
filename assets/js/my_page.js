@@ -32,7 +32,6 @@ function get_orders(auth_headers, user_id){
 	type: 'GET',
 	success: (data)=>show_offers(data, user_id)
     });
-    return;
     $.ajax({
 	url: orders_url,
 	headers: headers,
@@ -44,13 +43,26 @@ function get_orders(auth_headers, user_id){
 function show_orders(data, user_id){
     console.log('show_orders', data);
     let exist = false;
+    $('.sold .items tbody').empty().append(
+        $('<tr/>').append(
+	    $('<th/>').text('Type'),
+	    $('<th/>').text('Date'),
+	    $('<th/>').text('Amount').css('text-align', 'center'),
+	    $('<th/>').text('Customer'),
+	    $('<th/>').text('Rate'),
+	    $('<th/>').text('Description')));
+    
     for (var i in data.result){
 	let order = data.result[i];
-	if (order.user_id != user_id){
+	if (order.offer.user_id != user_id){
 	    continue;
 	}
-	console.log('order', order);
+	exist = true;
+	$('.sold .items tbody').append(make_order_row(order));
     }
+    if (exist){
+	$('.sold').removeClass('d-none');
+    }    
 }
 
 function show_offers(data, user_id){
@@ -75,8 +87,34 @@ function show_offers(data, user_id){
 }
 
 // returns a <tr/>
+function make_order_row(order){
+    let offer = order.offer;
+    let type = offer.offer_type;
+    if (type == 'other'){
+	type += ': ' + offer.offer_type_other;
+    }
+    let rate = offer.offer_per_hour + ' ' + offer.offer_unit;
+    if (offer.offer_per_hour > 1){
+	rate += 's';
+    }
+    let name = order.first_name + ' ' + order.last_name;
+    let email = order.payer_email;
+    let amount = '$'+order.payment_gross;
+    let customer = $('<a/>').attr('href', 'mailto:'+email).text(name);
+    let date = new Date(order.payment_date).toLocaleString();
+    let row = $('<tr/>').append(
+	$('<td/>').text(type),
+	$('<td/>').text(date),
+	$('<td/>').text(amount).css('text-align', 'right').addClass('pr-2'),
+	$('<td/>').append(customer),
+	$('<td/>').text(rate),
+	$('<td/>').text(offer.offer_description));
+    return row;
+}
+
+
+// returns a <tr/>
 function make_offer_row(offer){
-    console.log(offer);
     let type = offer.offer_type;
     if (type == 'other'){
 	type += ': ' + offer.offer_type_other;
