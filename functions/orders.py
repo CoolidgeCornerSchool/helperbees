@@ -3,7 +3,7 @@ import sys
 import logging
 from urllib.parse import parse_qsl
 from base_model import BaseModel
-from common import response, safe_json, with_admin
+from common import response, safe_json, with_admin, with_user
 from sendmail import send, render_template
 from offers import OFFERS
 from users import USER
@@ -123,8 +123,15 @@ def order_get(event, context):
     return response(404, 'Item not found')
 
 # GET /order
+# TODO: filter by credentials (either user or admin). Only show relevant orders.
+# If user is logged in, only show their orders
+# If admin is logged in, show all orders
+# Return nothing for anonymous requests
+@with_user
 @with_admin
-def order_get_all(event, context, admin=None):
+def order_get_all(event, context, admin=None, user=None):
+    if not admin and not user:
+        return response(401, "Unauthorized")
     items = ORDERS.get_all()
     return response(200, {'result': items})
 

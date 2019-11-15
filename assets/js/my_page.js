@@ -11,10 +11,18 @@ $(document).ready(()=> {
 function init_about_me(user_info){
     // call get_orders with auth_heders and user_id.
     with_user_auth((headers)=>get_orders(headers, user_info.user_id));
-    for (var field in user_info){
+
+    $('#my_name').text(user_info.first_name + ' ' + user_info.last_name);
+    $('#parent_name').text(user_info.parent_name);
+    let parent_email = user_info.parent_email;
+    let email_link = $('<a/>').attr('href', 'mailto:'+parent_email).text(parent_email);
+    $('#parent_email').append(email_link);
+    $('#parent_phone').text(user_info.parent_phone);
+    
+    /*for (var field in user_info){
 	let value = user_info[field];
 	$('form#about_me #'+field).val(value);
-    }
+    }*/
     let site_url = "{{ site.url }}";
     let link_url = site_url + '/login#' + user_info.login_code;
     let link = $('<a/>').attr('href', link_url).text(link_url);
@@ -23,6 +31,8 @@ function init_about_me(user_info){
     $('form#about_me').removeClass('d-none');
 }
 
+// Makes REST API request to get all the offers and all the orders
+// Passes the user's credentials (currently ignored by the back end)
 function get_orders(auth_headers, user_id){
     let offers_url = API_BASE_URL + '/offer';
     let orders_url = API_BASE_URL + '/order';
@@ -41,7 +51,6 @@ function get_orders(auth_headers, user_id){
 }
 
 function show_orders(data, user_id){
-    console.log('show_orders', data);
     let exist = false;
     $('.sold .items tbody').empty().append(
         $('<tr/>').append(
