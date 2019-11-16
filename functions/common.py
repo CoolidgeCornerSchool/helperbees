@@ -2,6 +2,7 @@ import os
 import boto3
 import json
 import logging
+import string
 from google_oauth import validate
 from functools import wraps
 

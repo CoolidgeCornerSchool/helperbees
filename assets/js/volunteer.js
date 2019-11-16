@@ -90,15 +90,6 @@ function on_load_service_types(data) {
   }
 }
 
-function params_to_object(entries) {
-    let result = {}
-    for(let entry of entries) { // each 'entry' is a [key, value] tupple
-	const [key, value] = entry;
-	result[key] = value;
-    }
-    return result;
-}
-
 function get_data(){
     let params = $('form.signup').serialize();
     let data = params_to_object(new URLSearchParams(params));
@@ -148,4 +139,13 @@ function say_thankyou(data, status, xhr){
 	return;
     }
     console.error("Error while handling form", data, status, xhr, xhr.status)
+}
+
+function params_to_object(entries) {
+    let result = {}
+    for(let entry of entries) { // each 'entry' is a [key, value] tuple
+	const [key, value] = entry;
+	result[key] = value;
+    }
+    return result;
 }

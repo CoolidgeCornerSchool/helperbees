@@ -142,7 +142,9 @@ function on_load_user(data) {
     }
     let link_url = '{{ site.url }}/login#' + data.login_code;
     let link = $('<a/>').attr('href', link_url).text(link_url);
+    let edit_link = $('<a/>').attr('href', 'edit_user#'+data.user_id).append('<i class="fa fa-edit"></i>');
     $('.show_user .login_link').html(link);
+    $('.show_user .edit_link').html(edit_link);
     $('#delete_user').on('submit', function(e) {
 	// delete_user(data);  // DISABLED until we have integrity: delete linked offers too
 	e.preventDefault();

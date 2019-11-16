@@ -145,7 +145,7 @@ def user_update(event, context, user=None, admin=None):
     if err:
         return item
     if USER.update(item_id, item):
-        return response(200, 'Successfully updated')
+        return response(200, {'result': 'Successfully updated'})
 
 # GET /user/{user_id}
 @with_user
