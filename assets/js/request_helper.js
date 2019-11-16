@@ -65,8 +65,8 @@ function on_load_offers(data) {
 	offer = offers[i];
 	offer_types[offer.offer_type] = true;
     }
-    // clone the first offer's offer_id into the test_offer
-    test_offer.offer_id = offers[0].offer_id
+    // use a known test offer
+    test_offer.offer_id = 'LB9LCi5Ahg4';
     offers.push(test_offer);    
     // If url has hashtag (e.g. #babysitting) select it in menu
     let path = window.location.pathname;
