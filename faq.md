@@ -6,18 +6,17 @@ layout: default
 
 ## Frequently Asked Questions (FAQ)
 
-
 #### Is the Helper Bees website done?  
 
-We are in pilot mode.  We are asking a few parents to test out the site. The student volunteers are real. Anyone can request their help. We are testing to see if and how parents and kids will respond to Helper Bees! the service.
+We are in pilot mode.  We are asking a few parents to test out the site. The student volunteers are real. Anyone can request their help. We are testing to see if and how parents and kids will respond to Helper Bees!
 
 #### How does it work?
 
-Students volunteers list the the jobs they will do. People seeking help choose a job offered by a student. They donate $10. Students and their parents will work with them to get the job done.
+Students volunteers list the jobs they will do. People seeking help choose a job offered by a student. They donate $10. Students and their parents will work with them to get the job done.
 
 #### Where will my $10 donation go?
 
-Your $10 donation will go toward the Coolidge Corner 8th grade PTO. The money raised will go toward 8th grade activities like the school play or aThompson Island trip.
+Your $10 donation will go toward the Coolidge Corner 8th grade PTO. The money raised will go toward 8th grade activities like the school play or a Thompson Island trip.
 
 Students are volunteering their time.
 
@@ -36,7 +35,7 @@ example, we need artists to create artwork for this website. Our logo
 was designed by a 5th grader using [Piskel][] (you can log in with
 your psbma.org account) who also created the bee below. Parents of
 artists should email
-[ccs.helperbees@gmail.com](mailto://ccs.helperbees@gmail.com)
+[ccs.helperbees@gmail.com](mailto:ccs.helperbees@gmail.com)
 to ask how their child can help.
 
 <img src="assets/images/helperbee2.gif" style="width: 100px"/>
