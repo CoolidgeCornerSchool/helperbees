@@ -5,9 +5,12 @@ plugins:
 
 # Amazon AWS base url for API Gateway
 api_base_url: 'https://pxa9qyui26.execute-api.us-east-1.amazonaws.com/dev'
+#api_base_url: 'http://localhost:3000'
 
 # Google Sheet with known service types
 service_types_url: 'https://docs.google.com/spreadsheets/d/1kNrnfhhqY0vPJ4yB61eWEeyBtcqn-vCUHffBN2aOBUI/export?gid=0&format=tsv'
+
+orders_sheet_url: 'https://docs.google.com/spreadsheets/d/1vvXP8GJeaWdAX5Taol7IHZFJrC1d-dfvT2jn4Yq-j0g'
 
 login_client_id: 635073293377-g9q675lgb6ek99l0fd92lhjvkk62kptl.apps.googleusercontent.com
 
