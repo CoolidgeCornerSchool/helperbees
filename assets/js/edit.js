@@ -9,6 +9,7 @@ var is_admin = false;
 function init_edit(){
     let path = window.location.pathname;
     let hash = window.location.hash;
+    $('form.edit_offer button.delete').click(on_click_delete_offer);
     $('form.edit_user').submit(()=>{
 	user_id = $('#user_id').val();
 	submit_form_data(user_id, user_url);
@@ -90,6 +91,21 @@ function get_offer(offer_id, headers){
     });
 }
 
+// delete offer info with authentication headers (either kid or admin)
+function delete_offer(offer_id, headers){
+    let url = offer_url + '/' + offer_id;
+    $.ajax({
+	url: url,
+	headers: headers,
+	type: 'DELETE',
+	success: on_delete_offer
+    });
+}
+
+function on_delete_offer(){
+    window.history.back();
+}
+
 function on_load_offer(data){
     for (var field in data){
 	$('#'+field).val(data[field]);
@@ -157,4 +173,20 @@ function params_to_object(entries) {
 	result[key] = value;
     }
     return result;
+}
+
+// user clicked delete_offer button
+function on_click_delete_offer(){
+    offer_id = $('#offer_id').val();
+    console.log('delete offer', offer_id);
+    let user = USER_INFO.state()       // when "resolved", means you're logged in as user
+    let admin = GOOGLE_PROFILE.state() // when "resolved", means you're logged in as admin
+    if (admin == 'resolved'){
+	is_admin = true;
+	with_admin_auth((headers)=>delete_offer(offer_id, headers));
+	return;
+    } else if (user == 'resolved'){
+	with_user_auth((headers)=>delete_offer(offer_id, headers));
+	return;
+    }
 }
