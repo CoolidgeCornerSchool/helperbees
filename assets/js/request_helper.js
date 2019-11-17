@@ -6,6 +6,8 @@ $(document).ready(init_shop);
 
 const offers_url = API_BASE_URL + '/offer';
 
+const BASE_VALUE = 10; // default to $10
+
 // This is a dedicated offer used for testing
 const TEST_OFFER_ID = 'LB9LCi5Ahg4';
 
@@ -24,17 +26,34 @@ const test_offer = {
 
 function init_shop() {
     $.get(offers_url).done(on_load_offers);
+    $('#extra_donation').change(on_change_donation);
     $('select#offer_type').change(on_change_offer_type);
+}
+
+function on_change_donation(){
+    let input = $(this);
+    let new_val = parseFloat(input.val());
+    if (new_val < 0 || isNaN(new_val)){
+	new_val = 0;
+	$(input).val(new_val);
+	return false;
+    }
+    $('select#offer_type').change();
 }
 
 // returns a <form/>
 function paypal_button(offer_id, offer_type){
     let url = "https://www.paypal.com/cgi-bin/webscr"
     let form = $('<form/>').attr({action: url, method: "post", target:"_top"});
+    let donation = parseFloat($('#extra_donation').val());
+    if (isNaN(donation) || donation < 0){
+	donation = 0;
+    }
+    let amount = BASE_VALUE + donation
     let fields = {
 	business: "SLDPEE4HT6FHA", // merchant ID
 	cmd: "_donations",
-	amount: "10.00",
+	amount: amount,
 	item_name: "HelperBees (" + offer_type + ")",
 	item_number: offer_id,
 	custom: offer_id,
@@ -44,6 +63,13 @@ function paypal_button(offer_id, offer_type){
 	return: "https://helperbees.org/request_thankyou"
     }
     let button_text = "Donate $10";
+    if (donation != 0){
+	if (Number.isInteger(donation)){
+	    button_text = "Donate $" + amount;
+	} else {
+	    button_text = "Donate $" + amount.toFixed(2);
+	}
+    }
     let button_style = "btn-primary";
     if (offer_type == 'testing'){
 	fields.amount = "0.01";
