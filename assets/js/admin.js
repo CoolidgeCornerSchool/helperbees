@@ -68,7 +68,7 @@ function on_load_orders(data) {
 function make_order_row(order){
     let row = $('<tr/>');
     row.append($('<td/>').text(new Date(order.payment_date).toLocaleString()));
-    row.append($('<td/>').text(order.order_id));
+    row.append($('<td/>').append($('<code/>').text(order.order_id)));
     row.append($('<td/>').append(
 	$('<span/>').text(order.first_name + ' ' + order.last_name).addClass('mr-2'),
 	$('<a/>').text(order.payer_email).attr('href', 'mailto:'+ order.payer_email)));
