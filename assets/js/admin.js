@@ -211,8 +211,9 @@ function on_change_offer_type() {
     let header = $('<tr/>').append(
 	$('<th/>').text('Item').css('width', '20%'),
 	$('<th/>').text('Helper Bee').css('width', '20%'),
-	$('<th/>').text('Description').css('width', '60%'),
-	$('<th/>').text('ID').css('width', '10%')
+	$('<th/>').text('Description').css('width', '40%'),
+	$('<th/>').text('ID').css('width', '10%'),
+	$('<th/>').text('Edit').css('width', '10%')
     );
     offerdivs.append(header);
     for (var i in offers) {
@@ -230,9 +231,12 @@ function on_change_offer_type() {
 	    let type_cell = $('<td/>').text(offer.offer_type +
 					    ' (' + offer.offer_per_hour + ' ' + offer.offer_unit + plural + ') ');
 	    let desc_cell = $('<td/>').text(offer.offer_description);
-	    let id_cell = $('<td/>').text(offer.offer_id);
+	    let id_cell = $('<td/>').append($('<code/>').text(offer.offer_id));
+	    let edit_link = $('<a/>').attr('href', '/edit_offer#' + offer.offer_id)
+		                     .append($('<i/>').addClass('fa fa-edit'));
+	    let edit_cell = $('<td/>').html(edit_link);
 	    let offer_row = $('<tr/>')
-		.append(type_cell, kid_cell, desc_cell, id_cell)
+		.append(type_cell, kid_cell, desc_cell, id_cell, edit_cell)
 		.addClass('align-items-center')
 		.attr('offer_id', offer.offer_id)
 		.attr('per_unit', offer.per_unit);

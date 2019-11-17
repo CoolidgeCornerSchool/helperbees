@@ -51,6 +51,7 @@ function login_and_get_offer(offer_id, count=0){
     let user = USER_INFO.state()       // when "resolved", means you're logged in as user
     let admin = GOOGLE_PROFILE.state() // when "resolved", means you're logged in as admin
     if (admin == 'resolved'){
+	is_admin = true;
 	with_admin_auth((headers)=>get_offer(offer_id, headers));
 	return;
     } else if (user == 'resolved'){
@@ -124,6 +125,10 @@ function submit_form_data(item_id, base_url){
     let params = $('form').serialize();
     let data = params_to_object(new URLSearchParams(params));
     let url = base_url + '/' + item_id;
+    let admin = GOOGLE_PROFILE.state() // when "resolved", means you're logged in as admin
+    if (admin == 'resolved'){ // give priority to admin credentials, if you have them.
+	is_admin = true;
+    }
     if (is_admin){
 	with_admin_auth((headers)=>update_item(url, headers, data));
     } else {
