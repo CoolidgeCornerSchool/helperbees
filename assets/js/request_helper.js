@@ -6,6 +6,9 @@ $(document).ready(init_shop);
 
 const offers_url = API_BASE_URL + '/offer';
 
+// This is a dedicated offer used for testing
+const TEST_OFFER_ID = 'LB9LCi5Ahg4';
+
 // All offers (includes many of the same offer_type)
 var offers = null;
 
@@ -66,7 +69,7 @@ function on_load_offers(data) {
 	offer_types[offer.offer_type] = true;
     }
     // use a known test offer
-    test_offer.offer_id = 'LB9LCi5Ahg4';
+    test_offer.offer_id = TEST_OFFER_ID;
     offers.push(test_offer);    
     // If url has hashtag (e.g. #babysitting) select it in menu
     let path = window.location.pathname;

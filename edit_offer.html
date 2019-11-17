@@ -1,0 +1,62 @@
+---
+tab: my_page
+layout: default
+title: Edit offer
+---
+
+<script src="assets/js/edit.js"></script>
+
+<h1>Edit my offer</h1>
+
+<form class="edit_offer">
+
+  <input type="hidden" id="offer_id" required />
+
+  <div class="row mt-5 mb-3">
+    <div class="col-2">Offered by:</div>
+    <div class="col form-inline">
+      <span class="mr-2" id="display_name"></span>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-2">Type:</div>
+    <div class="col form-inline">
+      <span class="mr-4" id="display_type"></span>
+      <input class="d-none form-control" id="offer_type_other" placeholder="other type"></input>
+    </div>
+  </div>  
+
+  <div class="form-group row align-items-center mb-3">
+    <label class="col-2" for="10-for">Donation: </label>
+    <div class="col-1" id="10-for">$10 for</div>
+    <div class="d-none form-inline" id="offer_per">
+      <input type="number" class="d-inline-block col-4 form-control" id="offer_per_hour" name="offer_per_hour" value="1"/>
+      <select class="d-inline-block form-control" id="offer_unit" name="offer_unit">
+	<option value="hour">hour</option>
+	<option value="visit">visits</option>
+	<option value="item">items</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group row mb-2">
+      <label class="col-2 col-form-label" for="offer_description">About this:</label>
+      <div class="col-6">
+        <textarea rows="6" class="form-control" id="offer_description" name="offer_description"
+		  placeholder="Describe what you will offer. How many times? How long?" required></textarea>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10 offset-2">
+      <button type="submit" class="change btn btn-primary mt-5 mb-5 mr-5">Change</button>
+      <button type="button" class="cancel btn btn-danger mt-5 mr-5 mb-5" onclick="window.history.back()">Cancel</button>
+      <span style="width:8em;display:inline-block;">&nbsp;</span>
+      <button type="button" class="delete btn btn-outline-danger mt-5 ml-5 mb-5 disabled">
+	<i class="fa fa-times mr-2"></i> Delete offer</button>
+    </div>
+  </div>
+
+</form>
+

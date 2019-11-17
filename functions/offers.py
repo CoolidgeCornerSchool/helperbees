@@ -130,7 +130,7 @@ def offer_update(event, context, user=None, admin=None):
     if err:
         return put_data
     if OFFERS.update(item_id, put_data):
-        return response(200, 'Successfully updated')
+        return response(200, {'result': 'Successfully updated'})
 
 # GET /offer/{offer_id}
 def offer_get(event, context):

@@ -59,7 +59,8 @@ function show_orders(data, user_id){
 	    $('<th/>').text('Customer'),
 	    $('<th/>').text('Date sold'),
 	    $('<th/>').text('Rate'),
-	    $('<th/>').text('Description')));
+	    $('<th/>').text('Description')
+	));
     
     for (var i in data.result){
 	let order = data.result[i];
@@ -80,7 +81,9 @@ function show_offers(data, user_id){
         $('<tr/>').append(
 	    $('<th/>').text('Type'),
 	    $('<th/>').text('Rate'),
-	    $('<th/>').text('Description')));
+	    $('<th/>').text('Description'),
+	    $('<th/>').text('Edit offer')
+	));
     
     for (var i in data.result){
 	let offer = data.result[i];
@@ -132,10 +135,14 @@ function make_offer_row(offer){
     if (offer.offer_per_hour > 1){
 	rate += 's';
     }
+    let edit_link = $('<a/>').attr('href', '/edit_offer#'+offer.offer_id)
+	.append('<i class="fa fa-edit mr-2"></i>');
     let row = $('<tr/>').append(
 	$('<td/>').text(type),
 	$('<td/>').text(rate),
-	$('<td/>').text(offer.offer_description));
+	$('<td/>').text(offer.offer_description),
+	$('<td/>').append(edit_link)
+    );
     return row;
 }
 

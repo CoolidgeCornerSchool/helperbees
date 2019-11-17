@@ -94,7 +94,7 @@ class BaseModel:
         :param item: partial spec of values to be updated
         :return: True if succeeds
         """
-
+        logging.info(f'UPDATE(item_id={item_id}, item={item})')
         # Don't attempt to update the partition key
         item = {k:v for (k,v) in item.items() if k != self.partition_key}
         item = self.update_hook(item)

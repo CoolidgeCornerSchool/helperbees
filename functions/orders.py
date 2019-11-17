@@ -115,6 +115,7 @@ def order_create(event, context):
 
 
 # GET /order/{order_id}
+# TODO: this probably should be restricted, require either user or admin credentials
 def order_get(event, context):
     item_id = event['pathParameters']['order_id']
     item = ORDERS.get_by_id(item_id)
