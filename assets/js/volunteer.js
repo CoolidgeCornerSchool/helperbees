@@ -39,12 +39,12 @@ function on_change_offer_type() {
     if (val == 'other') {
 	other.removeClass('d-none');
 	$('#10-for').text('$10 for');
-	$('#10-for').addClass('col-1').removeClass('col');
+	$('#10-for').addClass('col-2').addClass('col-md-1').removeClass('col');
 	$('#offer_per_hour, #offer_unit').removeClass('d-none');
 	$('#offer_per_hour').val(1);
     }
     if (val != 'other') {
-	$('#10-for').removeClass('col-1').addClass('col');
+	$('#10-for').removeClass('col-2').removeClass('col-md-1').addClass('col');
 	$('#offer_per_hour, #offer_unit').addClass('d-none').removeClass('d-inline-block');
 	other.val('').addClass('d-none');
 	let unit = option.attr('unit');
