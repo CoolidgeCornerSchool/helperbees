@@ -36,9 +36,9 @@ function on_change_donation(){
     if (new_val < 0 || isNaN(new_val)){
 	new_val = 0;
 	$(input).val(new_val);
-	return false;
     }
     $('select#offer_type').change();
+    return false;
 }
 
 // returns a <form/>
