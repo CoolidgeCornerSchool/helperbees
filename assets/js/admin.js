@@ -257,6 +257,7 @@ function on_change_offer_type() {
 // the first item determines the csv columns. We assume all items have the same keys.
 function to_csv(items){
     let header = Object.keys(items[0])
+    header.sort();
     let replacer = (key, value) => value === null ? '' : value // replace null values
     let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
     // replace \" with ""
@@ -282,6 +283,9 @@ function download_orders(){
     deferred_orders.then((orders)=>{
 	for (var i in orders){
 	    let order = orders[i];
+	    // change column name from 'custom'->'offer_id'
+	    order.offer_id = order.custom;
+	    delete order.custom;
 	    // nested JSON object in the order.offer field.
 	    order.offer = JSON.stringify(order.offer);
 	}
