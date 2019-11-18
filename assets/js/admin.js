@@ -6,6 +6,9 @@ $(document).ready(init_page);
 var offers = null;
 var offer_types = {};
 
+const deferred_orders = $.Deferred();
+const deferred_users = $.Deferred();
+
 const users_url = API_BASE_URL + '/user';
 
 // This is how jQuery calls a function to initialize the page.
@@ -17,7 +20,9 @@ function init_page() {
     // ADMIN_USERS tab
     // adds the ‘load_user’ callback to the names menu
     $('#names').change(load_user);
-
+    $("#download_users").click(download_users);
+    // ADMIN_ORDERS tab
+    $("#download_orders").click(download_orders);
     // ADMIN_OFFERS tab
     $('select#offer_type').change(on_change_offer_type);
 }
@@ -54,6 +59,7 @@ function load_admin_data(){
 
 
 function on_load_orders(data) {
+    deferred_orders.resolve(data.result);
     $('.no_orders').addClass('d-none');
     $('.admin_orders').removeClass('d-none');
     $('.admin_orders tbody').empty();
@@ -103,6 +109,7 @@ function compare_users( a, b ) {
 // It adds all the OPTION menu items to the names menu.
 function on_load_users(data) {
     let users = data.result;
+    deferred_users.resolve(users);
     users.sort(compare_users);
     for (var i in users) {
 	let user = users[i];
@@ -146,7 +153,7 @@ function on_load_user(data) {
     $('.show_user .login_link').html(link);
     $('.show_user .edit_link').html(edit_link);
     $('#delete_user').on('submit', function(e) {
-	// delete_user(data);  // DISABLED until we have integrity: delete linked offers too
+	// delete_user(data);  // DISABLED until we have integrity: must delete all the linked offers too
 	e.preventDefault();
     });
 }
@@ -188,21 +195,21 @@ function show_alert(result_struct) {
 }
 
 function on_load_offers(data) {
-  offers = data.result;
-  for (var i in offers) {
-    offer = offers[i];
-    offer_types[offer.offer_type] = true;
-  }
-  let dropdown = $('select#offer_type');
-  let ot_list = Object.keys(offer_types);
-  ot_list.sort();
-  for (var i in ot_list) {
-    let t = ot_list[i];
-    let option = $('<option/>')
-      .attr('value', t)
-      .text(t);
-    dropdown.append(option);
-  }
+    let offers = data.result;
+    for (var i in offers) {
+	offer = offers[i];
+	offer_types[offer.offer_type] = true;
+    }
+    let dropdown = $('select#offer_type');
+    let ot_list = Object.keys(offer_types);
+    ot_list.sort();
+    for (var i in ot_list) {
+	let t = ot_list[i];
+	let option = $('<option/>')
+	    .attr('value', t)
+	    .text(t);
+	dropdown.append(option);
+    }
 }
 
 function on_change_offer_type() {
@@ -243,4 +250,62 @@ function on_change_offer_type() {
 	    offerdivs.append(offer_row);
 	}
     }
+}
+
+// items is a list of objects
+// returns a string in CSV file format
+// the first item determines the csv columns. We assume all items have the same keys.
+function to_csv(items){
+    let header = Object.keys(items[0])
+    let replacer = (key, value) => value === null ? '' : value // replace null values
+    let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+    // replace \" with ""
+    let csv2 = csv.map(row => row.replace(/\\"/g, '""'));
+    csv2.unshift(header.join(','))
+    return csv2.join('\r\n')
+}
+
+function download_users(){
+    let date = new Date().toISOString().slice(0,10); // just the UTC date
+    deferred_users.then((users)=>{
+	for (var i in users){
+	    let user = users[i];
+	    // don't download the login_code
+	    delete user.login_code;
+	}
+	on_download_csv('users-'+date+'.csv', to_csv(users));
+    });
+};
+
+function download_orders(){
+    let date = new Date().toISOString().slice(0,10); // just the UTC date
+    deferred_orders.then((orders)=>{
+	for (var i in orders){
+	    let order = orders[i];
+	    // nested JSON object in the order.offer field.
+	    order.offer = JSON.stringify(order.offer);
+	}
+	on_download_csv('orders-'+date+'.csv', to_csv(orders));
+    });
+};
+
+function on_download_csv(filename, csv_body){
+    // Create a Blob containing the file body
+    let blob = new Blob([csv_body], {type : 'text/csv'});
+    // Create a download link, click on it, then delete it.
+    let url = URL.createObjectURL(blob);
+
+    // Listen for 'focus' event, which is sent when download is complete.
+    window.addEventListener('focus', window_focus, false);
+    function window_focus(){
+        window.removeEventListener('focus', window_focus, false);
+        URL.revokeObjectURL(url);
+        console.log('revoke ' + url);
+    }
+    let link = $("<a/>", {"download": filename, "href" : url})
+	.appendTo($('body'));
+    // Delete url and link after download is completed.
+    link.click(function() {
+	$(this).remove();
+    })[0].click();
 }
