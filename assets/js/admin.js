@@ -138,7 +138,6 @@ function load_user() {
 
 // This is called when the data for one user arrives from the back end.
 function on_load_user(data) {
-    console.log('loaded', data);
     // By default, this table is invisible. Remove the d-none class to make it appear
     $('.show_user').removeClass('d-none');
     // Put data into the table
@@ -195,7 +194,7 @@ function show_alert(result_struct) {
 }
 
 function on_load_offers(data) {
-    let offers = data.result;
+    offers = data.result;
     for (var i in offers) {
 	offer = offers[i];
 	offer_types[offer.offer_type] = true;
