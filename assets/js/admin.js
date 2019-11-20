@@ -60,6 +60,7 @@ function load_admin_data(){
 
 function on_load_orders(data) {
     deferred_orders.resolve(data.result);
+    data.result.sort(compare_dates);
     $('.no_orders').addClass('d-none');
     $('.admin_orders').removeClass('d-none');
     $('.admin_orders tbody').empty();
@@ -92,17 +93,24 @@ function make_order_row(order){
 
 
 // used when sorting, compares two objects (apply fcn to each object)
-function compare( a, b, fcn ) {
+function compare( a, b, fcn, reverse=false) {
+    let direction = 1;
+    if (reverse) { direction = -1 }
     let fa = fcn(a);
     let fb = fcn(b);
-    if ( fa < fb ){ return -1; }
-    if ( fa > fb ){ return 1; }
+    if ( fa < fb ){ return -1 * direction; }
+    if ( fa > fb ){ return 1 * direction; }
     return 0;
 }
 
 // alphabetical by last_name
 function compare_users( a, b ) {
     return compare(a, b, (user)=>user.last_name.toLowerCase());
+}
+
+// by date
+function compare_dates( a, b ) {
+    return compare(a, b, (order)=>new Date(order.payment_date), true);
 }
 
 // This is called when the list of all users arrives from the back end.
