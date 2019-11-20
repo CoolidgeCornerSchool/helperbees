@@ -96,7 +96,7 @@ function on_load_offers(data) {
     }
     // use a known test offer
     test_offer.offer_id = TEST_OFFER_ID;
-    offers.push(test_offer);    
+    // offers.push(test_offer);
     // If url has hashtag (e.g. #babysitting) select it in menu
     let path = window.location.pathname;
     let hash = decodeURI(window.location.hash).replace('<slash>', '/');
@@ -109,7 +109,7 @@ function on_load_offers(data) {
     // build dropdown menu from list of offer_types
     let ot_list = Object.keys(offer_types);
     ot_list.sort();
-    ot_list.push('testing');
+    //ot_list.push('testing');
     for (var i in ot_list) {
 	let offer_type = ot_list[i];
 	let option = $('<option/>')
