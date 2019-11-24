@@ -1,6 +1,6 @@
 # Helper Bees
 
-A web site for the 8th Grade Services Fair
+Matching student volunteers to neighborhood donors.
 
 ## Introduction
 
