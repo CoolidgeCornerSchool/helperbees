@@ -1,3 +1,8 @@
+---
+title: README
+layout: default
+---
+
 # Helper Bees
 
 Matching student volunteers to neighborhood donors.
