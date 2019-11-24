@@ -9,7 +9,9 @@ Matching student volunteers to neighborhood donors.
 
 ## Introduction
 
-8th grade students will offer services in the neighboorhood such as dog walking or snow shoveling to raise money for activities throughout the year.
+8th grade students at [Coolidge Corner School][] in Brookline, Massachusetts are volunteering their time to offer services such as dog walking or snow shoveling to raise money for student activities throughout the year through donations by people in their neighborhood.
+
+[Coolidge Corner School]: https://www.brookline.k12.ma.us/coolidgecorner
 
 ## Mission
 
