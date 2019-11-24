@@ -41,3 +41,9 @@ to ask how their child can help.
 <img src="assets/images/helperbee2.gif" style="width: 100px"/>
 
 [Piskel]: https://www.piskelapp.com/user/5267417628934144/public
+
+#### How is the Helper Bees website implemented?
+
+Helper Bees runs on GitHub Pages and AWS. Helper Bees is open source and all are welcome to inspect and contribute to the [source code][].
+
+[source code]: https://github.com/CoolidgeCornerSchool/helperbees
