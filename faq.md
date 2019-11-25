@@ -8,7 +8,7 @@ layout: default
 
 #### Is the Helper Bees website done?  
 
-Yes! Well, software is never done but On November 30, 2019, we sent an email called "Grade Level Communications - 8th Grade: Helper Bees!" to parents of 8th graders at [Coolidge Corner School][] to encourage their 8th graders to volunteer. We also encouraged these parents to hire Helper Bees by donating through the site (other neighbors are welcome to donate as well). We are testing to see if and how parents and kids will respond to Helper Bees!
+Yes! Well, software is never done but On November 20, 2019, we sent an email called "Grade Level Communications - 8th Grade: Helper Bees!" to parents of 8th graders at [Coolidge Corner School][] to encourage their 8th graders to volunteer. We also encouraged these parents to hire Helper Bees by donating through the site (other neighbors are welcome to donate as well). We are testing to see if and how parents and kids will respond to Helper Bees!
 
 #### How does it work?
 

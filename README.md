@@ -23,7 +23,7 @@ Parents and students must raise money each year to fund everything from the scho
 
 ## Status
 
-Helper Bees was "soft launched" on November 30, 2019. If you have been contacted about Helper Bees, please try out the site and email [ccs.helperbees@gmail.com](mailto:ccs.helperbees@gmail.com) with any feedback!
+Helper Bees was "soft launched" on November 20, 2019. If you have been contacted about Helper Bees, please try out the site and email [ccs.helperbees@gmail.com](mailto:ccs.helperbees@gmail.com) with any feedback!
 
 We are tracking our progress on a kanban board with the following columns:
 
