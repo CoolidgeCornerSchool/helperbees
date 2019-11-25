@@ -5,6 +5,8 @@ layout: default
 
 # Helper Bees
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
 Matching student volunteers to neighborhood donors.
 
 ## Introduction
@@ -21,15 +23,14 @@ Parents and students must raise money each year to fund everything from the scho
 
 ## Status
 
-At a high level, the code is under heavy development and is NOT yet ready for even a soft launch.
+Helper Bees was "soft launched" on November 30, 2019. If you have been contacted about Helper Bees, please try out the site and email [ccs.helperbees@gmail.com](mailto:ccs.helperbees@gmail.com) with any feedback!
 
-We are tracking our progress on a kanban board with three columns:
+We are tracking our progress on a kanban board with the following columns:
 
+- [Ideas](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-7236231)
 - [To Do](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867622)
 - [Doing](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867623)
 - [Done](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867624)
-
-[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 
 ## Resources
 
