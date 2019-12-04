@@ -7,6 +7,9 @@
 - tab: volunteer
   name: Volunteer to be a Helper Bee
   url: /volunteer
+- tab: photos
+  name: Photos
+  url: /photos
 - tab: my_page
   name: My page
   url: /my_page

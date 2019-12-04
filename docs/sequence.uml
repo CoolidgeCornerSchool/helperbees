@@ -1,27 +1,24 @@
 @startuml
 
-hide footbox
+'hide footbox
 title Helper Bees Sequence Diagram
 
-actor parent
 actor kid
+actor parent
+
 participant "Volunteer to be \n a Helper Bee"
 database system
 participant "Request\na Helper"
-kid -> "Volunteer to be \n a Helper Bee" : offers service from\ndropdown list
-"Volunteer to be \n a Helper Bee" -> system : service stored\nin system
-system -> parent : system emails parent that new\nservice has been offered
+kid -> "Volunteer to be \n a Helper Bee" : kid offers service\nfrom dropdown list
+"Volunteer to be \n a Helper Bee" -> system : offer stored in\nsystem
+system -> parent : system emails parent that\nkid has offered a service
 
 actor customer
-participant "Admin"
-actor admins
-customer -> "Request\na Helper" : browses services and\nclicks "Donate"
+customer -> "Request\na Helper" : customer browses\nservices and\nclicks "Donate"
 "Request\na Helper" -> system : order placed\nand payment\nsent to PTO
-system -> parent : system emails parent with\nemail address and phone number\nof customer
-system -> admins : system emails admins about order being placed
+system -> parent : system emails parent with\nemail address of customer
+system -> customer : system emails customer with email\naddress and phone number of parent
 parent -> kid : parent\ntalks\nto kid
 kid -> customer : kid contacts customer\nand provides service
-admins -> "Admin" : admins\nclicks\n"Reports"
-"Admin" -> system : get data on kids, donations, etc.
 
 @enduml

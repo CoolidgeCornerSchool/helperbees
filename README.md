@@ -1,10 +1,19 @@
+---
+title: README
+layout: default
+---
+
 # Helper Bees
 
-A web site for the 8th Grade Services Fair
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
+Matching student volunteers to neighborhood donors.
 
 ## Introduction
 
-8th grade students will offer services in the neighboorhood such as dog walking or snow shoveling to raise money for activities throughout the year.
+8th grade students at [Coolidge Corner School][] in Brookline, Massachusetts are volunteering their time to offer services such as dog walking or snow shoveling to raise money for student activities throughout the year through donations by people in their neighborhood.
+
+[Coolidge Corner School]: https://www.brookline.k12.ma.us/coolidgecorner
 
 ## Mission
 
@@ -14,15 +23,14 @@ Parents and students must raise money each year to fund everything from the scho
 
 ## Status
 
-At a high level, the code is under heavy development and is NOT yet ready for even a soft launch.
+Helper Bees was "soft launched" on November 20, 2019. If you have been contacted about Helper Bees, please try out the site and email [ccs.helperbees@gmail.com](mailto:ccs.helperbees@gmail.com) with any feedback!
 
-We are tracking our progress on a kanban board with three columns:
+We are tracking our progress on a kanban board with the following columns:
 
+- [Ideas](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-7236231)
 - [To Do](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867622)
 - [Doing](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867623)
 - [Done](https://github.com/CoolidgeCornerSchool/helperbees/projects/1#column-6867624)
-
-[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 
 ## Resources
 
