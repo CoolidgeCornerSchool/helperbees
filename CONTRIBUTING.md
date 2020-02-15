@@ -33,7 +33,7 @@ Hacking on the front end requires Jekyll to be installed. "Get up and running in
 
 On Mac, we've seen decent success with installing Homebrew from <https://brew.sh> followed by the command below (then make sure `jekyll` is in your `$PATH`):
 
-    gem install --user-install bundler jekyll
+    gem install --user-install bundler jekyll jekyll-redirect-from
 
 Once you have Jekyll installed you can run the following command...
 
