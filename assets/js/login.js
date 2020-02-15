@@ -41,7 +41,7 @@ const USER_INFO = $.Deferred();
 
 function set_cookie(name, value, days = LOGIN_DAYS, path = '/') {
   const expires = new Date(Date.now() + days * 864e5).toUTCString()
-    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path + ';SameSite=Lax';
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path + ';SameSite=None;Secure';
 }
 
 function get_cookie(name) {
