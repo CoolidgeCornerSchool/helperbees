@@ -41,7 +41,7 @@ const USER_INFO = $.Deferred();
 
 function set_cookie(name, value, days = LOGIN_DAYS, path = '/') {
   const expires = new Date(Date.now() + days * 864e5).toUTCString()
-    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path + ';SameSite=None;Secure';
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path + '; SameSite=None; Secure';
 }
 
 function get_cookie(name) {
@@ -155,14 +155,20 @@ function google_signout(googleUser) {
 // This gets resolved with the google user, if there is one.
 const GOOGLE_PROFILE = $.Deferred();
 
+// Print debug events on console
+window.addEventListener('message',(...args)=>console.log('login.js:window event', args));
+
 // This is called on every page ('admin login' callback in _includes/head.html)
 function on_load_google_api(){
+    console.log('login.js: on_load_google_api')
     gapi.load('auth2', function(){
 	// Retrieve the singleton for the GoogleAuth library and set up the client.
+	console.log('auth2 loaded');
 	auth2 = gapi.auth2.init({
             client_id: login_client_id,
             cookiepolicy: 'single_host_origin'
 	}).then((auth)=>{
+	    console.log('then loaded auth=', auth);
 	    if (auth.isSignedIn.get()){
 		let profile = auth.currentUser.get().getBasicProfile();
 		GOOGLE_PROFILE.resolve(profile);
