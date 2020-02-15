@@ -74,7 +74,7 @@ function on_load_orders(data) {
 // returns <tr/>
 function make_order_row(order){
     let row = $('<tr/>');
-    row.append($('<td/>').text(new Date(order.payment_date).toLocaleString()));
+    row.append($('<td/>').text(toDate(order.payment_date).toLocaleString()));
     row.append($('<td/>').append($('<code/>').text(order.order_id)));
     row.append($('<td/>').append(
 	$('<span/>').text(order.first_name + ' ' + order.last_name).addClass('mr-2'),
@@ -110,7 +110,26 @@ function compare_users( a, b ) {
 
 // by date
 function compare_dates( a, b ) {
-    return compare(a, b, (order)=>new Date(order.payment_date), true);
+    return compare(a, b, (order)=>toDate(order.payment_date), true);
+}
+
+
+// Paypal IDN returns nonstandard date strings, like "13:31:17 Nov 16, 2019 PST"
+// An ISO date looks like "YYYY-MM-DD HH:MM:SS"
+// Making things worse, Date.parse() behaves differently in Chrome and Safari.
+// toDate() tries to return a valid Date object no matter what browser you have
+function toDate(str){
+    if (str instanceof Date){
+	return str;
+    }
+    var parsed = Date.parse(str); // returns a long number
+    if (isNaN(parsed)){
+	// swap the MMDDYY with the HHMMSS
+	var pattern = /(\d+)\:(\d+)\:(\d+) (\w+) (\w+), (\w+)/;
+	return new Date(str.replace(pattern,'$4 $5, $6 $1:$2:$3'));
+    } else {
+	return new Date(parsed);
+    }
 }
 
 // This is called when the list of all users arrives from the back end.
